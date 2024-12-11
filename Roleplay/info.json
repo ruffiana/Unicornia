@@ -1,0 +1,10 @@
+{
+  "name": "Roleplay",
+  "author": ["Ruffiana", "Kirin", "JenJenJam"],
+  "description": "A magical cog with friendly commands.",
+  "install_msg": "Thank you for installing Roleplay!",
+  "short": "Roleplay cog",
+  "requirements": [],
+  "min_bot_version": "3.4.0",
+  "tags": ["fun", "greetings"]
+}

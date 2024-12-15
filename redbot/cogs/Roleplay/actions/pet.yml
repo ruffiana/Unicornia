@@ -1,0 +1,16 @@
+help: Pet a user!
+aliases:
+    - pets
+description: "{invoker_member} is petting {target_member}."
+images: 
+    - https://i.imgur.com/JEc9ojf.gif
+    - https://i.imgur.com/DblQfCO.gif
+    - https://i.imgur.com/myHZY4L.gif
+    - https://i.imgur.com/UPfLjsO.gif
+    - https://i.imgur.com/R1kAo6g.gif
+    - https://i.imgur.com/2viEd5X.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to pet you."
+    passive: "{target_member}, {invoker_member} wants you to pet them."
+    owner_active: "{owner}, {invoker_member} wants to pet {target_member}."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to pet them."

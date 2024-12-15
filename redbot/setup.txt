@@ -1,0 +1,9 @@
+Install redbot:
+https://docs.discord.red/en/stable/install_guides/index.html
+
+Creating bot account:
+https://docs.discord.red/en/stable/bot_application_guide.html
+https://discord.com/developers/applications
+
+Set up cogs:
+https://docs.discord.red/en/stable/guide_cog_creation.html

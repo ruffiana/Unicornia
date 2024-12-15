@@ -1,0 +1,10 @@
+aliases:
+    - bows
+    - bowto
+help: Bow to a user.
+description: "{invoker_member} is bowing to {target_member}."
+images:
+    - https://panel.unicornia.net/botimages/C5BVTfW.gif
+    - https://panel.unicornia.net/botimages/F9EDWhy.gif
+    - https://panel.unicornia.net/botimages/B32NP3T.gif
+    - https://panel.unicornia.net/botimages/avDRwRQ.gif

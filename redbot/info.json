@@ -1,0 +1,12 @@
+{
+    "name": "Unicornia",
+    "short": "A collection of cogs for Redbot",
+    "description": "This repository contains various cogs designed to enhance the functionality of Redbot. Each cog is designed to perform specific tasks and can be enabled or disabled individually.",
+    "author": ["Ruffiana", "Kirin"],
+    "tags": ["chat", "fun", "roleplay", "nsfw"],
+    "version": "1.0.0",
+    "api_version": 2,
+    "required_core_version": ">=3.0.0a",
+    "hidden": true,
+    "disabled_by_default": false
+}

@@ -1,9 +1,9 @@
 {
-  "name": "Roleplay",
-  "short": "Redbog cog that allows members to perform roleplay actions",
+  "name": "roleplay",
+  "short": "Redbog cog made for Unicornia that allows members to perform roleplay actions",
   "description": "Perform a commands on another user. Ask another user to perform a command on you. Modify settings that determine consent.",
   "author": ["Ruffiana", "Kirin"],
-  "tags": ["tag1", "tag2", "tag3"],
+  "tags": ["fun", "roleplay", "nsfw"],
   "version": "2.3.1",
   "api_version": 2,
   "required_core_version": ">=3.0.0a",

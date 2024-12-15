@@ -1,0 +1,10 @@
+{
+  "name": "COGS",
+  "author": ["Ruffiana", "Kirin", "JenJenJam"],
+  "description": "A collection of cogs for redbot.",
+  "install_msg": "Thank you for installing my cogs. UwU!",
+  "short": "COGS",
+  "requirements": [],
+  "min_bot_version": "3.4.0",
+  "tags": ["fun"]
+}

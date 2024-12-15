@@ -1,0 +1,50 @@
+help: Slap a user!
+aliases:
+    - slaps
+description: "{invoker_member} is slapping {target_member}."
+images: 
+    - https://cdn.weeb.sh/images/H16aQJFvb.gif
+    - https://media1.tenor.com/images/d14969a21a96ec46f61770c50fccf24f/tenor.gif
+    - https://media1.tenor.com/images/9ea4fb41d066737c0e3f2d626c13f230/tenor.gif
+    - https://media1.tenor.com/images/4a6b15b8d111255c77da57c735c79b44/tenor.gif
+    - https://media1.tenor.com/images/153b2f1bfd3c595c920ce60f1553c5f7/tenor.gif
+    - https://media1.tenor.com/images/4fa82be21ffd18c99a9708ba209d56ad/tenor.gif
+    - https://media1.tenor.com/images/1ba1ea1786f0b03912b1c9138dac707c/tenor.gif
+    - https://i.imgur.com/EO8udG1.gif
+    - https://i.imgur.com/lMmn1wy.gif
+    - https://i.imgur.com/TuSUTg5.gif
+    - https://i.imgur.com/9Ql97mO.gif
+    - https://i.imgur.com/VBGqeIU.gif
+    - https://i.imgur.com/uPZwGFQ.gif
+    - https://i.imgur.com/eNiOIMB.gif
+    - https://i.imgur.com/gsAGyoI.gif
+    - https://cdn.weeb.sh/images/HyPjmytDW.gif
+    - https://cdn.weeb.sh/images/BJ8o71tD-.gif
+    - https://cdn.weeb.sh/images/BJLCX1Kw-.gif
+    - https://cdn.weeb.sh/images/rJvR71KPb.gif
+    - https://cdn.weeb.sh/images/SkZTQkKPZ.gif
+    - https://cdn.weeb.sh/images/Hkw1VkYP-.gif
+    - https://cdn.weeb.sh/images/BkxEo7ytDb.gif
+    - https://cdn.weeb.sh/images/B1fnQyKDW.gif
+    - https://cdn.weeb.sh/images/Bkj-oaV0Z.gif
+    - https://cdn.weeb.sh/images/r1siXJKw-.gif
+    - https://cdn.weeb.sh/images/r1VF-lcyz.gif
+    - https://cdn.weeb.sh/images/BJgsX1Kv-.gif
+    - https://cdn.weeb.sh/images/SkKn-xc1f.gif
+    - https://cdn.weeb.sh/images/Sk9mfCtY-.gif
+    - https://cdn.weeb.sh/images/ry_RQkYDb.gif
+    - https://cdn.weeb.sh/images/HkK2mkYPZ.gif
+    - https://cdn.weeb.sh/images/S1ylxxc1M.gif
+    - https://cdn.weeb.sh/images/SJdXoVguf.gif
+    - https://cdn.weeb.sh/images/ByHUMRNR-.gif
+    - https://cdn.weeb.sh/images/SkdyfWCSf.gif
+    - https://cdn.weeb.sh/images/rknn7Jtv-.gif
+    - https://cdn.weeb.sh/images/rJgTQ1tvb.gif
+    - https://cdn.weeb.sh/images/rkaqm1twZ.gif
+    - https://cdn.weeb.sh/images/ryn_Zg5JG.gif
+    - https://cdn.weeb.sh/images/SJ-CQytvW.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to slap you."
+    passive: "{target_member}, {invoker_member} wants you to slap them."
+    owner_active: "{owner}, {invoker_member} wants to slap {target_member}."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to slap them."

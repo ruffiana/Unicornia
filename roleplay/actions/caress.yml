@@ -1,6 +1,6 @@
 aliases:
     - caresses
-help: Caress a user!
+help: "Caress a user."
 description: "{invoker_member} is caressing {target_member}."
 credits:
     - neviyn

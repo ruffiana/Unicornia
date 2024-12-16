@@ -1,5 +1,5 @@
-help: Hold hands with a user!
-description: {invoker_member} is holding {target_member}'s hand
+help: "Hold hands with a user!"
+description: "{invoker_member} is holding {target_member}'s hand"
 spoiler: True
 images: 
     - https://panel.unicornia.net/botimages/4SasCu2.gif

@@ -7,7 +7,7 @@ from redbot.core import commands
 from redbot.core.bot import Red
 
 from . import __version__, __credits__, const
-from .callbacks import Callbacks
+from .webserver import Webserver
 from .toys import Patterns, Controller
 from .guilds import Guilds
 
@@ -22,9 +22,9 @@ class Lovense(commands.Cog):
         self.bot = bot
         self.guilds = Guilds(self)
         self.controller = Controller(self)
-        self.callbacks = Callbacks(self)
+        self.callbacks = Webserver(self)
 
-        self.bot.loop.create_task(self.callbacks.webserver())
+        self.bot.loop.create_task(self.callbacks.start())
         self.bot.loop.create_task(self.update_activity())
 
         self.logger.info("-" * 32)

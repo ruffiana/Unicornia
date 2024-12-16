@@ -1,4 +1,4 @@
-help: Pet a user!
+help: "Pet a user."
 aliases:
     - pets
 description: "{invoker_member} is petting {target_member}."

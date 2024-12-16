@@ -1,4 +1,4 @@
-help: Walk a user!
+help: "Walk a user."
 aliases:
     - walkies
 description: "{invoker_member} takes {target_member} for a walk."

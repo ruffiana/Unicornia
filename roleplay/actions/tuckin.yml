@@ -1,4 +1,4 @@
-help: Tuck in a user
+help: "Tuck in a user."
 aliases:
     - tucksin
 description: "{invoker_member} has tucked in {target_member}."

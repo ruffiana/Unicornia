@@ -1,4 +1,4 @@
-help: Pat a user!
+help: "Pat a user."
 aliases:
     - pats
 description: "{invoker_member} is patting {target_member}."

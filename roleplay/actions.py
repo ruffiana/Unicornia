@@ -12,6 +12,8 @@ import yaml
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Union
 
+from . import const
+
 FILEPATH = Path(__file__).parent / "actions"
 FILETYPE = "yml"
 
@@ -76,7 +78,7 @@ class Action:
     name: str
     description: str
     help: str
-    aliases: Union[List[str], str] = field(default_factory=list)
+    aliases: Optional[Union[List[str], str]] = field(default_factory=list)
     credits: Optional[List[str]] = None
     spoiler: Optional[bool] = False
     images: Union[List[str], str] = field(default_factory=list)
@@ -109,8 +111,10 @@ class Action:
 class ActionManager:
     DATA_PATH = Path(__file__).parent / "actions"
 
-    def __init__(self):
+    def __init__(self, parent=None):
+        self.parent = parent
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger.setLevel = const.LOGGER_LEVEL
 
         self.actions: List[Action] = []
 
@@ -176,7 +180,7 @@ if __name__ == "__main__":
     print("Actions:")
     pprint(names, indent=4)
 
-    action_name = "suck"
+    action_name = "holdhands"
     action = manager.get(action_name)
 
     if action:

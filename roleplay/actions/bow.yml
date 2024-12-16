@@ -1,7 +1,7 @@
+help: "Bow to a user."
 aliases:
     - bows
     - bowto
-help: Bow to a user.
 description: "{invoker_member} is bowing to {target_member}."
 images:
     - https://panel.unicornia.net/botimages/C5BVTfW.gif

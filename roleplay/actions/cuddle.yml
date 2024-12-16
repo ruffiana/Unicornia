@@ -1,7 +1,7 @@
 aliases:
     - cuddles
     - cuddlewith
-help: Cuddle a user!
+help: "Cuddle a user."
 description: "{invoker_member} is cuddling with {target_member}."
 images: 
     - https://cdn.weeb.sh/images/BkTe8U7v-.gif

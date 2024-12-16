@@ -1,4 +1,4 @@
-help: Kiss a user!
+help: "Kiss a user."
 aliases:
     - kisses
     - smooch
@@ -15,4 +15,4 @@ consent:
     active: "{target_member}, {invoker_member} wants to kiss you."
     passive: "{target_member}, {invoker_member} wants you to kiss them."
     owner_active: "{owner}, {invoker_member} wants to kiss {target_member}."
-    owner_passive: "{owner}, {invoker_member} wants {target_member} to ki9ss them."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to kiss them."

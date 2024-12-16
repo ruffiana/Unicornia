@@ -1,4 +1,4 @@
-help: Hug a user!
+help: "Hug a user."
 aliases:
     - hugs
 description: "{invoker_member} is hugging {target_member}."

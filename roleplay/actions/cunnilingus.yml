@@ -1,7 +1,7 @@
 aliases:
     - eatout
     - eatsout
-help: Eat out a user!
+help: "Eat out a user!"
 description: "{invoker_member} is eating out {target_member}."
 spoiler: True
 images: 

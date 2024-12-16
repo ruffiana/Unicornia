@@ -3,7 +3,7 @@ aliases:
     - bang
     - bangs
     - havesexwith
-help: Fuck a user!
+help: "Fuck a user!"
 description: "{invoker_member} is fucking {target_member}."
 spoiler: True
 images: 

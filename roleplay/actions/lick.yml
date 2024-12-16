@@ -1,4 +1,4 @@
-help: Lick a user!
+help: "Lick a user."
 aliases:
     - licks
 description: "{invoker_member} is licking {target_member}."

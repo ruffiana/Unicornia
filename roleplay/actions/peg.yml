@@ -2,7 +2,7 @@ help: Peg a user!
 aliases:
     - pegs
     - strapon
-description: "{invoker_member} is {pegging} target."
+description: "{invoker_member} is pegging {target_member}."
 spoiler: True
 images: 
     - https://panel.unicornia.net/botimages/evzDCB0.gif

@@ -4,6 +4,13 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.3.3] - 2021-12-16
+
+### Added
+- Added admin commands group
+- Added logger_settings command group and logger_set_level command
+
+
 ## [2.3.2] - 2021-12-16
 
 ### Changed

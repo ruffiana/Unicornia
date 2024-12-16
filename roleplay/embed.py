@@ -1,6 +1,5 @@
 import io
 from pathlib import Path
-
 import discord
 import requests
 
@@ -41,7 +40,13 @@ class Embed:
         if cache_path.exists():
             return cache_path
 
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+        # put this here to resolve SSLError(SSLCertVerificationError with images on
+        # https://panel.unicornia.net
+        except:
+            response = requests.get(url, verify=False)
+
         if response.status_code == 200:
             cache_path.parent.mkdir(parents=True, exist_ok=True)
             with open(cache_path, "wb") as file:

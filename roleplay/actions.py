@@ -76,7 +76,7 @@ class Action:
     name: str
     description: str
     help: str
-    aliases: Union[List[str], str] = field(default_factory=list)
+    aliases: Optional[Union[List[str], str]] = field(default_factory=list)
     credits: Optional[List[str]] = None
     spoiler: Optional[bool] = False
     images: Union[List[str], str] = field(default_factory=list)
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     print("Actions:")
     pprint(names, indent=4)
 
-    action_name = "suck"
+    action_name = "holdhands"
     action = manager.get(action_name)
 
     if action:

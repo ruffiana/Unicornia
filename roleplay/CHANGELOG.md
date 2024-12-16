@@ -4,12 +4,16 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.3.4] - 2021-12-16
+
+### Changed
+- Ask commands will ignore public use flag and ask the target member for consent when required
+
 ## [2.3.3] - 2021-12-16
 
 ### Added
 - Added admin commands group
 - Added logger_settings command group and logger_set_level command
-
 
 ## [2.3.2] - 2021-12-16
 
@@ -20,7 +24,6 @@
 - Fixed formatting issues in action YAML files
 - made Action.aliases an optional property
 - fixed interaction allowing consent to be skipped
-
 
 ## [2.3.1] - 2021-12-15
 

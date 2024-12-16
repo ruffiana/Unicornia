@@ -4,7 +4,7 @@ TODO:
     Add "ask" command
 """
 
-__version__ = "2.3.3"
+__version__ = "2.3.4"
 __author__ = "ruffiana"
 __credits__ = ["the.kirin", "neviyn", "fitz.lol"]
 

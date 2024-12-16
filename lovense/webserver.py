@@ -7,7 +7,7 @@ from aiohttp import web
 from . import const
 
 
-class Callbacks:
+class Webserver:
     REQUEST_HEADERS = {"User-Agent": "ToyBot/beep-boop"}
     CALLBACK_PORT = 8000
 
@@ -22,7 +22,7 @@ class Callbacks:
 
         self.site = None
 
-    async def webserver(self):
+    async def start(self):
         async def handler(request: web.Request):
             if request.body_exists and request.can_read_body:
                 body = await request.json()

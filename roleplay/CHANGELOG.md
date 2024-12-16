@@ -14,7 +14,7 @@
 ## [2.3.2] - 2021-12-16
 
 ### Changed
-- Changed many member.mention uses to member.display_name to reduce notifications
+- Changed some of the consent messages back to member.mention
 
 ### Fixed
 - Fixed formatting issues in action YAML files

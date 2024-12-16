@@ -266,7 +266,7 @@ class Roleplay(commands.Cog):
             return False
 
         # If the invoker_member owns the target member
-        if invoker_member is target_owner:
+        if invoker_member == target_owner:
             await self.send_action_message(
                 ctx,
                 invoker_member,
@@ -654,7 +654,7 @@ class Roleplay(commands.Cog):
         consent_message = format_string(
             consent_message,
             invoker_member=invoker_member.display_name,
-            target_member=target_member.display_name,
+            target_member=target_member.mention,
         )
         self.logger.debug(f'consent_message : "{consent_message}"')
         await ctx.send(consent_message)

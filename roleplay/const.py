@@ -8,8 +8,9 @@ from discord import Color
 
 from . import __version__, __author__
 
-# set logging level for package. Most common are logging.INFO or logging.DEBUG
-LOGGER_LEVEL = logging.DEBUG
+# set logging level for package.
+# Most common is logging.INFO or logging.DEBUG
+LOGGER_LEVEL = logging.INFO
 
 # limit on number of times a command can be used before cooldown these
 # are defined in the module's global scope so they can be used as args

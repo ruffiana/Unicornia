@@ -31,15 +31,12 @@ class UsersGroup(commands.Group):
 
 class Help:
     def __init__(self, bot=None, parent=None, action_manager=ActionManager()):
+        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger.setLevel(const.LOGGER_LEVEL)
+
         self.bot = bot
         self.parent = parent
         self.action_manager = action_manager
-        self.init_logging()
-
-    def init_logging(self):
-        """Sets up logging for the Roleplay class."""
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        self.logger.setLevel(const.LOGGER_LEVEL)
 
     @property
     def bot_avatar_url(self):

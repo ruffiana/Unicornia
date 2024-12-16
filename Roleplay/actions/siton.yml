@@ -1,0 +1,16 @@
+help: Sit on a user's face.
+aliases:
+    - sitson
+    - sitonface
+    - sitsonface
+description: "{invoker_member} is sitting on {target_member}'s face."
+spoiler: True
+images: 
+    - https://panel.unicornia.net/botimages/dIkTN8t.gif
+    - https://panel.unicornia.net/botimages/60SNbrc.gif
+    - https://panel.unicornia.net/botimages/LS3hMtD.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to sit on your face."
+    passive: "{target_member}, {invoker_member} wants you to sit on their face."
+    owner_active: "{owner}, {invoker_member} wants to sit on {target_member}'s face'."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to sit on their face ."

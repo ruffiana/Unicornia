@@ -1,4 +1,4 @@
-help: Act smug towards a user.
+help: "Act smug towards a user."
 description: "{invoker_member} is acting smug towards {target_member}."
 images: 
     - https://i.kym-cdn.com/photos/images/original/001/087/562/93c.gif

@@ -1,4 +1,4 @@
-help: Bite a user!
+help: "Bite a user."
 aliases:
     - bites
 description: "{invoker_member} is biting {target_member}."

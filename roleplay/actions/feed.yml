@@ -1,6 +1,6 @@
 aliases:
     - feeds
-help: Feed a user!
+help: "Feed a user."
 description: "{invoker_member} is feeding {target_member}."
 images: 
     - https://media1.tenor.com/images/93c4833dbcfd5be9401afbda220066ee/tenor.gif

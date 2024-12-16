@@ -1,4 +1,4 @@
-help: Ride a user!
+help: "Ride a user!"
 aliases:
     - rides
 description: "{invoker_member} is riding {target_member}."

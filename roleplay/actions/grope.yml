@@ -2,7 +2,7 @@ aliases:
     - gropes
     - fondle
     - fondles
-help: Grope a user!
+help: "Grope a user."
 description: "{invoker_member} is groping {target_member}."
 images: 
     - https://panel.unicornia.net/botimages/gJYOuPo.gif

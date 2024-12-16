@@ -1,4 +1,4 @@
-help: Slap a user!
+help: "Slap a user."
 aliases:
     - slaps
 description: "{invoker_member} is slapping {target_member}."

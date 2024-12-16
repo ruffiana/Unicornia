@@ -1,4 +1,4 @@
-help: Tickle a user!
+help: "Tickle a user."
 aliases:
     - tickles
 description: "{invoker_member} is tickling {target_member}."

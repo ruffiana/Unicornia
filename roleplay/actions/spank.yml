@@ -1,4 +1,4 @@
-help: Spank a user!
+help: "Spank a user."
 aliases:
     - spanks
 description: "{invoker_member} is spanking {target_member}."

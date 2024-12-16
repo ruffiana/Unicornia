@@ -1,4 +1,4 @@
-help: Poke a user!
+help: "Poke a user."
 aliases:
     - pokes
 description: "{invoker_member} is poking {target_member}."

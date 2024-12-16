@@ -1,0 +1,17 @@
+aliases:
+    - eatout
+    - eatsout
+help: Eat out a user!
+description: "{invoker_member} is eating out {target_member}."
+spoiler: True
+images: 
+    - https://panel.unicornia.net/botimages/cunnilingus1.gif
+    - https://panel.unicornia.net/botimages/cunnilingus2.gif
+    - https://panel.unicornia.net/botimages/cunnilingus3.gif
+    - https://panel.unicornia.net/botimages/cunnilingus4.gif
+    - https://panel.unicornia.net/botimages/cunnilingus5.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to eat you out."
+    passive: "{target_member}, {invoker_member} wants you to eat them out."
+    owner_active: "{owner}, {invoker_member} wants to eat out {target_member}."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to eat them out."

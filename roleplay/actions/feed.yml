@@ -1,0 +1,20 @@
+aliases:
+    - feeds
+help: Feed a user!
+description: "{invoker_member} is feeding {target_member}."
+images: 
+    - https://media1.tenor.com/images/93c4833dbcfd5be9401afbda220066ee/tenor.gif
+    - https://media1.tenor.com/images/33cfd292d4ef5e2dc533ff73a102c2e6/tenor.gif
+    - https://media1.tenor.com/images/72268391ffde3cd976a456ee2a033f46/tenor.gif
+    - https://media1.tenor.com/images/4b48975ec500f8326c5db6b178a91a3a/tenor.gif
+    - https://media1.tenor.com/images/187ff5bc3a5628b6906935232898c200/tenor.gif
+    - https://media1.tenor.com/images/15e7d9e1eb0aad2852fabda1210aee95/tenor.gif
+    - https://media1.tenor.com/images/d08d0825019c321f21293c35df8ed6a9/tenor.gif
+    - https://media1.tenor.com/images/571da4da1ad526afe744423f7581a452/tenor.gif
+    - https://media1.tenor.com/images/6bde17caa5743a22686e5f7b6e3e23b4/tenor.gif
+    - https://media1.tenor.com/images/fd3616d34ade61e1ac5cd0975c25a917/tenor.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to feed you."
+    passive: "{target_member}, {invoker_member} wants you to feed them."
+    owner_active: "{owner}, {invoker_member} wants to feed {target_member}."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to feed them."    

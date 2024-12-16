@@ -1,0 +1,13 @@
+help: Hold hands with a user!
+description: author is holding target's hand
+spoiler: True
+images: 
+    - https://panel.unicornia.net/botimages/4SasCu2.gif
+    - https://panel.unicornia.net/botimages/biFPihV.gif
+    - https://panel.unicornia.net/botimages/lnVGxdN.gif
+    - https://panel.unicornia.net/botimages/DfDKZGT.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to hold your hand."
+    passive: "{target_member}, {invoker_member} wants you to hold their hand."
+    owner_active: "{owner}, {invoker_member} wants to hold {target_member}'s hand'."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to their hand."

@@ -1,0 +1,15 @@
+help: Spank a user!
+aliases:
+    - spanks
+description: "{invoker_member} is spanking {target_member}."
+images: 
+    - https://panel.unicornia.net/botimages/
+    - https://panel.unicornia.net/botimages/rikka-takanashi-bad-girl.gif
+    - https://panel.unicornia.net/botimages/h8PWgcl.gif
+    - https://panel.unicornia.net/botimages/YTSIU80.gif
+    - https://panel.unicornia.net/botimages/dG7qAye.gif
+consent:
+    active: "{target_member}, {invoker_member} wants to spank out."
+    passive: "{target_member}, {invoker_member} wants you to spank them."
+    owner_active: "{owner}, {invoker_member} wants to spank {target_member}."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to spank them."

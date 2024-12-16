@@ -1,0 +1,12 @@
+{
+  "name": "Lovense",
+  "short": "Redbog cog that can control Lovense toys",
+  "description": "TBD.",
+  "author": ["Ruffiana", "chmod-000"],
+  "tags": ["fun", "lovense", "nsfw"],
+  "version": "1.0.0",
+  "api_version": 2,
+  "required_core_version": ">=3.0.0a",
+  "hidden": true,
+  "disabled_by_default": false
+}

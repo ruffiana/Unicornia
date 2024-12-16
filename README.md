@@ -4,8 +4,5 @@ https://unicornia.net/
 
 ## Instructions
 **Updating from github:**
-Update the Unicornia repo
-`&repo update unicornia`
-
-then update the cogs in use
-`&cog update roleplay`
+1. Update the Unicornia repo: `&repo update unicornia`
+1. Update a cog: `&cog update roleplay`

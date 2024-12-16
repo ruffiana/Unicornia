@@ -328,8 +328,13 @@ class Roleplay(commands.Cog):
             self.reset_cooldown(ctx, action_name)
             return False
 
-        # does the the command requires consent
-        if action.consent and not target_public:
+        # does the the command requires consent?
+        # passive interactions will ignore public use flag
+        if (
+            action.consent
+            and interaction_type == const.InteractionType.PASSIVE
+            or (interaction_type == const.InteractionType.ACTIVE and not target_public)
+        ):
             self.logger.debug(f"{action_name} consent is required")
             has_consent = await self.ask_for_consent(
                 ctx,

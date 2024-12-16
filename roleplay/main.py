@@ -22,20 +22,17 @@ class Roleplay(commands.Cog):
     def __init__(self, bot: commands.Bot = Red):
         self.bot = bot
 
-        self.MODULE = __name__
-        self.CLASS = self.__class__.__name__
-        self.logger = logging.getLogger(f"{self.MODULE}.{self.CLASS}")
+        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(const.LOGGER_LEVEL)
 
-        self.action_manager = ActionManager()
-
+        self.action_manager = ActionManager(parent=self)
         self.helper = Help(bot=bot, parent=self, action_manager=self.action_manager)
         self.user_settings = Settings(bot=bot, parent=self, helper=self.helper)
 
         self.create_action_commands()
 
         self.logger.info("-" * 32)
-        self.logger.info(f"{self.CLASS} v({__version__}) initialized!")
+        self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
         self.logger.info("-" * 32)
 
     @commands.group(invoke_without_command=True)
@@ -43,6 +40,37 @@ class Roleplay(commands.Cog):
         """Parent command for roleplay settings."""
         if ctx.invoked_subcommand is None:
             return await self.helper.roleplay(ctx)
+
+    @roleplay.group(invoke_without_command=True)
+    @commands.admin()
+    async def admin(self, ctx: commands.Context):
+        """Parent command for roleplay admin settings."""
+        if ctx.invoked_subcommand is None:
+            return
+
+    @admin.group(aliases=["logger"], invoke_without_command=True)
+    async def logger_settings(self, ctx: commands.Context):
+        """Logger settings for roleplay."""
+        if ctx.invoked_subcommand is None:
+            level = self.logger.level
+            level_name = logging._levelToName.get(level)
+            msg = f'Logger level is currently set to "{level_name}".'
+            return await ctx.send(msg)
+
+    @logger_settings.command(aliases=["level", "setlevel"])
+    async def logger_set_level(self, ctx: commands.Context, level_name: str = None):
+        """Set logger level."""
+        try:
+            level = getattr(logging, level_name.upper())
+        except AttributeError:
+            msg = f'{level_name.upper()} is not a valid logger level!\n({", ".join(logging._nameToLevel)})'
+            self.logger.debug(msg)
+            return await ctx.send(msg)
+
+        self.logger.setLevel(level)
+        msg = f'Logger level set to "{level_name}".'
+        self.logger.info(msg)
+        return await ctx.send(msg)
 
     @roleplay.command(aliases=["help"])
     async def roleplay_help(self, ctx: commands.Context):
@@ -223,7 +251,7 @@ class Roleplay(commands.Cog):
         action = self.action_manager.get(action_name)
         if not action:
             self.logger.error(
-                f'{self.CLASS}.interaction() called with invalid action "{action_name}"!'
+                f'{self.__class__.__name__}.interaction() called with invalid action "{action_name}"!'
             )
             return False
 

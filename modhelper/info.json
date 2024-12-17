@@ -1,0 +1,12 @@
+{
+  "name": "modhelper",
+  "short": "Moderation Helper",
+  "description": "Collection of commands to help with server moderation.",
+  "author": ["ruffiana"],
+  "requirements": ["fuzzywuzzy", "python-Levenshtein"],
+  "version": "1.0.0",
+  "hidden": false,
+  "disabled": false,
+  "type": "COG",
+  "license": "MIT"
+}

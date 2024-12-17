@@ -162,4 +162,4 @@ cython_debug/
 #.idea/
 
 # workspace
-image_cache/
+_template/

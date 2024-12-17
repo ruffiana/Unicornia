@@ -15,40 +15,45 @@ USER_SETTINGS = {
     "allowed": {
         "aliases": ["allow", "approved", "approve"],
         "default": [],
-        "label": "Allowed User",
+        "label": "Allowed Users",
         "description": "Always consent to any action from members in your allowed list.",
         "emoji": "✅",
     },
     "blocked": {
         "aliases": ["block"],
         "default": [],
-        "label": "Blocked User",
+        "label": "Blocked Users",
         "description": "Ignore any roleplay command from members in your blocked list.",
         "emoji": "🚫",
     },
+    # "keyholder": {
+    #     "default": [],
+    #     "label": "Keyholder",
+    #     "description": "Your keyholder is responsible for managing your chastity.",
+    #     "emoji": "🗝️",
+    # },
     "selective": {
         "default": False,
-        "label": "Selective User",
-        "description": "Will always reject roleplay commands from any user not in their allowed list.",
+        "label": "Selective",
+        "description": "Always reject roleplay commands from any user not in your allowed list.",
         "emoji": "🛡️",
     },
     "public": {
         "default": False,
         "label": "Public Use Slut",
-        "description": "Always consent to any action from any member except those in your blocked list.",
+        "description": "Always consent to any action *from* a member (except those in your blocked list.)",
         "emoji": "🆓",
     },
-    # example of extending settings
-    # "keyholders" : {
-    #     "default" : [],
-    #     "label": "Keyholder(s)",
-    #     "description": "Keyholder is responsible for managing your chastity.",
-    #     "emoji": "🗝️"
-    #     },
+    "servant": {
+        "default": False,
+        "label": "Servant",
+        "description": "Always consent to any request to perform an action *on* a member (except those in your blocked list.)",
+        "emoji": "🧹",
+    },
     # "chastity": {
     #     "default : False",
     #     "label": "Chastity",
     #     "description": "Properties for chastity.",
-    #     "emoji": "🔒🔓"
+    #     "emoji": "🔒"
     #     },
 }

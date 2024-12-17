@@ -5,7 +5,7 @@ import requests
 
 
 class Embed:
-    CACHE_DIR = Path("image_cache")
+    CACHE_DIR = Path(__file__).parent / "image_cache"
 
     # @classmethod
     # def create(

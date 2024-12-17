@@ -334,22 +334,9 @@ class Roleplay(commands.Cog):
             action.consent
             and interaction_type == const.InteractionType.PASSIVE
             or (interaction_type == const.InteractionType.ACTIVE and not target_public)
+            or (invoker_owner or target_owner)
         ):
             self.logger.debug(f"{action_name} consent is required")
-            has_consent = await self.ask_for_consent(
-                ctx,
-                invoker_member,
-                target_member,
-                action,
-                interaction_type=interaction_type,
-            )
-            if has_consent is not True:
-                self.reset_cooldown(ctx, action_name)
-                return False
-
-        # if the invoker or target member is owned
-        if invoker_owner or target_owner:
-            self.logger.debug(f"Owner(s) consent is required")
             has_consent = await self.ask_for_consent(
                 ctx,
                 invoker_member,

@@ -4,6 +4,14 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.3.5] - 2021-12-16
+
+### Fixed
+- Fixed bug that would cause owner to be asked for consent twice (Are you *really* sure?)
+
+### Added
+- Error handling for operation that caches spoilered images
+
 ## [2.3.4] - 2021-12-16
 
 ### Changed

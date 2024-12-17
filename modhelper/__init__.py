@@ -1,15 +1,6 @@
-"""
-ModHelper Cog
+"""ModHelper Cog"""
 
-This module contains the ModHelper class, which provides commands to assist with
-moderation tasks in a Discord server.
-
-Commands:
-    Find: The find command uses fuzzy matching to search for users by their username
-    or display name.
-"""
-
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "Ruffiana"
 
 from .main import ModHelper

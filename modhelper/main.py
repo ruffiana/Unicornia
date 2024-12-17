@@ -80,7 +80,7 @@ class ModHelper(commands.Cog):
             member = discord.utils.get(members, name=name)
             if member:
                 results.append(
-                    f"{member.display_name} ({member.name}) - ID: {member.id}"
+                    f"## {member.display_name} ({member.name}) - {score}%\nID: {member.id}\n"
                 )
 
         if results:

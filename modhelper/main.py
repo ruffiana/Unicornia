@@ -36,18 +36,18 @@ class ModHelper(commands.Cog):
     async def find(
         self,
         ctx: commands.Context,
-        username: str,
-        min_score: int = 70,
-        max_results: int = const.EMBED_LIST_LIMIT,
+        name: str,
+        score: int = 70,
+        results: int = 5,
     ) -> None:
         """
         Find a user by username using fuzzy matching.
 
         Args:
             ctx (commands.Context): The command context.
-            username (str): The username to search for.
-            min_score (int, optional): The minimum score threshold for matching. Defaults to 70.
-            max_results (int, optional): The maximum number of results to display. Defaults to const.EMBED_LIST_LIMIT.
+            name (str): The user or display name to search for.
+            score (int, optional): The minimum score threshold for matching. Defaults to 70.
+            results (int, optional): The maximum number of results to display. Defaults to 5.
         """
         members: List[discord.Member] = ctx.guild.members
         member_names: List[Tuple[str, str]] = [
@@ -58,9 +58,9 @@ class ModHelper(commands.Cog):
         ]
 
         found_users: List[Tuple[str, int]] = process.extract(
-            username, search_targets, limit=max_results
+            name, search_targets, limit=results
         )
-        await self.show_results(ctx, username, found_users, min_score, members)
+        await self.show_results(ctx, name, found_users, score, members)
 
     async def show_results(
         self,
@@ -89,7 +89,7 @@ class ModHelper(commands.Cog):
             name = name.rstrip(")")
             member = discord.utils.get(members, name=name)
             if member:
-                await ctx.send(f"## {member.display_name} ({member.name}) - {score}%")
+                await ctx.send(f"### {member.display_name} ({member.name}) - {score}%")
                 await ctx.send(f"{member.id}")
 
         if not found_users:

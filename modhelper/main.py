@@ -1,3 +1,14 @@
+"""
+ModHelper Cog
+
+This module contains the ModHelper class, which provides commands to assist with
+moderation tasks in a Discord server.
+
+Commands:
+    Find: The find command uses fuzzy matching to search for users by their username
+    or display name.
+"""
+
 import logging
 import discord
 from fuzzywuzzy import process
@@ -69,7 +80,6 @@ class ModHelper(commands.Cog):
             min_score (int): The minimum score threshold for matching.
             members (List[discord.Member]): List of guild members.
         """
-        results: List[str] = []
         for user, score in found_users:
             # Only include matches that meet the minimum score
             if score < min_score:
@@ -79,13 +89,10 @@ class ModHelper(commands.Cog):
             name = name.rstrip(")")
             member = discord.utils.get(members, name=name)
             if member:
-                results.append(
-                    f"## {member.display_name} ({member.name}) - {score}%\nID: {member.id}\n"
-                )
+                await ctx.send(f"## {member.display_name} ({member.name}) - {score}%")
+                await ctx.send(f"{member.id}")
 
-        if results:
-            await ctx.send("\n".join(results))
-        else:
+        if not found_users:
             await ctx.send(
                 f"No matches found for '{username}' with the minimum score of {min_score}."
             )

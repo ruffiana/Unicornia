@@ -6,16 +6,13 @@ Roleplay action commands are defined as individual YAML files in "actions" subfo
 """
 
 import logging
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Dict, List, Optional, Union
+
 import yaml
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Dict, Union
-
 from . import const
-
-FILEPATH = Path(__file__).parent / "actions"
-FILETYPE = "yml"
 
 
 @dataclass

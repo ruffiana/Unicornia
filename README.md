@@ -1,14 +1,23 @@
 # Unicornia
-This is a collection of Redbot Discord bot COGs used for the Unicornia server:
-https://unicornia.net/
+This is a collection of [Redbot](https://docs.discord.red/en/stable/) cogs created for [Unicornia]https://unicornia.net/:
 
-# roleplay
+## Cogs in this repo:
+### roleplay
 Roleplay Cog is originally based on [Jintaku-Cogs-V3 Roleplay](https://github.com/Jintaku/Jintaku-Cogs-V3/tree/master/roleplay).
-
-# lovense
+### lovense
 Lovense Cog is originally based on [chmod-000-LovenseBot](https://github.com/chmod-000/LovenseBot).
+### modhelper
+ModHelper Cog is collection of commands to help with moderating a Discord server.
 
-## Instructions
-**Updating from github:**
-1. Update the Unicornia repo: `&repo update unicornia`
-1. Update a cog: `&cog update roleplay`
+## Installing with redbot:
+
+
+## Updating from github:
+1. Update the Unicornia repo:
+    - `&repo update unicornia`
+1. Update each cog:
+    - `&cog update roleplay`
+    - `&cog update lovense`
+    - `&cog update modhelper`
+
+(*replace '&' with your bot prefix* )

@@ -4,6 +4,11 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.4.0] - 2021-12-16
+
+### Added
+- Added "Servant" flag to user settings. "Servants" will automatically consent to any request for them to perform an action on other members.
+
 ## [2.3.5] - 2021-12-16
 
 ### Fixed

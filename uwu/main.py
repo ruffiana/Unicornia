@@ -102,7 +102,7 @@ class UwUCog(commands.Cog):
         self.logger: logging.Logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}"
         )
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
         self.logger.info("-" * 32)
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")

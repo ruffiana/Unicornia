@@ -8,5 +8,8 @@
   "api_version": 2,
   "required_core_version": ">=3.0.0a",
   "hidden": true,
-  "disabled_by_default": false
+  "disabled_by_default": false,
+  "license": "MIT",
+  "min_python_version": [3, 11, 0],
+  "end_user_data_statement": "This cog stores guildIDs and userIDs."
 }

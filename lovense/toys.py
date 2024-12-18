@@ -15,6 +15,7 @@ class Patterns(Enum):
 
 
 class Controller:
+    API_URL_COMMAND = "https://api.lovense.com/api/lan/v2/command"
     API_URL_QR = "https://api.lovense.com/api/lan/getQrCode"
     BASE_REQ = {"token": const.LOVENSE_DEVELOPER_TOKEN, "apiVer": "1"}
 
@@ -25,11 +26,20 @@ class Controller:
         self.parent = parent
         self.guilds = self.parent.guilds
 
-    def get_connection_qr(self, guild_id: str, uid: str):
+    def get_connection_qr(self, guild_id: str, user_id: str):
+        """Get a QR code from Lovense to connect the user
+
+        Args:
+            guild_id (str): _description_
+            user_id (str): _description_
+
+        Returns:
+            _type_: _description_
+        """
         req = {
             **self.BASE_REQ,
             **{
-                "uid": guild_id + ":" + uid,
+                "uid": f"{guild_id}:{user_id}",
             },
         }
 
@@ -43,10 +53,10 @@ class Controller:
         self.guilds._refresh()
         toys = []
 
-        if guild_id not in self.guilds:
+        if guild_id not in self.guilds.ids:
             return []
 
-        for uid, user in self.guilds.get(guild_id).items():
+        for _, user in self.guilds.get(guild_id).items():
             toys += [y.get("name") for x, y in user.get("toys").items()]
 
         return toys
@@ -54,27 +64,27 @@ class Controller:
     def stop(self, guild_id: str):
         return self._function(guild_id, "Stop", None, 0, 0)
 
-    def pattern(self, guild_id: str, pattern, uid: str = None):
+    def pattern(self, guild_id: str, pattern, user_id: str = None):
         self.guilds._refresh()
 
         if self.guilds.get(guild_id) is None:
             return False
 
-        if uid is not None and uid not in self.guilds.get(guild_id):
+        if user_id is not None and user_id not in self.guilds.get(guild_id):
             return False
 
-        uids = [
+        user_ids = [
             x.get("uid")
             for x in (
                 self.guilds.get(guild_id).values()
-                if uid is None
-                else [self.guilds.get(guild_id).get(uid)]
+                if user_id is None
+                else [self.guilds.get(guild_id).get(user_id)]
             )
         ]
         req = {
             **self.BASE_REQ,
             **{
-                "uid": ",".join(uids),
+                "uid": ",".join(user_ids),
                 "command": "Preset",
                 "name": pattern,
                 "timeSec": 0,
@@ -84,52 +94,52 @@ class Controller:
             return response.status_code == 200
 
     def vibrate(
-        self, guild_id: str, uid: str = None, strength: int = 10, duration: int = 10
+        self, guild_id: str, user_id: str = None, strength: int = 10, duration: int = 10
     ):
-        return self._function(guild_id, "Vibrate", uid, strength, duration)
+        return self._function(guild_id, "Vibrate", user_id, strength, duration)
 
     def rotate(
-        self, guild_id: str, uid: str = None, strength: int = 10, duration: int = 10
+        self, guild_id: str, user_id: str = None, strength: int = 10, duration: int = 10
     ):
-        return self._function(guild_id, "Rotate", uid, strength, duration)
+        return self._function(guild_id, "Rotate", user_id, strength, duration)
 
     def pump(
-        self, guild_id: str, uid: str = None, strength: int = 10, duration: int = 10
+        self, guild_id: str, user_id: str = None, strength: int = 10, duration: int = 10
     ):
-        return self._function(guild_id, "Pump", uid, strength, duration)
+        return self._function(guild_id, "Pump", user_id, strength, duration)
 
     # Send a command=Function request
     def _function(
         self,
         guild_id: str,
         action: str,
-        uid: str = None,
+        user_id: str = None,
         strength: int = 10,
         duration: int = 10,
     ):
         self.guilds._refresh()
 
-        if guild_id not in self.guilds:
+        if guild_id not in self.guilds.ids:
             return False
 
-        if uid is not None and uid not in self.guilds.get(guild_id):
+        if not user_id or user_id not in self.guilds.get(guild_id):
             return False
 
         if strength > 0:
             action += ":{}".format(strength)
 
-        uids = [
+        user_ids = [
             x.get("uid")
             for x in (
                 self.guilds.get(guild_id).values()
-                if uid is None
-                else [self.guilds.get(guild_id).get(uid)]
+                if user_id is None
+                else [self.guilds.get(guild_id).get(user_id)]
             )
         ]
         req = {
             **self.BASE_REQ,
             **{
-                "uid": ",".join(uids),
+                "uid": ",".join(user_ids),
                 "command": "Function",
                 "action": action,
                 "timeSec": duration,

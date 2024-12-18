@@ -18,7 +18,7 @@ from .strings import format_string
 from .embed import Embed
 
 
-class Roleplay(commands.Cog):
+class RoleplayCog(commands.Cog):
     def __init__(self, bot: commands.Bot = Red):
         self.bot = bot
 
@@ -257,6 +257,10 @@ class Roleplay(commands.Cog):
 
         # collection settings for invoker and target member
         target_public = await self.user_settings.config.user(target_member).public()
+        target_servant = await self.user_settings.config.user(target_member).servant()
+        target_selective = await self.user_settings.config.user(
+            target_member
+        ).selective()
         is_blocked = await self.check_blocked(ctx, invoker_member, target_member)
         is_denied = await self.check_roles(ctx, invoker_member, target_member, action)
         is_allowed = await self.user_settings.users_manager.in_group(
@@ -276,6 +280,8 @@ class Roleplay(commands.Cog):
             target_member : {target_member}
             interaction_type : {interaction_type.value}
             target_public : {target_public}
+            target_servant : {target_servant}
+            target_selective : {target_selective}
             is_blocked : {is_blocked}
             is_denied : {is_denied}
             is_allowed : {is_allowed}
@@ -315,12 +321,18 @@ class Roleplay(commands.Cog):
             )
             return True
 
-        # if the target has the 'selective user' flag, then decline the command
-        # this needs to happen after checks for owners and allowed users so we
-        # can just assume every one else is neither at this point
-        selective = await self.user_settings.config.user(target_member).selective()
-        self.logger.debug(f"{target_member.display_name} selective flag: {selective}")
-        if selective and not target_public:
+        # if the target has the 'selective user' flag, then decline the command unless:
+        # the invoker is their owner
+        # the interaction is active and they are public use
+        # the interaction is passive and they are servant
+        if (
+            target_selective
+            and (not invoker_owner)
+            and (interaction_type == const.InteractionType.ACTIVE and not target_public)
+            and (
+                interaction_type == const.InteractionType.PASSIVE and not target_servant
+            )
+        ):
             msg = format_string(
                 const.REFUSAL_MESSAGE, target_member=target_member.display_name
             )
@@ -329,10 +341,11 @@ class Roleplay(commands.Cog):
             return False
 
         # does the the command requires consent?
-        # passive interactions will ignore public use flag
         if (
             action.consent
-            and interaction_type == const.InteractionType.PASSIVE
+            and (
+                interaction_type == const.InteractionType.PASSIVE and not target_servant
+            )
             or (interaction_type == const.InteractionType.ACTIVE and not target_public)
             or (invoker_owner or target_owner)
         ):
@@ -440,12 +453,17 @@ class Roleplay(commands.Cog):
             embed.set_image(url=image_url)
             await ctx.send(embed=embed)
 
-    async def delete_message(self, ctx: commands.Context):
+    async def delete_message(
+        self, ctx: commands.Context, delay: int = const.SHORT_DELETE_TIME
+    ):
         """Deletes a message by its ID with exception handling for missing permissions
 
         Args:
             ctx (commands.Context): The context of the command invocation.
         """
+        # Adding a delay before deleting the message
+        await asyncio.sleep(delay)
+
         try:
             # Attempt to delete the message
             await ctx.message.delete()

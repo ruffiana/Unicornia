@@ -19,7 +19,7 @@ from typing import List, Tuple
 from . import __version__, __author__, const
 
 
-class ModHelper(commands.Cog):
+class ModHelperCog(commands.Cog):
     def __init__(self, bot: commands.Bot = Red):
         self.bot: commands.Bot = bot
 

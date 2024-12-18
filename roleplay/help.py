@@ -2,12 +2,10 @@ import logging
 
 import discord
 from redbot.core import commands
-from redbot.core.bot import Red
 
 from . import __version__, const
-from .actions import Action, ActionManager
+from .actions import ActionManager
 from .settings import USER_SETTINGS
-from .strings import get_indefinite_article, pluralize
 
 
 class UsersGroup(commands.Group):
@@ -120,7 +118,7 @@ class Help:
 
             if isinstance(default, list):
                 embed.add_field(
-                    name=f"{emoji} {pluralize(label)}",
+                    name=f"{emoji} {label}",
                     value=f"- **{prefix}roleplay settings {property}** [`add`|`remove`] **user**\n{desc}\n",
                     inline=False,
                 )

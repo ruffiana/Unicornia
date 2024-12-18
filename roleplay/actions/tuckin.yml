@@ -8,7 +8,7 @@ images:
     - https://panel.unicornia.net/botimages/tuckin3.gif
     - https://panel.unicornia.net/botimages/tuckin4.gif
 consent:
-    active: "{target_member}, {invoker_member} wants to tuck you in."
+    active: "{target_member}, {invoker_member} wants tuck you om."
     passive: "{target_member}, {invoker_member} wants you tuck them in."
     owner_active: "{owner}, {invoker_member} wants to tuck in {target_member}."
     owner_passive: "{owner}, {invoker_member} wants {target_member} to tuck them in."

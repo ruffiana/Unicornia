@@ -42,7 +42,8 @@ class JudgesScoreboardGenerator:
         if not self.EMOJI_FONT.is_file():
             self.logger.error(f"{self.EMOJI_FONT} is not a valid font")
 
-    def get_font_path(self):
+    @staticmethod
+    def get_font_path():
         system = platform.system()
         if system == "Windows":
             return "calibri.ttf"  # Ensure this font is installed on Windows
@@ -179,7 +180,7 @@ class JudgesScoreboardGenerator:
         # Draw text
         draw.text(text_position, text, font=text_font, fill=color)
 
-    def create(self, text: Optional[str] = None):
+    def create(self, text: Optional[str] = None, text_color=None):
         image_name = random.choice(list(self.images.keys()))
 
         image_data = self.images[image_name]
@@ -195,7 +196,9 @@ class JudgesScoreboardGenerator:
 
         # Draw the text at the top of the image if provided
         if text:
-            self.draw_text(draw, text, width, outline_color=image_data.color)
+            self.draw_text(
+                draw, text, width, color=text_color if text_color else image_data.color
+            )
 
         # Generate random scores based on the number of positions
         proc = random.randrange(1, 100)

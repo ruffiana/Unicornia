@@ -1,6 +1,6 @@
 """Template for redbot cog"""
 
-__version__ = "0.1.0(a)"
+__version__ = "0.2.0-alpha"
 __author__ = "Ruffiana"
 
 from .main import JudgesCog

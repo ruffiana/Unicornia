@@ -2,8 +2,10 @@
 
 import asyncio
 import logging
+from pathlib import Path
 from random import choice
 from typing import List
+from urllib.parse import urlparse
 
 import discord
 from redbot.core import commands
@@ -16,9 +18,10 @@ from .help import Help
 from .settings import Settings
 from .strings import format_string
 from .embed import Embed
+from . import images
 
 
-class RoleplayCog(commands.Cog):
+class Roleplay(commands.Cog):
     def __init__(self, bot: commands.Bot = Red):
         self.bot = bot
 
@@ -34,6 +37,18 @@ class RoleplayCog(commands.Cog):
         self.logger.info("-" * 32)
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
         self.logger.info("-" * 32)
+
+        # Asynchronously update the action_manager
+        # this lets us look for locally cached images after the settings config has
+        # initialized and set the cog's data folder
+        bot.loop.create_task(self.initialize())
+
+    async def initialize(self):
+        await self.bot.wait_until_red_ready()
+        # make sure to update user_settings first as that creates a data_path attribute
+        # needed for action_manager
+        self.user_settings.update()
+        self.action_manager.update()
 
     @commands.group(invoke_without_command=True)
     async def roleplay(self, ctx: commands.Context):
@@ -56,6 +71,21 @@ class RoleplayCog(commands.Cog):
             level_name = logging._levelToName.get(level)
             msg = f'Logger level is currently set to "{level_name}".'
             return await ctx.send(msg)
+
+    @admin.command()
+    async def download(self, ctx: commands.Context):
+        """Downloads all action images into the cog's data folder"""
+        images_path = self.user_settings.data_path / "images"
+
+        actions = self.action_manager.list()
+        for action_name in actions:
+            action = self.action_manager.get(action_name)
+            for image_URL in action.images:
+                images.save_image_from_url(
+                    image_URL, images_path, action_name, action.spoiler
+                )
+
+        await ctx.send(f"Roleplay action images downloaded to: {images_path}")
 
     @logger_settings.command(aliases=["level", "setlevel"])
     async def logger_set_level(self, ctx: commands.Context, level_name: str = None):
@@ -431,27 +461,33 @@ class RoleplayCog(commands.Cog):
         # get a random image from the list of images using random.choice()
         # TODO: This could be extended to get an image dynamically or allow for a single
         # URL as a string
-        image_url = choice(action.images)
-        self.logger.debug(f"imageURL : {image_url}")
+        image = choice(action.images)
+        # Check if image_url_or_path is a URL
+        parsed_url = urlparse(image)
+        if parsed_url.scheme in ("http", "https"):
+            self.logger.debug(f"image URL : {image}")
+        else:
+            self.logger.debug(f"image filepath : {image}")
+            file_path = Path(image)
 
         # EMBEDS WON'T SPOILER IMAGES INSIDE THEM
         # Embed.spoiler_image() creates manages a local cache and uses file attachments
         # which makes for a bit nicer presentation
         embed.set_footer(text=footer, icon_url=self.bot.user.avatar.url)
         if action.spoiler:
-            async with ctx.typing():
-                embed, file = Embed.spoiler_image(image_url, embed)
-            # await ctx.send(embed=embed)
-            # await ctx.send(file=file)
-
-            # use local cached spoiler image as an attachment
+            if parsed_url.scheme in ("http", "https"):
+                async with ctx.typing():
+                    embed, file = Embed.spoiler_image(image, embed)
+            else:
+                file = discord.File(fp=file_path, filename=file_path.name)
             await ctx.send(description, file=file)
-
-            # use pipes to spoiler image
-            # await ctx.send(f"{description}\n|| {image_url} ||")
         else:
-            embed.set_image(url=image_url)
-            await ctx.send(embed=embed)
+            if parsed_url.scheme in ("http", "https"):
+                embed.set_image(url=image)
+            else:
+                file = discord.File(fp=file_path, filename=file_path.name)
+                embed.set_image(url=f"attachment://{file_path.name}")
+            await ctx.send(embed=embed, file=file)
 
     async def delete_message(
         self, ctx: commands.Context, delay: int = const.SHORT_DELETE_TIME

@@ -4,6 +4,14 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.5.0] - 2021-12-19
+
+### Added
+- Added "download" admin command. This caches all action gifs to subfolders under the cog's config data folder
+
+### Changed
+- Action commands will look for local cached image directories and use a random image from those instead of the URLs when available
+
 ## [2.4.0] - 2021-12-16
 
 ### Added

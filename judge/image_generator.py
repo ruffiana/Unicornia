@@ -29,9 +29,9 @@ class JudgesScoreboardGenerator:
     def __init__(self):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(logging.DEBUG)
-
-        self.TEXT_FONT = self.get_font_path()
-        self.EMOJI_FONT = Path(__file__).parent / "fonts" / "NotoColorEmoji-Regular.ttf"
+        self.FONTS_PATH = Path(__file__).parent / "fonts"
+        self.TEXT_FONT = self.FONTS_PATH / "calibrib.ttf"
+        self.EMOJI_FONT = self.FONTS_PATH / "NotoColorEmoji-Regular.ttf"
 
         self.images = self.load_images_data()
 
@@ -198,10 +198,16 @@ class JudgesScoreboardGenerator:
             self.draw_text(draw, text, width, outline_color=image_data.color)
 
         # Generate random scores based on the number of positions
-        scores = [
-            self.generate_weighted_float_score()
-            for _ in range(len(image_data.positions))
-        ]
+        proc = random.randrange(1, 100)
+        if proc <= 5:
+            scores = [0] * len(image_data.positions)
+        elif proc >= 95:
+            scores = [10] * len(image_data.positions)
+        else:
+            scores = [
+                self.generate_weighted_float_score()
+                for _ in range(len(image_data.positions))
+            ]
 
         # Draw each score on the image at the specified positions with the given rotation
         for position, score, rotation in zip(

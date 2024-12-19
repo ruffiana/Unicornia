@@ -25,6 +25,7 @@ import discord
 import yaml
 from redbot.core import Config, commands
 from redbot.core.bot import Red
+from redbot.core.data_manager import cog_data_path
 from redbot.core.utils.chat_formatting import humanize_list
 
 from . import const
@@ -68,6 +69,14 @@ class Settings:
 
         # Dynamically create commands based on USER_SETTINGS\
         self.create_setting_commands()
+
+        # Placeholder for data path, will be set in async initialization
+        self.data_path = None
+
+    def update(self):
+        """Called from parent class after bot is ready"""
+        self.data_path = Path(cog_data_path(self.parent))
+        self.logger.info(f"Cog data path: {self.data_path}")
 
     def load_user_settings(self) -> Dict:
         with open(self.PATH_USER_SETTINGS, "r") as file:

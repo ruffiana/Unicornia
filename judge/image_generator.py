@@ -1,6 +1,7 @@
 import logging
 import random
 import yaml
+import platform
 from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
 from dataclasses import dataclass
@@ -24,19 +25,31 @@ class JudgesScoreboardGenerator:
     OUTPUT_DIR = Path(__file__).resolve().parent / "output_images"
     PATH_IMAGES = Path(__file__).resolve().parent / "images"
     IMAGES_DATA = PATH_IMAGES / "images.yaml"
-    TEXT_FONT = "calibri.ttf"
-    EMOJI_FONT = Path(__file__).parent / "fonts" / "NotoColorEmoji-Regular.ttf"
 
     def __init__(self):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(logging.DEBUG)
 
+        self.TEXT_FONT = self.get_font_path()
+        self.EMOJI_FONT = Path(__file__).parent / "fonts" / "NotoColorEmoji-Regular.ttf"
+
         self.images = self.load_images_data()
+
         # Ensure the output directory exists
         self.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
         # check fonts
         if not self.EMOJI_FONT.is_file():
             self.logger.error(f"{self.EMOJI_FONT} is not a valid font")
+
+    def get_font_path(self):
+        system = platform.system()
+        if system == "Windows":
+            return "calibri.ttf"  # Ensure this font is installed on Windows
+        elif system == "Darwin":  # macOS
+            return "Arial.ttf"  # A common font available on macOS
+        else:  # Assume Linux or other
+            return "LiberationSans-Regular.ttf"  # A similar font available on Linux
 
     @classmethod
     def load_images_data(cls):
@@ -94,15 +107,14 @@ class JudgesScoreboardGenerator:
         new_height = abs(width * math.sin(radians)) + abs(height * math.cos(radians))
         return int(new_width), int(new_height)
 
-    @classmethod
-    def create_text_image(cls, text, font_size, color, rotation):
-        font = ImageFont.truetype(cls.TEXT_FONT, font_size)
+    def create_text_image(self, text, font_size, color, rotation):
+        font = ImageFont.truetype(self.TEXT_FONT, font_size)
         dummy_image = Image.new("RGBA", (1, 1), (255, 255, 255, 0))
         dummy_draw = ImageDraw.Draw(dummy_image)
         text_bbox = dummy_draw.textbbox((0, 0), text, font=font)
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
-        new_width, new_height = cls.calculate_rotated_size(
+        new_width, new_height = self.calculate_rotated_size(
             text_width, text_height, rotation
         )
 
@@ -200,7 +212,7 @@ class JudgesScoreboardGenerator:
             )
 
         # Create the output path dynamically
-        output_image_path = self.OUTPUT_DIR / f"{image_name}_output.jpg"
+        output_image_path = self.OUTPUT_DIR / f"judges_scores.jpg"
         base_image.save(output_image_path)
         return output_image_path
 

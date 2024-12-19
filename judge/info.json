@@ -1,0 +1,15 @@
+{
+  "name": "Judge",
+  "short": "Redbot cog to judge things.",
+  "description": "Enables a user to [p]judge something.",
+  "author": ["Ruffiana"],
+  "tags": ["fun", "images", "cute"],
+  "version": "1.0.0",
+  "api_version": 2,
+  "required_core_version": ">=3.0.0a",
+  "hidden": true,
+  "disabled_by_default": false,
+  "license": "MIT",
+  "min_python_version": [3, 11, 0],
+  "end_user_data_statement": "This cog does not store any user data."
+}

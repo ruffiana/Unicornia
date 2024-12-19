@@ -1,12 +1,15 @@
 import logging
-import random
-import yaml
-import platform
-from PIL import Image, ImageDraw, ImageFont
-from pathlib import Path
-from dataclasses import dataclass
-from typing import List, Tuple, Optional
 import math
+import platform
+import random
+import re
+import itertools
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Optional, Tuple
+
+import yaml
+from PIL import Image, ImageDraw, ImageFont
 
 from .flags import flag_emojis
 
@@ -86,7 +89,15 @@ class JudgesScoreboardGenerator:
         self.logger.debug(
             f"image_width: {image_width}, text_length: {text_length}, base_font_size: {base_font_size}"
         )
-        font_size = max(base_font_size, image_width // (text_length / 1.5))
+        # Calculate the suggested font size based on image width and text length
+        suggested_font_size = image_width // (text_length / 2.5)
+
+        # Ensure the font size is not smaller than the base font size
+        font_size = max(base_font_size, suggested_font_size)
+
+        # Ensure the font size is not larger than the half the width of the image
+        font_size = min(font_size, image_width // 2)
+
         self.logger.debug(f"font_size: {font_size}")
         return font_size
 
@@ -152,8 +163,27 @@ class JudgesScoreboardGenerator:
         )
         self.paste_centered(base_image, text_image, position, rotation)
 
+    def draw_text_outline(
+        self, draw, x, y, word, font, font_size, outline_color="#000000"
+    ):
+        outline_width = max(min(int(font_size // 50), 8), 4)
+        offsets = itertools.product(range(-outline_width, outline_width + 1), repeat=2)
+        for offset_x, offset_y in offsets:
+            if offset_x != 0 or offset_y != 0:
+                draw.text(
+                    (x + offset_x, y + offset_y),
+                    word,
+                    font=font,
+                    fill=outline_color,
+                )
+
     def draw_text(
-        self, draw, text, image_width, color="#FFFFFF", outline_color="#000000"
+        self,
+        draw,
+        text,
+        image_width,
+        color="#FFFFFF",
+        outline_color="#000000",
     ):
         # Calculate font size based on image width and text length
         font_size = self.calculate_font_size(image_width, len(text))
@@ -164,21 +194,23 @@ class JudgesScoreboardGenerator:
             10,
         )  # Top-centered with a small vertical margin
 
-        outline_width = int(font_size // 25)
+        x, y = text_position
+        words = re.split(r"(\W)", text)  # Split text into words and keep punctuation
 
-        # Draw outline
-        for offset in range(-outline_width, outline_width + 1):
-            for offset_y in range(-outline_width, outline_width + 1):
-                if offset != 0 or offset_y != 0:
-                    draw.text(
-                        (text_position[0] + offset, text_position[1] + offset_y),
-                        text,
-                        font=text_font,
-                        fill=outline_color,
-                    )
+        for word in words:
+            text_bbox = draw.textbbox((0, 0), word, font=text_font)
+            word_width = text_bbox[2] - text_bbox[0]
+            word_height = text_bbox[3] - text_bbox[1]
 
-        # Draw text
-        draw.text(text_position, text, font=text_font, fill=color)
+            # Draw outline
+            self.draw_text_outline(
+                draw, x, y, word, text_font, font_size, outline_color
+            )
+
+            # Draw text
+            draw.text((x, y), word, font=text_font, fill=color)
+
+            x += word_width  # Move x position for the next word
 
     def create(self, text: Optional[str] = None, text_color=None):
         image_name = random.choice(list(self.images.keys()))
@@ -197,7 +229,11 @@ class JudgesScoreboardGenerator:
         # Draw the text at the top of the image if provided
         if text:
             self.draw_text(
-                draw, text, width, color=text_color if text_color else image_data.color
+                draw,
+                text,
+                width,
+                color=text_color if text_color else None,
+                outline_color=image_data.color,
             )
 
         # Generate random scores based on the number of positions

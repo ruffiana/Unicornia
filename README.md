@@ -14,9 +14,10 @@ ModHelper Cog is collection of commands to help with moderating a Discord server
 #### Add the github repository
 - `&repo add unicornia https://github.com/ruffiana/Unicornia` (may also include optional `[branch]`)
 #### Install cogs
-- `&cog install roleplay unicornia roleplay`
-- `&cog install roleplay unicornia lovense`
-- `&cog install roleplay unicornia modhelper`
+- `&cog install unicornia roleplay`
+- `&cog install unicornia lovense`
+- `&cog install unicornia modhelper`
+- `&cog install unicornia judge`
 - etc.
 ### Updating with Redbot (*replace '&' with your bot prefix* ):
 #### Update the repository:
@@ -25,4 +26,5 @@ ModHelper Cog is collection of commands to help with moderating a Discord server
 - `&cog update roleplay`
 - `&cog update lovense`
 - `&cog update modhelper`
+- `&cog update judge`
 - etc.

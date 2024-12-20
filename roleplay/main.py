@@ -19,6 +19,7 @@ from .settings import Settings
 from .strings import format_string
 from .embed import Embed
 from . import images
+from unicornia.predicate import CustomMessagePredicate
 
 
 class Roleplay(commands.Cog):
@@ -616,6 +617,11 @@ class Roleplay(commands.Cog):
             """
         )
 
+        # special-case handler for when the invoker is an admin, and
+        # the target is a bot
+        if invoker_member.guild_permissions.administrator and target_member.bot:
+            return True
+
         # collect owners for invoker and target members
         if not invoker_owner:
             invoker_owner = await self.user_settings.users_manager.get_owner(
@@ -628,11 +634,16 @@ class Roleplay(commands.Cog):
 
         # if both invoker and target have owners, ask both for permission
         if invoker_owner and target_owner:
+            owners_mention = f"{invoker_owner.mention} & {target_owner.mention}"
+            owners_display_name = (
+                f"{invoker_owner.display_name} & {target_owner.display_name}"
+            )
+
             consent_message = getattr(action.consent, f"owners_{interaction_type}")
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
             consent_message = format_string(
                 consent_message,
-                owner=f"{invoker_owner.mention} & {target_owner.mention}",
+                owner=owners_mention,
                 invoker_member=invoker_member.display_name,
                 target_member=target_member.display_name,
             )
@@ -661,7 +672,7 @@ class Roleplay(commands.Cog):
                         )
                 except asyncio.TimeoutError:
                     await ctx.send(
-                        const.TIMEOUT_MESSAGE.format(user=owner.display_name)
+                        const.TIMEOUT_MESSAGE.format(user=owners_display_name)
                     )
                     return False
 
@@ -676,20 +687,14 @@ class Roleplay(commands.Cog):
                 return False
             else:
                 return True
-
-        # if there is only one owner and the target member is not the invoker's owner
-        self.logger.debug(
-            f"{invoker_owner} or {target_owner} and {invoker_owner} != {target_member}"
-        )
-        if (invoker_owner or target_owner) and (invoker_owner != target_member):
-            owner = invoker_owner if invoker_owner else target_owner
-
+        # if only the invoker has an owner
+        elif invoker_owner and invoker_owner != target_member:
             # interaction type is an Enum, so need it's value as string
             consent_message = getattr(action.consent, f"owner_{interaction_type.value}")
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
             consent_message = format_string(
                 consent_message,
-                owner=owner.mention,
+                owner=invoker_owner.mention,
                 invoker_member=invoker_member.display_name,
                 target_member=target_member.display_name,
             )
@@ -697,7 +702,7 @@ class Roleplay(commands.Cog):
             await ctx.send(consent_message)
 
             # wait for response from owner
-            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, owner)
+            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, invoker_owner)
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
@@ -707,21 +712,51 @@ class Roleplay(commands.Cog):
             # if the owner declines consent, send this message
             if not pred.result:
                 refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
-                    owner=owner.display_name,
+                    owner=invoker_owner.display_name,
                     invoker_member=invoker_member.display_name,
                     target_member=target_member.display_name,
                 )
                 await ctx.send(refusal_message)
                 return False
+            # don't return True here, as we still need to check the target for consent
+            else:
+                return True
+        # if only the target has an owner
+        elif target_owner:
+            # interaction type is an Enum, so need it's value as string
+            consent_message = getattr(action.consent, f"owner_{interaction_type.value}")
+            consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
+            consent_message = format_string(
+                consent_message,
+                owner=target_owner.mention,
+                invoker_member=invoker_member.display_name,
+                target_member=target_member.display_name,
+            )
+            self.logger.debug(f'consent_message : "{consent_message}"')
+            await ctx.send(consent_message)
+
+            # wait for response from owner
+            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_owner)
+            try:
+                await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
+            except asyncio.TimeoutError:
+                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owner.display_name))
+                return False
+
+            # if the owner declines consent, send this message
+            if not pred.result:
+                refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
+                    owner=target_owner.display_name,
+                    invoker_member=invoker_member.display_name,
+                    target_member=target_member.display_name,
+                )
+                await ctx.send(refusal_message)
+                return False
+            # we can return True here as the owner has given consent
             else:
                 return True
 
-        # special-case handler for when the invoker is an admin, and
-        # the target is a bot
-        if invoker_member.guild_permissions.administrator and target_member.bot:
-            return True
-
-        # no owners involved
+        # Otherwise, no owners are involved and we ask the target member for consent
         # interaction type is an Enum, so need it's value as string
         consent_message = getattr(action.consent, interaction_type.value)
         consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
@@ -734,7 +769,7 @@ class Roleplay(commands.Cog):
         await ctx.send(consent_message)
 
         # wait for response from target member
-        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, target_member)
+        pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_member)
         try:
             await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
         except asyncio.TimeoutError:

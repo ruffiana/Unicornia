@@ -19,7 +19,7 @@ from .settings import Settings
 from .strings import format_string
 from .embed import Embed
 from . import images
-from unicornia.predicate import CustomMessagePredicate
+from .predicates import CustomMessagePredicate
 
 
 class Roleplay(commands.Cog):
@@ -365,7 +365,7 @@ class Roleplay(commands.Cog):
             )
         ):
             msg = format_string(
-                const.REFUSAL_MESSAGE, target_member=target_member.display_name
+                const.REFUSAL_MESSAGE, target_member=f"**{target_member.display_name}**"
             )
             await ctx.send(msg)
             self.reset_cooldown(ctx, action_name)
@@ -558,8 +558,8 @@ class Roleplay(commands.Cog):
                 deny_message = action.denial
                 deny_message = format_string(
                     deny_message,
-                    invoker_member=invoker_member.display_name,
-                    target=target_member.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 self.logger.debug(f"deny_message: {deny_message}")
                 await ctx.send(deny_message)
@@ -590,7 +590,7 @@ class Roleplay(commands.Cog):
         )
         if is_blocked:
             await ctx.send(
-                f"{invoker_member.display_name}, you can't use that command on {target_member.display_name}."
+                f"**{invoker_member.display_name}**, you can't use that command on **{target_member.display_name}**."
             )
             return True
         return False
@@ -601,7 +601,7 @@ class Roleplay(commands.Cog):
         invoker_member: discord.User,
         target_member: discord.User,
         action: Action,
-        interaction_type=const.InteractionType.ACTIVE,
+        interaction_type: const.InteractionType = const.InteractionType.ACTIVE,
         invoker_owner: discord.User = None,
         target_owner: discord.User = None,
     ):
@@ -634,54 +634,41 @@ class Roleplay(commands.Cog):
 
         # if both invoker and target have owners, ask both for permission
         if invoker_owner and target_owner:
-            owners_mention = f"{invoker_owner.mention} & {target_owner.mention}"
+            owners_mention = f"**{invoker_owner.mention}** & **{target_owner.mention}**"
             owners_display_name = (
                 f"{invoker_owner.display_name} & {target_owner.display_name}"
             )
-
-            consent_message = getattr(action.consent, f"owners_{interaction_type}")
+            # interaction type is an Enum, so need it's value as string
+            consent_message = getattr(
+                action.consent, f"owners_{interaction_type.value}"
+            )
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
             consent_message = format_string(
                 consent_message,
                 owner=owners_mention,
-                invoker_member=invoker_member.display_name,
-                target_member=target_member.display_name,
+                invoker_member=f"**{invoker_member.display_name}**",
+                target_member=f"**{target_member.display_name}**",
             )
             self.logger.debug(f'consent_message : "{consent_message}"')
             # send the consent message
             await ctx.send(consent_message)
 
-            # Collect responses from owners until we have a yes/no from both
-            responses = {}
+            # wait for response from owner
+            pred = CustomMessagePredicate.yes_or_no(
+                ctx, ctx.channel, [invoker_owner, target_owner]
+            )
+            try:
+                await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
+            except asyncio.TimeoutError:
+                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owners_display_name))
+                return False
 
-            # custom check function to look for yes/no responses only from owners
-            def yes_or_no_from_owners(ctx: commands.Context) -> bool:
-                return (
-                    ctx.author == invoker_owner or ctx.author == target_owner
-                ) and ctx.content.lower() in ["yes", "no", "y", "n"]
-
-            while len(responses) < 2:
-                try:
-                    response = await self.bot.wait_for(
-                        "message", check=yes_or_no_from_owners, timeout=const.TIMEOUT
-                    )
-                    if response.author not in responses:
-                        responses[response.author] = response.content.lower()
-                        self.logger.debug(
-                            f"{response.author.display_name} responded with {response.content.lower()}."
-                        )
-                except asyncio.TimeoutError:
-                    await ctx.send(
-                        const.TIMEOUT_MESSAGE.format(user=owners_display_name)
-                    )
-                    return False
-
-            # Process responses
-            if "no" in responses.values() or "n" in responses.values():
+            # if the either owner declines consent, send this message
+            if not pred.result:
                 refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
                     owner=target_owner.display_name,
-                    invoker_member=invoker_member.display_name,
-                    target_member=target_member.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 await ctx.send(refusal_message)
                 return False
@@ -695,8 +682,8 @@ class Roleplay(commands.Cog):
             consent_message = format_string(
                 consent_message,
                 owner=invoker_owner.mention,
-                invoker_member=invoker_member.display_name,
-                target_member=target_member.display_name,
+                invoker_member=f"**{invoker_member.display_name}**",
+                target_member=f"**{target_member.display_name}**",
             )
             self.logger.debug(f'consent_message : "{consent_message}"')
             await ctx.send(consent_message)
@@ -713,8 +700,8 @@ class Roleplay(commands.Cog):
             if not pred.result:
                 refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
                     owner=invoker_owner.display_name,
-                    invoker_member=invoker_member.display_name,
-                    target_member=target_member.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 await ctx.send(refusal_message)
                 return False
@@ -729,8 +716,8 @@ class Roleplay(commands.Cog):
             consent_message = format_string(
                 consent_message,
                 owner=target_owner.mention,
-                invoker_member=invoker_member.display_name,
-                target_member=target_member.display_name,
+                invoker_member=f"**{invoker_member.display_name}**",
+                target_member=f"**{target_member.display_name}**",
             )
             self.logger.debug(f'consent_message : "{consent_message}"')
             await ctx.send(consent_message)
@@ -747,8 +734,8 @@ class Roleplay(commands.Cog):
             if not pred.result:
                 refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
                     owner=target_owner.display_name,
-                    invoker_member=invoker_member.display_name,
-                    target_member=target_member.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 await ctx.send(refusal_message)
                 return False
@@ -762,7 +749,7 @@ class Roleplay(commands.Cog):
         consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
         consent_message = format_string(
             consent_message,
-            invoker_member=invoker_member.display_name,
+            invoker_member=f"**{invoker_member.display_name}**",
             target_member=target_member.mention,
         )
         self.logger.debug(f'consent_message : "{consent_message}"')
@@ -774,13 +761,13 @@ class Roleplay(commands.Cog):
             await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
         except asyncio.TimeoutError:
             await ctx.send(
-                const.TIMEOUT_MESSAGE.format(user=target_member.display_name)
+                const.TIMEOUT_MESSAGE.format(user=f"**{target_member.display_name}**")
             )
             return False
 
         if not pred.result:
             refusal_message = const.REFUSAL_MESSAGE.format(
-                target_member=target_member.display_name
+                target_member=f"**{target_member.display_name}**"
             )
             await ctx.send(refusal_message)
             return False

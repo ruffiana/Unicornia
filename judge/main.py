@@ -4,11 +4,12 @@ from redbot.core import commands
 from redbot.core.bot import Red
 import re
 
-from .image_generator import JudgesScoreboardGenerator
+from .scoreboards import Generator
 from . import __version__, __author__
+from . import strings
 
 
-class JudgesCog(commands.Cog):
+class JudgeCog(commands.Cog):
     EMBED_COLOR = discord.Color.from_str("#9401fe")
     EMBED_FOOTER = f"Judge Cog ({__version__}) - by: {__author__}"
     TEMP_FILENAME = "judges_score.jpg"
@@ -23,73 +24,41 @@ class JudgesCog(commands.Cog):
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
         self.logger.info("-" * 32)
 
-        self.generator = JudgesScoreboardGenerator()
-
-        self.replacments = {
-            "i": "you",
-            "me": "you",
-            "my": "your",
-            "mine": "yours",
-            "we": "you all",
-            "us": "you all",
-            "our": "your",
-            "ours": "yours",
-        }
-
-    def replace_pronouns(self, text):
-        words = text.split()
-        replaced_words = []
-        for word in words:
-            stripped_word = word.strip(",.!?;:")
-            if stripped_word in self.replacments:
-                replaced_words.append(self.replacments[stripped_word])
-            else:
-                replaced_words.append(word)
-        return " ".join(replaced_words)
+        self.image_maker = Generator()
 
     @staticmethod
-    def remove_emojis(text):
-        emoji_pattern = re.compile(
-            "["
-            "\U0001F600-\U0001F64F"  # emoticons
-            "\U0001F300-\U0001F5FF"  # symbols & pictographs
-            "\U0001F680-\U0001F6FF"  # transport & map symbols
-            "\U0001F1E0-\U0001F1FF"  # flags (iOS)
-            "\U00002702-\U000027B0"
-            "\U000024C2-\U0001F251"
-            "]+",
-            flags=re.UNICODE,
-        )
-        return emoji_pattern.sub(r"", text)
+    def convert_mentions(text: str, member: discord.User):
+        # matches @<[userID]>
+        mention_regex = re.compile(r"<@!?(\d+)>")
+        text = mention_regex.sub(member.display_name, text)
+        return text
 
     @commands.command(name="judge", aliases=["score"])
     @commands.has_permissions(administrator=True)
     async def judge(self, ctx, *, text: str = None):
 
         if ctx.message.mentions:
-            mentioned_user = ctx.message.mentions[0]
-            user_name = mentioned_user.display_name
-            text = text.replace(f"<@{mentioned_user.id}>", user_name)
-            color = mentioned_user.color.to_rgb()
+            member = ctx.message.mentions[0]
+            text = self.convert_mentions(text, member)
+            # get color of member's top role as RGB
+            color = member.color.to_rgb()
         else:
             color = None
 
         if text:
-            text = self.replace_pronouns(text)
-            text = self.remove_emojis(text)
+            text = strings.replace_pronouns(text)
+            text = strings.remove_emojis(text)
 
         self.logger.debug(f"color: {color}")
 
         # Indicate that the bot is typing
         async with ctx.typing():
-            output_image_path = self.generator.create(text=text, text_color=color)
+            output_image_path = self.image_maker.create(text=text, text_color=color)
 
             file = discord.File(fp=output_image_path, filename=self.TEMP_FILENAME)
 
             # Create the embed object
-            embed = discord.Embed(
-                description="The judges scores...", color=self.EMBED_COLOR
-            )
+            embed = discord.Embed(color=self.EMBED_COLOR)
 
             footer = self.EMBED_FOOTER
             embed.set_footer(text=footer, icon_url=self.bot.user.avatar.url)

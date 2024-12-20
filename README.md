@@ -1,5 +1,5 @@
 # Unicornia
-This is a collection of [Redbot](https://docs.discord.red/en/stable/) cogs created for [Unicornia]https://unicornia.net/:
+This is a collection of [Redbot](https://docs.discord.red/en/stable/) cogs created for [Unicornia](https://unicornia.net/)
 
 ## Cogs in this repo:
 ### roleplay
@@ -8,8 +8,9 @@ Roleplay Cog is originally based on [Jintaku-Cogs-V3 Roleplay](https://github.co
 Lovense Cog is originally based on [chmod-000-LovenseBot](https://github.com/chmod-000/LovenseBot).
 ### modhelper
 ModHelper Cog is collection of commands to help with moderating a Discord server.
-
-## Examples
+### judge
+Judge Cog creates an international panel of anime girls to judge things.
+## How-to:
 ### Installing with Redbot (*replace '&' with your bot prefix* ):
 #### Add the github repository
 - `&repo add unicornia https://github.com/ruffiana/Unicornia` (may also include optional `[branch]`)

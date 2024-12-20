@@ -27,7 +27,7 @@ ModHelper Cog is collection of commands to help with moderating a Discord server
 - `&cog update modhelper`
 - `&cog update judge`
 #### Load cogs:
-- `&cog load roleplay`
-- `&cog load lovense`
-- `&cog load modhelper`
-- `&cog load judge`
+- `&load roleplay`
+- `&load lovense`
+- `&load modhelper`
+- `&load judge`

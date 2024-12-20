@@ -1,5 +1,5 @@
 # Unicornia
-This is a collection of [Redbot](https://docs.discord.red/en/stable/) cogs created for [Unicornia]https://unicornia.net/:
+This is a collection of [Redbot](https://docs.discord.red/en/stable/) cogs created for [Unicornia](https://unicornia.net/)
 
 ## Cogs in this repo:
 ### roleplay

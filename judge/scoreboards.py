@@ -168,7 +168,7 @@ class FlagsUtil(ImageUtil):
 
     def __init__(self):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
         self.flags = self.get_all_flags()
 
     @classmethod

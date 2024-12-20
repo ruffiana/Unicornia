@@ -16,8 +16,51 @@ class CustomMessagePredicate(MessagePredicate):
     class attribute.
     """
 
-    POSITIVES = ["yes", "y", "yup", "yeah"]
-    NEGATIVES = ["no", "n", "nope", "nah"]
+    POSITIVES = [
+        "yes",
+        "y",
+        "yup",
+        "yeah",
+        "affirmative",
+        "absolutely",
+        "sure",
+        "ok",
+        "okay",
+        "aye",
+        "ja",  # German
+        "da",  # Russian
+        "si",  # Spanish/Italian
+        "oui",  # French
+        "sim",  # Portuguese
+        "hai",  # Japanese
+        "tak",  # Polish
+        "ano",  # Czech
+        "igen",  # Hungarian
+        "evet",  # Turkish
+        "ja",  # Dutch
+    ]
+    NEGATIVES = [
+        "no",
+        "n",
+        "nope",
+        "nah",
+        "negative",
+        "never",
+        "not",
+        "nay",
+        "nein",  # German
+        "nien",  # Polish
+        "niet",  # Russian
+        "non",  # French/Italian
+        "nada",  # Spanish
+        "não",  # Portuguese
+        "いいえ",  # Japanese
+        "hayır",  # Turkish
+        "nie",  # Dutch
+        "nem",  # Hungarian``
+        "ne",  # Czech
+        "yok",  # Turkish
+    ]
 
     def __init__(
         self, predicate: Callable[["MessagePredicate", discord.Message], bool]

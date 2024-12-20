@@ -4,10 +4,18 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.5.1] - 2021-12-20
+
+### Added
+- Added CustomMessagePredicate subclass to allow for more types of yes/no responses. It can also accept multiple users for check (allows reuse for owners, owner, or member to member)
+
+### Changed
+- Fixed bug that would allow interactions between a command invoker and other member to skip consent if the invoker owner consented (You don't own everyone!!)
+
 ## [2.5.0] - 2021-12-19
 
 ### Added
-- Added "download" admin command. This caches all action gifs to subfolders under the cog's config data folder
+- Added "download" admin command. This caches all action gifs to a subfolder under the cog's config data folder
 
 ### Changed
 - Action commands will look for local cached image directories and use a random image from those instead of the URLs when available

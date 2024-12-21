@@ -44,7 +44,9 @@ class JudgeCog(commands.Cog):
         if not ctx.author.guild_permissions.administrator and not any(
             role.id in self.ALLOWED_ROLE_IDS for role in ctx.author.roles
         ):
-            return await ctx.send("You do not have permission to use this command.")
+            return await ctx.send(
+                "This command can only be used by supporters, staff, and Cutie of the Month."
+            )
 
         if ctx.message.mentions:
             member = ctx.message.mentions[0]

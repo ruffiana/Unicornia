@@ -485,10 +485,11 @@ class Roleplay(commands.Cog):
         else:
             if parsed_url.scheme in ("http", "https"):
                 embed.set_image(url=image)
+                await ctx.send(embed=embed)
             else:
                 file = discord.File(fp=file_path, filename=file_path.name)
                 embed.set_image(url=f"attachment://{file_path.name}")
-            await ctx.send(embed=embed, file=file)
+                await ctx.send(embed=embed, file=file)
 
     async def delete_message(
         self, ctx: commands.Context, delay: int = const.SHORT_DELETE_TIME

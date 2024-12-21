@@ -13,6 +13,11 @@ class JudgeCog(commands.Cog):
     EMBED_COLOR = discord.Color.from_str("#9401fe")
     EMBED_FOOTER = f"Judge Cog ({__version__}) - by: {__author__}"
     TEMP_FILENAME = "judges_score.jpg"
+    ALLOWED_ROLE_IDS = [
+        700121551483437128,  # supporter role
+        696020813299580940,  # staff role
+        707303996389589045,  # cutie of the month
+    ]
 
     def __init__(self, bot: Red):
         self.bot = bot
@@ -34,8 +39,12 @@ class JudgeCog(commands.Cog):
         return text
 
     @commands.command(name="judge", aliases=["score"])
-    @commands.has_permissions(administrator=True)
+    @commands.cooldown(1, 60, commands.BucketType.user)
     async def judge(self, ctx, *, text: str = None):
+        if not ctx.author.guild_permissions.administrator and not any(
+            role.id in self.ALLOWED_ROLE_IDS for role in ctx.author.roles
+        ):
+            return await ctx.send("You do not have permission to use this command.")
 
         if ctx.message.mentions:
             member = ctx.message.mentions[0]
@@ -64,4 +73,17 @@ class JudgeCog(commands.Cog):
             embed.set_footer(text=footer, icon_url=self.bot.user.avatar.url)
             embed.set_image(url=f"attachment://{self.TEMP_FILENAME}")
 
-            await ctx.send(embed=embed, file=file)
+            return await ctx.send(embed=embed, file=file)
+
+        # if the command wasn't successful, reset the cooldown for this command
+        self.reset_cooldown(ctx, "judge")
+
+    def reset_cooldown(self, ctx: commands.Context, command_name: str):
+        """Reset the cooldown for the invoking user."""
+        command = self.bot.get_command(command_name)
+        if command is not None:
+            bucket = command._buckets.get_bucket(ctx)
+            bucket.reset()
+            self.logger.debug(f'Reset cooldown on"{command_name}" command.')
+        else:
+            self.logger.error(f'Invalid command name: "{command_name}".')

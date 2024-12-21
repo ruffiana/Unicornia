@@ -11,6 +11,7 @@
 
 ### Changed
 - Fixed bug that would allow interactions between a command invoker and other member to skip consent if the invoker owner consented (You don't own everyone!!)
+- Member display names will now be bolded to make them more identifiable as a name and not a typo in some cases (the 'that jay' protocol)
 
 ## [2.5.0] - 2021-12-19
 

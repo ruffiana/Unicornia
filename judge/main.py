@@ -4,7 +4,7 @@ from redbot.core import commands
 from redbot.core.bot import Red
 import re
 
-from .scoreboards import Generator
+from .scoreboards import ScoreboardMaker
 from . import __version__, __author__
 from . import strings
 
@@ -29,7 +29,7 @@ class JudgeCog(commands.Cog):
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
         self.logger.info("-" * 32)
 
-        self.image_maker = Generator()
+        self.scoreboard_maker = ScoreboardMaker()
 
     @staticmethod
     def convert_mentions(text: str, member: discord.User):
@@ -39,7 +39,7 @@ class JudgeCog(commands.Cog):
         return text
 
     @commands.command(name="judge", aliases=["score"])
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 1, commands.BucketType.user)
     async def judge(self, ctx, *, text: str = None):
         if not ctx.author.guild_permissions.administrator and not any(
             role.id in self.ALLOWED_ROLE_IDS for role in ctx.author.roles
@@ -47,6 +47,9 @@ class JudgeCog(commands.Cog):
             return await ctx.send(
                 "This command can only be used by supporters, staff, and Cutie of the Month."
             )
+
+        if text and len(text) > 40:
+            return await ctx.send("That's like...way too much text for me to judge.")
 
         if ctx.message.mentions:
             member = ctx.message.mentions[0]
@@ -64,7 +67,9 @@ class JudgeCog(commands.Cog):
 
         # Indicate that the bot is typing
         async with ctx.typing():
-            output_image_path = self.image_maker.create(text=text, text_color=color)
+            output_image_path = self.scoreboard_maker.create_scoreboard(
+                text=text, text_color=color
+            )
 
             file = discord.File(fp=output_image_path, filename=self.TEMP_FILENAME)
 

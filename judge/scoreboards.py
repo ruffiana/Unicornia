@@ -1,6 +1,4 @@
-import itertools
 import logging
-import math
 import random
 import re
 from dataclasses import dataclass
@@ -8,9 +6,9 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 import yaml
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
+from collections import namedtuple
 
-from . import fonts
 
 # Class constants for the output directory and config file path
 BASE_DIR = Path(__file__).resolve().parent
@@ -18,19 +16,47 @@ OUTPUT_DIR = BASE_DIR / "output_images"
 IMAGES_DIR = BASE_DIR / "images"
 
 
+# this uses a namedtuple to represent an x, y position. We can't use a
+# dataclass because Pillow will try to access it using index notation
+Position = namedtuple("Position", ["x", "y"])
+
+
 @dataclass
-class ImageData:
-    base_image_path: Path
+class ScoreboardBaseImage:
+    """
+    A class to represent a scoreboard image.
+
+    Attributes:
+    ----------
+    image_filepath : Path
+        The file path to the image.
+    positions : List[Tuple[int, int]]
+        A list of tuples representing the positions on the scoreboard.
+    size : int
+        The size of the scoreboard.
+    color : str
+        The color of the scoreboard.
+    rotations : List[int]
+        A list of integers representing the rotations of the scoreboard.
+    """
+
+    image_filepath: Path
     positions: List[Tuple[int, int]]
     size: int
     color: str
     rotations: List[int]
 
+    def __post_init__(self):
+        self.positions = [Position(x, y) for x, y in self.positions]
+
 
 class ImageUtil:
-    FONTS_PATH = Path(__file__).parent / "fonts"
-    TEXT_FONT = FONTS_PATH / "calibrib.ttf"
-    EMOJI_FONT = FONTS_PATH / "NotoColorEmoji-Regular.ttf"
+    """Utility class for image manipulation using Pillow."""
+
+    @staticmethod
+    def load_image(base_image_path: str) -> Image.Image:
+        """Loads the base image from the given path."""
+        return Image.open(base_image_path).convert("RGBA")
 
     @staticmethod
     def get_image_dimensions(image_path: Path) -> Tuple[int, int]:
@@ -53,36 +79,6 @@ class ImageUtil:
         return image.resize((new_width, new_height), Image.LANCZOS)
 
     @classmethod
-    def calculate_rotated_size(cls, width, height, angle):
-        radians = math.radians(angle)
-        new_width = abs(width * math.cos(radians)) + abs(height * math.sin(radians))
-        new_height = abs(width * math.sin(radians)) + abs(height * math.cos(radians))
-        return int(new_width), int(new_height)
-
-    def create_text_image(self, text, font_size, color, rotation):
-        font = ImageFont.truetype(self.TEXT_FONT, font_size)
-        dummy_image = Image.new("RGBA", (1, 1), (255, 255, 255, 0))
-        dummy_draw = ImageDraw.Draw(dummy_image)
-        text_bbox = dummy_draw.textbbox((0, 0), text, font=font)
-        text_width = text_bbox[2] - text_bbox[0]
-        text_height = text_bbox[3] - text_bbox[1]
-        new_width, new_height = self.calculate_rotated_size(
-            text_width, text_height, rotation
-        )
-
-        # Making the image size twice as large to avoid clipping
-        new_width *= 2
-        new_height *= 2
-
-        text_image = Image.new("RGBA", (new_width, new_height), (255, 255, 255, 0))
-        text_draw = ImageDraw.Draw(text_image)
-        # Draw text in the center of the larger image
-        draw_x = (new_width - text_width) // 2
-        draw_y = (new_height - text_height) // 2
-        text_draw.text((draw_x, draw_y), text, font=font, fill=color)
-        return text_image, new_width, new_height
-
-    @classmethod
     def paste_centered(cls, base_image, overlay_image, position, rotation):
         rotated_image = cls.rotate_image(overlay_image, rotation)
         rotated_width, rotated_height = rotated_image.size
@@ -91,20 +87,6 @@ class ImageUtil:
         top_left_y = position[1] - rotated_height // 2
         # Paste the rotated image onto the base image
         base_image.paste(rotated_image, (top_left_x, top_left_y), rotated_image)
-
-    def draw_text_outline(
-        self, draw, x, y, word, font, font_size, outline_color="#000000"
-    ):
-        outline_width = max(min(int(font_size // 50), 8), 4)
-        offsets = itertools.product(range(-outline_width, outline_width + 1), repeat=2)
-        for offset_x, offset_y in offsets:
-            if offset_x != 0 or offset_y != 0:
-                draw.text(
-                    (x + offset_x, y + offset_y),
-                    word,
-                    font=font,
-                    fill=outline_color,
-                )
 
     @staticmethod
     def draw_image_outline(base_image, outline_width=5, outline_color=(0, 0, 0, 255)):
@@ -124,45 +106,224 @@ class ImageUtil:
 
         return outline_image
 
+
+class TextDraw(ImageUtil):
+    """Utility class for drawing text on images using Pillow."""
+
+    FONTS_PATH = Path(__file__).parent / "fonts"
+    TEXT_FONT = FONTS_PATH / "calibrib.ttf"
+    EMOJI_FONT = FONTS_PATH / "NotoColorEmoji-Regular.ttf"
+
+    def __init__(self, base_image_path: str):
+        super().__init__()
+
+        self.font_path = self.TEXT_FONT
+        self.image = self.load_image(base_image_path)
+        self.font = self.load_font()
+
+    @staticmethod
+    def get_contrast_color(
+        color: str, dark_color: str = "black", light_color: str = "white"
+    ) -> str:
+        """Returns the color (dark or light) that provides the best contrast against the given color."""
+        # Convert hex color to RGB
+        color = color.lstrip("#")
+        r, g, b = int(color[0:2], 16), int(color[2:4], 16), int(color[4:6], 16)
+
+        # Calculate the luminance of the color
+        luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+
+        # Return dark color for light backgrounds and light color for dark backgrounds
+        return dark_color if luminance > 0.5 else light_color
+
+    @staticmethod
+    def draw_text_outline(
+        draw: ImageDraw.Draw,
+        position: Position,
+        text: str,
+        font: ImageFont.FreeTypeFont,
+        outline_color: str,
+        outline_width: int,
+    ) -> None:
+        """Draws an outline around the text."""
+        for dx in range(-outline_width, outline_width + 1):
+            for dy in range(-outline_width, outline_width + 1):
+                if dx != 0 or dy != 0:
+                    draw.text(
+                        (position.x + dx, position.y + dy),
+                        text,
+                        font=font,
+                        fill=outline_color,
+                    )
+
+    @staticmethod
+    def create_text_image(base_image: Image.Image) -> Image.Image:
+        """Creates a transparent image for drawing text."""
+        max_dimension = max(base_image.width, base_image.height)
+        return Image.new("RGBA", (max_dimension, max_dimension), (255, 255, 255, 0))
+
+    def load_font(self, font_size: int = 100) -> ImageFont.FreeTypeFont:
+        """Loads the font from the given path or returns the default font."""
+        return (
+            ImageFont.truetype(self.font_path, font_size)
+            if self.font_path
+            else ImageFont.load_default()
+        )
+
+    @staticmethod
+    def calculate_text_position(
+        draw: ImageDraw.Draw,
+        text: str,
+        font: ImageFont.FreeTypeFont,
+        image_center: Position,
+    ) -> Position:
+        """Calculates the position to center the text on the image."""
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_height = text_bbox[3] - text_bbox[1]
+        text_x = image_center.x - (text_width // 2)
+        text_y = image_center.y - (text_height // 2)
+        return Position(text_x, text_y)
+
     def draw_text(
         self,
-        draw,
-        text,
-        image_size: Tuple[(int, int)],
-        color="#FFFFFF",
-        outline_color="#000000",
-    ):
-        image_height, image_width = image_size
-
-        # Calculate font size based on image width and text length
-        font_size = fonts.calculate_font_size(image_size, text)
-        text_font = ImageFont.truetype(self.TEXT_FONT, font_size)
-        text_width, text_height = fonts.get_text_size(text, text_font)
-        text_position = (
-            (image_width - text_width) // 2,
-            10,
-        )  # Top-centered with a small vertical margin
-
-        x, y = text_position
-        words = re.split(r"(\W)", text)  # Split text into words and keep punctuation
-
-        for word in words:
-            text_bbox = draw.textbbox((0, 0), word, font=text_font)
-            word_width = text_bbox[2] - text_bbox[0]
-            word_height = text_bbox[3] - text_bbox[1]
-
-            # Draw outline
+        draw: ImageDraw.Draw,
+        text_centered: Position,
+        text: str,
+        font: ImageFont.FreeTypeFont,
+        color: str = "black",
+        outline: bool = False,
+        outline_color: str = None,
+        outline_width: Optional[int] = None,
+        outline_scalar: float = 0.02,
+    ) -> None:
+        """Draws the text with optional outline."""
+        if outline:
+            if not outline_color:
+                outline_color = self.get_contrast_color(color)
+            outline_width = outline_width or max(4, int(font.size * outline_scalar))
             self.draw_text_outline(
-                draw, x, y, word, text_font, font_size, outline_color
+                draw, text_centered, text, font, outline_color, outline_width
             )
+        draw.text(text_centered, text, font=font, fill=color)
 
-            # Draw text
-            draw.text((x, y), word, font=text_font, fill=color)
+    @staticmethod
+    def rotate_text_image(
+        text_image: Image.Image, text_rotation: int = 0
+    ) -> Image.Image:
+        """Rotates the text image by the given angle."""
+        if text_rotation != 0:
+            return text_image.rotate(text_rotation, expand=True, resample=Image.BICUBIC)
+        return text_image
 
-            x += word_width  # Move x position for the next word
+    @staticmethod
+    def calculate_offset(
+        text_position: Position, rotated_size: tuple[int, int]
+    ) -> Position:
+        """Calculates the offset to position the rotated text image."""
+        rotated_width, rotated_height = rotated_size
+        offset_x = text_position.x - (rotated_width // 2)
+        offset_y = text_position.y - (rotated_height // 2)
+        return Position(offset_x, offset_y)
+
+    def calculate_font_size(self, text: str) -> int:
+        """Calculates the font size to fit the text within the image width."""
+        draw = ImageDraw.Draw(self.image)
+        initial_font_size = 10
+        font = ImageFont.truetype(self.font_path, initial_font_size)
+
+        # Calculate the bounding box of the text with the initial font size
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = text_bbox[2] - text_bbox[0]
+
+        # Calculate the margin and the available width for the text
+        margin = max(2, self.image.width // 10)
+        available_width = self.image.width - (2 * margin)
+
+        # Calculate the scale factor to fit the text within the available width
+        scale_factor = available_width / text_width
+
+        # Return the scaled font size
+        return int(initial_font_size * scale_factor)
+
+    def draw_header_text(
+        self,
+        text: str,
+        color: str = "black",
+        outline: bool = False,
+        outline_color: str = "white",
+        outline_width: Optional[int] = None,
+        outline_scalar: float = 0.0125,
+    ) -> Image.Image:
+        """Draws text on the image with automatically calculated font size."""
+        # Calculate the appropriate font size
+        font_size = self.calculate_font_size(text)
+
+        # Load the font with the calculated size
+        font = self.load_font(font_size)
+
+        # Create a drawing context
+        draw = ImageDraw.Draw(self.image)
+
+        # Calculate the bounding box of the text
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_height = text_bbox[3] - text_bbox[1]
+
+        # Calculate the margin and centered position
+        margin = max(2, self.image.height // 20)  # Adjusted margin to place text higher
+        image_center = Position(self.image.width // 2, self.image.height // 2)
+        centered_position = Position(image_center.x, margin + (text_height // 2))
+
+        # Draw the text on the image
+        return self.draw_text_on_image(
+            text=text,
+            position=centered_position,
+            font_size=font_size,
+            color=color,
+            outline=outline,
+            outline_color=outline_color,
+            outline_width=outline_width,
+            outline_scalar=outline_scalar,
+        )
+
+    def draw_text_on_image(
+        self,
+        text: str,
+        position: Position = Position(0, 0),
+        rotation: int = 0,
+        font_size: int = 100,
+        color: str = "black",
+        outline: bool = False,
+        outline_color: str = "white",
+        outline_width: Optional[int] = None,
+        outline_scalar: float = 0.02,
+    ) -> Image.Image:
+        """Draws text on the image with the specified parameters."""
+        image_center = Position(self.image.width // 2, self.image.height // 2)
+        text_image = self.create_text_image(self.image)
+        font = self.load_font(font_size)
+        draw = ImageDraw.Draw(text_image)
+        text_centered = self.calculate_text_position(draw, text, font, image_center)
+        self.draw_text(
+            draw,
+            text_centered,
+            text,
+            font,
+            color,
+            outline,
+            outline_color,
+            outline_width,
+            outline_scalar,
+        )
+        text_image = self.rotate_text_image(text_image, rotation)
+        offset = self.calculate_offset(position, text_image.size)
+        self.image.paste(text_image, offset, text_image)
+        return self.image
 
 
-class FlagsUtil(ImageUtil):
+class FlagDraw(ImageUtil):
+    """Utility class for drawing flag images on images using Pillow."""
+
     FLAG_PATH = IMAGES_DIR / "flag"
     OUTPUT_PATH = BASE_DIR / "output_images" / "flag_test.png"
 
@@ -205,117 +366,137 @@ class FlagsUtil(ImageUtil):
         return base_image
 
 
-class ScoreUtil(ImageUtil):
-    @staticmethod
-    def get_random_score(alpha: int = 12, beta: int = 1):
-        score = random.betavariate(alpha, beta)
-        weighted_score = 1 + (score * 9)
-        rounded_score = round(weighted_score, 1)
+class ScoreboardMaker:
+    """A class to generate scoreboard images with random scores and flags."""
 
-        if rounded_score == 10.0:
-            return 10
-        else:
-            return rounded_score
-
-    def draw_score(self, base_image, position, score, font_size, rotation, color):
-        text = str(score)
-        text_image, text_width, text_height = self.create_text_image(
-            text, font_size, color, rotation
-        )
-        self.paste_centered(base_image, text_image, position, rotation)
-
-
-class Generator(ImageUtil):
     IMAGES_DATA = IMAGES_DIR / "images.yaml"
 
-    def __init__(self):
+    def __init__(self, logger=None):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(logging.DEBUG)
 
-        self.images_data = self.load_images_data()
+        self.images_data = self.load_scoreboard_images_data()
 
-        self.flags_util = FlagsUtil()
-        self.score_util = ScoreUtil()
+        self.flags_util = FlagDraw()
 
         # Ensure the output directory exists
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-        # check fonts
-        if not self.EMOJI_FONT.is_file():
-            self.logger.error(f"{self.EMOJI_FONT} is not a valid font")
+    @staticmethod
+    def get_random_score(alpha: int = 12, beta: int = 1):
+        """
+        Generate a random score between 0 and 10.
+
+        The function generates a random score between 0 and 10. The score is determined by a random
+        process where:
+        - There is a 5% chance of returning a score of 0.
+        - There is a 5% chance of returning a score of 10.
+        - Otherwise, the score is generated using a beta distribution with the given alpha and beta
+          parameters, scaled to a range of 1 to 10, and rounded to one decimal place.
+
+        Parameters:
+            alpha (int): The alpha parameter for the beta distribution. Default is 12.
+            beta (int): The beta parameter for the beta distribution. Default is 1.
+        Returns:
+            float: A random score between 0 and 10, inclusive.
+        """
+
+        proc = random.randrange(1, 100)
+        if proc <= 5:
+            return 0
+        elif proc >= 95:
+            return 10
+        else:
+            score = random.betavariate(alpha, beta)
+            weighted_score = 1 + (score * 9)
+            rounded_score = round(weighted_score, 1)
+
+            if rounded_score == 10.0:
+                return 10
+            else:
+                return rounded_score
 
     @classmethod
-    def load_images_data(cls):
+    def load_scoreboard_images_data(cls):
+        """Load the scoreboard images data from the config file."""
         with open(cls.IMAGES_DATA, "r") as file:
-            raw_config = yaml.safe_load(file)
+            try:
+                raw_config = yaml.safe_load(file)
+            except yaml.YAMLError as e:
+                raise ValueError(f"Error loading images data: {e}")
+                return {}
+
         config = {}
         for image_name, details in raw_config.items():
-            base_image_path = IMAGES_DIR / image_name
-            positions = details.get("positions", [])
+            image_filepath = IMAGES_DIR / image_name
+            positions = details.get("positions", ())
             size = details.get("size", 12)  # Default size 12
             color = details.get("color", "#000000")  # Default color black
             # Default rotation 0. Need to have same number of rotations as positions
             rotations = details.get("rotations", [0] * len(positions))
 
-            config[image_name] = ImageData(
-                base_image_path=base_image_path,
+            config[image_name] = ScoreboardBaseImage(
+                image_filepath=image_filepath,
                 positions=positions,
                 size=size,
                 color=color,
                 rotations=rotations,
             )
+
         return config
 
-    def create(self, text: Optional[str] = None, text_color=None):
+    def create_scoreboard(self, text: Optional[str] = None, text_color=None):
+        """
+        Creates a scoreboard image with random scores and optional header text.
+
+        Args:
+            text (Optional[str]): The header text to be drawn on the image. Defaults to None.
+            text_color: The color of the header text. If not provided, the default color from image data will be used.
+
+        Returns:
+            str: The file path of the saved scoreboard image.
+        """
         image_name = random.choice(list(self.images_data.keys()))
 
         image_data = self.images_data[image_name]
-        base_image_path = image_data.base_image_path
-
-        # Get the dimensions of the base image
-        image_size = self.get_image_dimensions(base_image_path)
+        base_image_path = image_data.image_filepath
 
         # Open the base image
-        base_image = Image.open(base_image_path)
-        draw = ImageDraw.Draw(base_image)
+        text_draw = TextDraw(base_image_path)
 
-        # Draw the text at the top of the image if provided
+        # Draw the header text on the image if supplied
         if text:
-            self.draw_text(
-                draw,
-                text,
-                image_size,
-                color=text_color if text_color else None,
-                outline_color=image_data.color,
+            text_draw.draw_header_text(
+                text, color=text_color if text_color else image_data.color, outline=True
             )
 
-        # Generate random scores based on the number of positions
-        proc = random.randrange(1, 100)
-        if proc <= 5:
-            scores = [0] * len(image_data.positions)
-        elif proc >= 95:
-            scores = [10] * len(image_data.positions)
-        else:
-            scores = [
-                self.score_util.get_random_score()
-                for _ in range(len(image_data.positions))
-            ]
-
-        # Draw each score on the image at the specified positions with the given rotation
-        for position, score, rotation in zip(
-            image_data.positions, scores, image_data.rotations
-        ):
-            self.score_util.draw_score(
-                base_image, position, score, image_data.size, rotation, image_data.color
+        # get a random score for each position/rotation and draw them on the image
+        for position, rotation in zip(image_data.positions, image_data.rotations):
+            # Draw each score on the image at the specified positions with the given rotation
+            score = self.get_random_score()
+            text_draw.draw_text_on_image(
+                str(score),
+                position=position,
+                rotation=rotation,
+                font_size=image_data.size,
+                color=image_data.color,
+                outline=False,
             )
+
+            # draw a random flag aligned vertically with each scoreboard
             nation, flag_image_path = self.flags_util.get_random_flag()
             flag_x, flag_y = position
-            flag_y = base_image.size[1] - 100
+            flag_y = (
+                text_draw.image.size[1] - 100
+            )  # align the flag 100 pixels from the bottom of the image
             self.flags_util.overlay_flag(
-                base_image, flag_image_path, (flag_x, flag_y), scale=1.0
+                text_draw.image, flag_image_path, (flag_x, flag_y), scale=1.0
             )
 
+        final_image = text_draw.image
+
         # Create the output path dynamically
-        output_image_path = OUTPUT_DIR / f"judges_scores.jpg"
-        base_image.save(output_image_path)
+        output_image_path = OUTPUT_DIR / f"judges_scores.png"
+        final_image.save(output_image_path)
+        # final_image.show()
         return output_image_path

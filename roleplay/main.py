@@ -706,9 +706,9 @@ class Roleplay(commands.Cog):
                 )
                 await ctx.send(refusal_message)
                 return False
+
             # don't return True here, as we still need to check the target for consent
-            else:
-                return True
+
         # if only the target has an owner
         elif target_owner:
             # interaction type is an Enum, so need it's value as string

@@ -729,7 +729,7 @@ class Roleplay(commands.Cog):
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
-                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owner.display_name))
+                await ctx.send(const.TIMEOUT_MESSAGE.format(user=target_owner.display_name))
                 return False
 
             # if the owner declines consent, send this message

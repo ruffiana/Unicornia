@@ -39,7 +39,7 @@ class JudgeCog(commands.Cog):
         return text
 
     @commands.command(name="judge", aliases=["score"])
-    @commands.cooldown(1, 1, commands.BucketType.user)
+    @commands.cooldown(1, 120, commands.BucketType.user)
     async def judge(self, ctx, *, text: str = None):
         if not ctx.author.guild_permissions.administrator and not any(
             role.id in self.ALLOWED_ROLE_IDS for role in ctx.author.roles
@@ -49,6 +49,7 @@ class JudgeCog(commands.Cog):
             )
 
         if text and len(text) > 40:
+            self.reset_cooldown(ctx, "judge")
             return await ctx.send("That's like...way too much text for me to judge.")
 
         if ctx.message.mentions:

@@ -373,12 +373,13 @@ class Roleplay(commands.Cog):
 
         # does the the command requires consent?
         if (
-            action.consent
+            (invoker_owner or target_owner)
+            or (action.consent
             and (
                 interaction_type == const.InteractionType.PASSIVE and not target_servant
             )
-            or (interaction_type == const.InteractionType.ACTIVE and not target_public)
-            or (invoker_owner or target_owner)
+            or (interaction_type == const.InteractionType.ACTIVE and not target_public))
+
         ):
             self.logger.debug(f"{action_name} consent is required")
             has_consent = await self.ask_for_consent(

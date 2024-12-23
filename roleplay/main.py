@@ -10,7 +10,6 @@ from urllib.parse import urlparse
 import discord
 from redbot.core import commands
 from redbot.core.bot import Red
-from redbot.core.utils.predicates import MessagePredicate
 
 from . import __version__, __credits__, const
 from .actions import Action, ActionManager

@@ -16,11 +16,11 @@ from typing import List, Optional, Union
 
 import discord
 from redbot.core import commands
-from redbot.core.utils.predicates import MessagePredicate
 
 from . import const
 from .strings import get_indefinite_article
 from .user_settings import USER_SETTINGS
+from .predicates import CustomMessagePredicate
 
 
 @dataclass
@@ -164,7 +164,7 @@ class Manager:
                     )
                 )
 
-                pred = MessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
+                pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
                 try:
                     await self.bot.wait_for(
                         "message", timeout=const.TIMEOUT, check=pred

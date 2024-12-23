@@ -8,5 +8,6 @@
   "min_bot_version": "3.4.0",
   "tags": ["fun", "roleplay", "nsfw"],
   "hidden": true,
-  "license": "MIT"
+  "license": "MIT",
+  "min_python_version": [3, 11, 0]
 }

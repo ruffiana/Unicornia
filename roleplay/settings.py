@@ -25,10 +25,11 @@ import discord
 import yaml
 from redbot.core import Config, commands
 from redbot.core.bot import Red
+from redbot.core.data_manager import cog_data_path
 from redbot.core.utils.chat_formatting import humanize_list
 
 from . import const
-from .strings import get_indefinite_article, pluralize
+from .strings import get_indefinite_article
 from .user_settings import USER_SETTINGS
 from .users import Manager
 
@@ -68,6 +69,14 @@ class Settings:
 
         # Dynamically create commands based on USER_SETTINGS\
         self.create_setting_commands()
+
+        # Placeholder for data path, will be set in async initialization
+        self.data_path = None
+
+    def update(self):
+        """Called from parent class after bot is ready"""
+        self.data_path = Path(cog_data_path(self.parent))
+        self.logger.info(f"Cog data path: {self.data_path}")
 
     def load_user_settings(self) -> Dict:
         with open(self.PATH_USER_SETTINGS, "r") as file:
@@ -165,7 +174,7 @@ class Settings:
                 users = await self.users_manager.list_users(
                     ctx.author, property, as_display=True
                 )
-                label = pluralize(values.get("label", property.capitalize()))
+                label = values.get("label", property.capitalize())
                 if not users or users == "None":
                     await ctx.send(f'No "{label}" for {ctx.author.display_name}.')
                 else:
@@ -309,7 +318,6 @@ class Settings:
             default = values.get("default")
             emoji = values.get("emoji")
             label = values.get("label")
-            label = pluralize(label) if isinstance(default, list) else label
             description = values.get("description")
             line = f"* {emoji} **{label}** - {description}"
             desc_lines.append(line)
@@ -333,7 +341,7 @@ class Settings:
                 users = await self.users_manager.list_users(
                     member, property, as_display=True, as_string=True
                 )
-                embed.add_field(name=pluralize(label), value=users, inline=True)
+                embed.add_field(name=label, value=users, inline=True)
             elif data_type is bool:
                 bool_value = await self.config.user(member).get_attr(property)()
                 value = const.TRUE_EMOJI if bool_value else const.FALSE_EMOJI

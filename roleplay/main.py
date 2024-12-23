@@ -2,8 +2,10 @@
 
 import asyncio
 import logging
+from pathlib import Path
 from random import choice
 from typing import List
+from urllib.parse import urlparse
 
 import discord
 from redbot.core import commands
@@ -16,6 +18,8 @@ from .help import Help
 from .settings import Settings
 from .strings import format_string
 from .embed import Embed
+from . import images
+from .predicates import CustomMessagePredicate
 
 
 class Roleplay(commands.Cog):
@@ -34,6 +38,18 @@ class Roleplay(commands.Cog):
         self.logger.info("-" * 32)
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
         self.logger.info("-" * 32)
+
+        # Asynchronously update the action_manager
+        # this lets us look for locally cached images after the settings config has
+        # initialized and set the cog's data folder
+        bot.loop.create_task(self.initialize())
+
+    async def initialize(self):
+        await self.bot.wait_until_red_ready()
+        # make sure to update user_settings first as that creates a data_path attribute
+        # needed for action_manager
+        self.user_settings.update()
+        self.action_manager.update()
 
     @commands.group(invoke_without_command=True)
     async def roleplay(self, ctx: commands.Context):
@@ -56,6 +72,21 @@ class Roleplay(commands.Cog):
             level_name = logging._levelToName.get(level)
             msg = f'Logger level is currently set to "{level_name}".'
             return await ctx.send(msg)
+
+    @admin.command()
+    async def download(self, ctx: commands.Context):
+        """Downloads all action images into the cog's data folder"""
+        images_path = self.user_settings.data_path / "images"
+
+        actions = self.action_manager.list()
+        for action_name in actions:
+            action = self.action_manager.get(action_name)
+            for image_URL in action.images:
+                images.save_image_from_url(
+                    image_URL, images_path, action_name, action.spoiler
+                )
+
+        await ctx.send(f"Roleplay action images downloaded to: {images_path}")
 
     @logger_settings.command(aliases=["level", "setlevel"])
     async def logger_set_level(self, ctx: commands.Context, level_name: str = None):
@@ -334,20 +365,19 @@ class Roleplay(commands.Cog):
             )
         ):
             msg = format_string(
-                const.REFUSAL_MESSAGE, target_member=target_member.display_name
+                const.REFUSAL_MESSAGE, target_member=f"**{target_member.display_name}**"
             )
             await ctx.send(msg)
             self.reset_cooldown(ctx, action_name)
             return False
 
         # does the the command requires consent?
-        if (
+        if (invoker_owner or target_owner) or (
             action.consent
             and (
                 interaction_type == const.InteractionType.PASSIVE and not target_servant
             )
             or (interaction_type == const.InteractionType.ACTIVE and not target_public)
-            or (invoker_owner or target_owner)
         ):
             self.logger.debug(f"{action_name} consent is required")
             has_consent = await self.ask_for_consent(
@@ -431,34 +461,46 @@ class Roleplay(commands.Cog):
         # get a random image from the list of images using random.choice()
         # TODO: This could be extended to get an image dynamically or allow for a single
         # URL as a string
-        image_url = choice(action.images)
-        self.logger.debug(f"imageURL : {image_url}")
+        image = choice(action.images)
+        # Check if image_url_or_path is a URL
+        parsed_url = urlparse(image)
+        if parsed_url.scheme in ("http", "https"):
+            self.logger.debug(f"image URL : {image}")
+        else:
+            self.logger.debug(f"image filepath : {image}")
+            file_path = Path(image)
 
         # EMBEDS WON'T SPOILER IMAGES INSIDE THEM
         # Embed.spoiler_image() creates manages a local cache and uses file attachments
         # which makes for a bit nicer presentation
         embed.set_footer(text=footer, icon_url=self.bot.user.avatar.url)
         if action.spoiler:
-            async with ctx.typing():
-                embed, file = Embed.spoiler_image(image_url, embed)
-            # await ctx.send(embed=embed)
-            # await ctx.send(file=file)
-
-            # use local cached spoiler image as an attachment
+            if parsed_url.scheme in ("http", "https"):
+                async with ctx.typing():
+                    embed, file = Embed.spoiler_image(image, embed)
+            else:
+                file = discord.File(fp=file_path, filename=file_path.name)
             await ctx.send(description, file=file)
-
-            # use pipes to spoiler image
-            # await ctx.send(f"{description}\n|| {image_url} ||")
         else:
-            embed.set_image(url=image_url)
-            await ctx.send(embed=embed)
+            if parsed_url.scheme in ("http", "https"):
+                embed.set_image(url=image)
+                await ctx.send(embed=embed)
+            else:
+                file = discord.File(fp=file_path, filename=file_path.name)
+                embed.set_image(url=f"attachment://{file_path.name}")
+                await ctx.send(embed=embed, file=file)
 
-    async def delete_message(self, ctx: commands.Context):
+    async def delete_message(
+        self, ctx: commands.Context, delay: int = const.SHORT_DELETE_TIME
+    ):
         """Deletes a message by its ID with exception handling for missing permissions
 
         Args:
             ctx (commands.Context): The context of the command invocation.
         """
+        # Adding a delay before deleting the message
+        await asyncio.sleep(delay)
+
         try:
             # Attempt to delete the message
             await ctx.message.delete()
@@ -516,8 +558,8 @@ class Roleplay(commands.Cog):
                 deny_message = action.denial
                 deny_message = format_string(
                     deny_message,
-                    invoker_member=invoker_member.display_name,
-                    target=target_member.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 self.logger.debug(f"deny_message: {deny_message}")
                 await ctx.send(deny_message)
@@ -548,7 +590,7 @@ class Roleplay(commands.Cog):
         )
         if is_blocked:
             await ctx.send(
-                f"{invoker_member.display_name}, you can't use that command on {target_member.display_name}."
+                f"**{invoker_member.display_name}**, you can't use that command on **{target_member.display_name}**."
             )
             return True
         return False
@@ -559,7 +601,7 @@ class Roleplay(commands.Cog):
         invoker_member: discord.User,
         target_member: discord.User,
         action: Action,
-        interaction_type=const.InteractionType.ACTIVE,
+        interaction_type: const.InteractionType = const.InteractionType.ACTIVE,
         invoker_owner: discord.User = None,
         target_owner: discord.User = None,
     ):
@@ -575,6 +617,11 @@ class Roleplay(commands.Cog):
             """
         )
 
+        # special-case handler for when the invoker is an admin, and
+        # the target is a bot
+        if invoker_member.guild_permissions.administrator and target_member.bot:
+            return True
+
         # collect owners for invoker and target members
         if not invoker_owner:
             invoker_owner = await self.user_settings.users_manager.get_owner(
@@ -587,124 +634,148 @@ class Roleplay(commands.Cog):
 
         # if both invoker and target have owners, ask both for permission
         if invoker_owner and target_owner:
-            consent_message = getattr(action.consent, f"owners_{interaction_type}")
+            owners_mention = f"**{invoker_owner.mention}** & **{target_owner.mention}**"
+            owners_display_name = (
+                f"{invoker_owner.display_name} & {target_owner.display_name}"
+            )
+            # interaction type is an Enum, so need it's value as string
+            consent_message = getattr(
+                action.consent, f"owners_{interaction_type.value}"
+            )
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
             consent_message = format_string(
                 consent_message,
-                owner=f"{invoker_owner.mention} & {target_owner.mention}",
-                invoker_member=invoker_member.display_name,
-                target_member=target_member.display_name,
+                owner=owners_mention,
+                invoker_member=f"**{invoker_member.display_name}**",
+                target_member=f"**{target_member.display_name}**",
             )
             self.logger.debug(f'consent_message : "{consent_message}"')
             # send the consent message
             await ctx.send(consent_message)
 
-            # Collect responses from owners until we have a yes/no from both
-            responses = {}
+            # wait for response from owner
+            pred = CustomMessagePredicate.yes_or_no(
+                ctx, ctx.channel, [invoker_owner, target_owner]
+            )
+            try:
+                await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
+            except asyncio.TimeoutError:
+                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owners_display_name))
+                return False
 
-            # custom check function to look for yes/no responses only from owners
-            def yes_or_no_from_owners(ctx: commands.Context) -> bool:
-                return (
-                    ctx.author == invoker_owner or ctx.author == target_owner
-                ) and ctx.content.lower() in ["yes", "no", "y", "n"]
-
-            while len(responses) < 2:
-                try:
-                    response = await self.bot.wait_for(
-                        "message", check=yes_or_no_from_owners, timeout=const.TIMEOUT
-                    )
-                    if response.author not in responses:
-                        responses[response.author] = response.content.lower()
-                        self.logger.debug(
-                            f"{response.author.display_name} responded with {response.content.lower()}."
-                        )
-                except asyncio.TimeoutError:
-                    await ctx.send(
-                        const.TIMEOUT_MESSAGE.format(user=owner.display_name)
-                    )
-                    return False
-
-            # Process responses
-            if "no" in responses.values() or "n" in responses.values():
+            # if the either owner declines consent, send this message
+            if not pred.result:
                 refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
                     owner=target_owner.display_name,
-                    invoker_member=invoker_member.display_name,
-                    target_member=target_member.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 await ctx.send(refusal_message)
                 return False
             else:
                 return True
-
-        # if there is only one owner and the target member is not the invoker's owner
-        self.logger.debug(
-            f"{invoker_owner} or {target_owner} and {invoker_owner} != {target_member}"
-        )
-        if (invoker_owner or target_owner) and (invoker_owner != target_member):
-            owner = invoker_owner if invoker_owner else target_owner
-
+        # if only the invoker has an owner
+        elif invoker_owner and invoker_owner != target_member:
             # interaction type is an Enum, so need it's value as string
             consent_message = getattr(action.consent, f"owner_{interaction_type.value}")
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
             consent_message = format_string(
                 consent_message,
-                owner=owner.mention,
-                invoker_member=invoker_member.display_name,
-                target_member=target_member.display_name,
+                owner=invoker_owner.mention,
+                invoker_member=f"**{invoker_member.display_name}**",
+                target_member=f"**{target_member.display_name}**",
             )
             self.logger.debug(f'consent_message : "{consent_message}"')
             await ctx.send(consent_message)
 
             # wait for response from owner
-            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, owner)
+            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, invoker_owner)
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
-                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owner.display_name))
+                await ctx.send(
+                    const.TIMEOUT_MESSAGE.format(
+                        user=f"**{invoker_owner.display_name}**"
+                    )
+                )
                 return False
 
             # if the owner declines consent, send this message
             if not pred.result:
                 refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
-                    owner=owner.display_name,
-                    invoker_member=invoker_member.display_name,
-                    target_member=target_member.display_name,
+                    owner=invoker_owner.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
                 )
                 await ctx.send(refusal_message)
                 return False
+
+            # don't return True here, as we still need to check the target for consent
+
+        # if only the target has an owner
+        elif target_owner:
+            # interaction type is an Enum, so need it's value as string
+            consent_message = getattr(action.consent, f"owner_{interaction_type.value}")
+            consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
+            consent_message = format_string(
+                consent_message,
+                owner=target_owner.mention,
+                invoker_member=f"**{invoker_member.display_name}**",
+                target_member=f"**{target_member.display_name}**",
+            )
+            self.logger.debug(f'consent_message : "{consent_message}"')
+            await ctx.send(consent_message)
+
+            # wait for response from owner
+            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_owner)
+            try:
+                await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
+            except asyncio.TimeoutError:
+                await ctx.send(
+                    const.TIMEOUT_MESSAGE.format(
+                        user=f"**{target_owner.display_name}**"
+                    )
+                )
+                return False
+
+            # if the owner declines consent, send this message
+            if not pred.result:
+                refusal_message = const.OWNER_REFUSAL_MESSAGE.format(
+                    owner=target_owner.display_name,
+                    invoker_member=f"**{invoker_member.display_name}**",
+                    target_member=f"**{target_member.display_name}**",
+                )
+                await ctx.send(refusal_message)
+                return False
+            # we can return True here as the owner has given consent
             else:
                 return True
 
-        # special-case handler for when the invoker is an admin, and
-        # the target is a bot
-        if invoker_member.guild_permissions.administrator and target_member.bot:
-            return True
-
-        # no owners involved
+        # Otherwise, no owners are involved and we ask the target member for consent
         # interaction type is an Enum, so need it's value as string
         consent_message = getattr(action.consent, interaction_type.value)
         consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
         consent_message = format_string(
             consent_message,
-            invoker_member=invoker_member.display_name,
+            invoker_member=f"**{invoker_member.display_name}**",
             target_member=target_member.mention,
         )
         self.logger.debug(f'consent_message : "{consent_message}"')
         await ctx.send(consent_message)
 
         # wait for response from target member
-        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, target_member)
+        pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_member)
         try:
             await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
         except asyncio.TimeoutError:
             await ctx.send(
-                const.TIMEOUT_MESSAGE.format(user=target_member.display_name)
+                const.TIMEOUT_MESSAGE.format(user=f"**{target_member.display_name}**")
             )
             return False
 
         if not pred.result:
             refusal_message = const.REFUSAL_MESSAGE.format(
-                target_member=target_member.display_name
+                target_member=f"**{target_member.display_name}**"
             )
             await ctx.send(refusal_message)
             return False

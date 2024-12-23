@@ -1,0 +1,57 @@
+scoreboard_01.png:
+  positions:
+    - [180, 633]
+    - [520, 614]
+    - [877, 654]
+  rotations:
+    - -10
+    - -5
+    - 5
+  size: 135
+  color: "#170400"
+
+scoreboard_02.png:
+  positions:
+    - [533, 700]
+  size: 200
+  color: "#310400"
+
+scoreboard_03.png:
+  positions:
+    - [140, 620]
+    - [525, 685]
+    - [905, 615]
+  size: 125
+  color: "#15132b"
+
+scoreboard_04.png:
+  positions:
+    - [200, 580]
+    - [530, 600]
+    - [855, 580]
+  rotations:
+    - 10
+    - 0
+    - -10
+  size: 125
+  color: "#b95360"
+  
+scoreboard_05.png:
+  positions:
+    - [169, 629]
+    - [541, 768]
+    - [919, 597]
+  rotations:
+    - -5
+    - 0
+    - 10
+  size: 125
+  color: "#1a0400"
+
+scoreboard_06.png:
+  positions:
+    - [193, 565]
+    - [515, 666]
+    - [836, 588]
+  size: 125
+  color: "#220500"

@@ -9,7 +9,7 @@ images:
     - https://panel.unicornia.net/botimages/YTSIU80.gif
     - https://panel.unicornia.net/botimages/dG7qAye.gif
 consent:
-    active: "{target_member}, {invoker_member} wants to spank out."
+    active: "{target_member}, {invoker_member} wants to spank you."
     passive: "{target_member}, {invoker_member} wants you to spank them."
     owner_active: "{owner}, {invoker_member} wants to spank {target_member}."
     owner_passive: "{owner}, {invoker_member} wants {target_member} to spank them."

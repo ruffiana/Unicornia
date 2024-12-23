@@ -12,7 +12,10 @@ from typing import Dict, List, Optional, Union
 
 import yaml
 
-from . import const
+try:
+    from . import const
+except ImportError:
+    import const
 
 
 @dataclass
@@ -133,6 +136,7 @@ class ActionManager:
                 self.logger.error(f"Error trying to parse {file_path}!")
                 return None
             action = Action(name=action_name, **data)
+
             return action
 
     def load_all(self):
@@ -152,6 +156,30 @@ class ActionManager:
             self.actions.append(action)
             # add property as pointer to the action
             setattr(self, action_name, action)
+
+    def update_images(self, action: Action):
+        image_path = self.parent.user_settings.data_path / "images"
+
+        # Look for locally cached images and replace the list of URLs with a list
+        # of these filepaths
+        images_path = image_path / action.name
+        if not images_path.is_dir():
+            self.logger.debug(f"{images_path} is not a valid directory.")
+            return action
+
+        image_files = [
+            file.as_posix() for file in images_path.iterdir() if file.is_file()
+        ]
+        if not image_files:
+            self.logger.debug(f"No cached images for {action.name} in {images_path}.")
+            return action
+
+        action.images = image_files
+        self.logger.debug(f"{action.name} is now using local image cache")
+
+    def update(self):
+        for action in self.actions:
+            self.update_images(action)
 
     def get(self, action_name):
         for action in self.actions:

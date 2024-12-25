@@ -53,11 +53,11 @@ class Consent:
             Ex: "{owner}, {invoker_member} wants {target_member} to ___ them."
     """
 
-    required: bool = True
     active: str
     passive: str
     owner_active: str
     owner_passive: str
+    required: bool = True
 
 
 @dataclass

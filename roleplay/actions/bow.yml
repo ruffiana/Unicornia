@@ -9,7 +9,7 @@ images:
     - https://panel.unicornia.net/botimages/B32NP3T.gif
     - https://panel.unicornia.net/botimages/avDRwRQ.gif
 consent:
-    requried: False
+    required: False
     active: "{target_member}, {invoker_member} wants to bow to you."
     passive: "{target_member}, {invoker_member} wants you to bow to them."
     owner_active: "{owner}, {invoker_member} wants to bow to {target_member}."

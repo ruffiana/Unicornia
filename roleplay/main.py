@@ -355,13 +355,14 @@ class Roleplay(commands.Cog):
         # the invoker is their owner
         # the interaction is active and they are public use
         # the interaction is passive and they are servant
-        if (
-            target_selective
-            and (not invoker_owner)
-            and (interaction_type == const.InteractionType.ACTIVE and not target_public)
-            and (
-                interaction_type == const.InteractionType.PASSIVE and not target_servant
-            )
+        if all(
+            [
+                target_selective,
+                not invoker_owner,
+                interaction_type == const.InteractionType.ACTIVE and not target_public,
+                interaction_type == const.InteractionType.PASSIVE
+                and not target_servant,
+            ]
         ):
             msg = format_string(
                 const.REFUSAL_MESSAGE, target_member=f"**{target_member.display_name}**"

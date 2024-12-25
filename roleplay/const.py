@@ -5,11 +5,7 @@ import logging
 
 from discord import Color
 
-try:
-    from . import __version__, __author__
-except ImportError:
-    __version__ = "Unknown"
-    __author__ = "Unknown"
+from . import __version__, __author__
 
 # set logging level for package.
 # Most common is logging.INFO or logging.DEBUG

@@ -370,14 +370,26 @@ class Roleplay(commands.Cog):
             self.reset_cooldown(ctx, action_name)
             return False
 
-        # does the the command requires consent?
-        if (invoker_owner or target_owner) or (
-            action.consent
-            and (
-                interaction_type == const.InteractionType.PASSIVE and not target_servant
-            )
-            or (interaction_type == const.InteractionType.ACTIVE and not target_public)
-        ):
+        """Check if the command requires consent and handle accordingly.
+        
+        Consent is required if:
+        - The invoker or target has an owner.
+        - The action is passive and the target is not a servant.
+        - The action is active, requires consent, and the target is not public use.
+        """
+        requires_consent = any(
+            [
+                invoker_owner,
+                target_owner,
+                interaction_type == const.InteractionType.PASSIVE
+                and not target_servant,
+                interaction_type == const.InteractionType.ACTIVE
+                and action.consent.required
+                and not target_public,
+            ]
+        )
+
+        if requires_consent:
             self.logger.debug(f"{action_name} consent is required")
             has_consent = await self.ask_for_consent(
                 ctx,

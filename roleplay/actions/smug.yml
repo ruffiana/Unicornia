@@ -5,3 +5,9 @@ images:
     - https://i.kym-cdn.com/photos/images/newsfeed/001/161/167/eda.gif
     - https://media1.tenor.com/images/d9b3127da3f9419cbb28f9f7c00860d8/tenor.gif
     - https://media1.tenor.com/images/0097fa7f957477f9edc5ff147bb9a5ad/tenor.gif
+consent:
+    requried: False
+    active: "{target_member}, {invoker_member} wants to act smug towards you."
+    passive: "{target_member}, {invoker_member} wants you to act smug towards them."
+    owner_active: "{owner}, {invoker_member} wants to act smug towards {target_member}."
+    owner_passive: "{owner}, {invoker_member} wants {target_member} to act smug towards them."

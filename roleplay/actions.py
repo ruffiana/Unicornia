@@ -53,6 +53,7 @@ class Consent:
             Ex: "{owner}, {invoker_member} wants {target_member} to ___ them."
     """
 
+    required: bool = True
     active: str
     passive: str
     owner_active: str
@@ -217,7 +218,7 @@ if __name__ == "__main__":
         pprint(action.images, indent=4)
 
         # Test for consent
-        if action.consent:
+        if action.consent.required:
             print(f'Consent Message (active): "{action.consent.active}"')
             print(f'Consent Message (passive): "{action.consent.passive}"')
             print(f'Owner Consent Message (active): "{action.consent.owner_active}"')

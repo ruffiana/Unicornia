@@ -42,7 +42,6 @@ class Consent:
     """Represents the consent properties for an action.
 
     Attributes:
-        required (bool): Indicates the action requires consent (default is True).
         active (str): The message displayed when asking for active consent.
             Ex: "{target_member}, {invoker_member} wants to ___ you."
         passive (str): The message displayed when asking for passive consent.
@@ -51,6 +50,7 @@ class Consent:
             Ex: "{owner}, {invoker_member} wants to ___ {target_member}."
         owner_passive (str): The message displayed when asking for consent from an owner(s).
             Ex: "{owner}, {invoker_member} wants {target_member} to ___ them."
+        required (bool): Indicates the action requires consent (default is True).
     """
 
     active: str

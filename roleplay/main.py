@@ -11,14 +11,13 @@ import discord
 from redbot.core import commands
 from redbot.core.bot import Red
 
-from . import __version__, __credits__, const
+from . import __credits__, __version__, const
 from .actions import Action, ActionManager
+from .embed import Embed
 from .help import Help
 from .settings import Settings
-from .strings import format_string
-from .embed import Embed
-from . import images
-from .predicates import CustomMessagePredicate
+from .shared import images, strings
+from .shared.predicates import CustomMessagePredicate
 
 
 class Roleplay(commands.Cog):
@@ -364,7 +363,7 @@ class Roleplay(commands.Cog):
                 and not target_servant,
             ]
         ):
-            msg = format_string(
+            msg = strings.format_string(
                 const.REFUSAL_MESSAGE, target_member=f"**{target_member.display_name}**"
             )
             await ctx.send(msg)
@@ -440,7 +439,7 @@ class Roleplay(commands.Cog):
         self.logger.debug(f"description : {description}")
 
         if interaction_type == const.InteractionType.ACTIVE:
-            description = format_string(
+            description = strings.format_string(
                 description,
                 invoker_member=invoker_member.mention,
                 target_member=target_member.mention,
@@ -448,7 +447,7 @@ class Roleplay(commands.Cog):
         # for passive consent type, the invoker is the one receiving the action, so we
         # need to swap the member args
         elif interaction_type == const.InteractionType.PASSIVE:
-            description = format_string(
+            description = strings.format_string(
                 description,
                 invoker_member=target_member.mention,
                 target_member=invoker_member.mention,
@@ -568,7 +567,7 @@ class Roleplay(commands.Cog):
                     f"Role ID:{role_id} in member roles. Action will be auto-denied"
                 )
                 deny_message = action.denial
-                deny_message = format_string(
+                deny_message = strings.format_string(
                     deny_message,
                     invoker_member=f"**{invoker_member.display_name}**",
                     target_member=f"**{target_member.display_name}**",
@@ -655,7 +654,7 @@ class Roleplay(commands.Cog):
                 action.consent, f"owners_{interaction_type.value}"
             )
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
-            consent_message = format_string(
+            consent_message = strings.format_string(
                 consent_message,
                 owner=owners_mention,
                 invoker_member=f"**{invoker_member.display_name}**",
@@ -691,7 +690,7 @@ class Roleplay(commands.Cog):
             # interaction type is an Enum, so need it's value as string
             consent_message = getattr(action.consent, f"owner_{interaction_type.value}")
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
-            consent_message = format_string(
+            consent_message = strings.format_string(
                 consent_message,
                 owner=invoker_owner.mention,
                 invoker_member=f"**{invoker_member.display_name}**",
@@ -729,7 +728,7 @@ class Roleplay(commands.Cog):
             # interaction type is an Enum, so need it's value as string
             consent_message = getattr(action.consent, f"owner_{interaction_type.value}")
             consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
-            consent_message = format_string(
+            consent_message = strings.format_string(
                 consent_message,
                 owner=target_owner.mention,
                 invoker_member=f"**{invoker_member.display_name}**",
@@ -767,7 +766,7 @@ class Roleplay(commands.Cog):
         # interaction type is an Enum, so need it's value as string
         consent_message = getattr(action.consent, interaction_type.value)
         consent_message = f"{consent_message} {const.CONSENT_QUESTION}"
-        consent_message = format_string(
+        consent_message = strings.format_string(
             consent_message,
             invoker_member=f"**{invoker_member.display_name}**",
             target_member=target_member.mention,

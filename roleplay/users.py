@@ -18,9 +18,9 @@ import discord
 from redbot.core import commands
 
 from . import const
-from .strings import get_indefinite_article
+from .shared.strings import get_indefinite_article
 from .user_settings import USER_SETTINGS
-from .predicates import CustomMessagePredicate
+from .shared.predicates import CustomMessagePredicate
 
 
 @dataclass

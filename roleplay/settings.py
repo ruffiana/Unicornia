@@ -29,7 +29,7 @@ from redbot.core.data_manager import cog_data_path
 from redbot.core.utils.chat_formatting import humanize_list
 
 from . import const
-from .strings import get_indefinite_article
+from .shared.strings import get_indefinite_article
 from .user_settings import USER_SETTINGS
 from .users import Manager
 

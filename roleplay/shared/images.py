@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 try:
-    from .actions import ActionManager
+    from ..actions import ActionManager
 except ImportError:
     from actions import ActionManager
 

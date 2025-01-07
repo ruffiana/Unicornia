@@ -42,7 +42,6 @@ class Consent:
     """Represents the consent properties for an action.
 
     Attributes:
-        roles (bool): Indicates if roles require consent (default is True).
         active (str): The message displayed when asking for active consent.
             Ex: "{target_member}, {invoker_member} wants to ___ you."
         passive (str): The message displayed when asking for passive consent.
@@ -51,12 +50,14 @@ class Consent:
             Ex: "{owner}, {invoker_member} wants to ___ {target_member}."
         owner_passive (str): The message displayed when asking for consent from an owner(s).
             Ex: "{owner}, {invoker_member} wants {target_member} to ___ them."
+        required (bool): Indicates the action requires consent (default is True).
     """
 
     active: str
     passive: str
     owner_active: str
     owner_passive: str
+    required: bool = True
 
 
 @dataclass
@@ -217,7 +218,7 @@ if __name__ == "__main__":
         pprint(action.images, indent=4)
 
         # Test for consent
-        if action.consent:
+        if action.consent.required:
             print(f'Consent Message (active): "{action.consent.active}"')
             print(f'Consent Message (passive): "{action.consent.passive}"')
             print(f'Owner Consent Message (active): "{action.consent.owner_active}"')

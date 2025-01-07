@@ -400,21 +400,14 @@ class ScoreboardMaker:
         Returns:
             float: A random score between 0 and 10, inclusive.
         """
+        score = random.betavariate(alpha, beta)
+        weighted_score = 1 + (score * 9)
+        rounded_score = round(weighted_score, 1)
 
-        proc = random.randrange(1, 100)
-        if proc <= 5:
-            return 0
-        elif proc >= 95:
+        if rounded_score == 10.0:
             return 10
         else:
-            score = random.betavariate(alpha, beta)
-            weighted_score = 1 + (score * 9)
-            rounded_score = round(weighted_score, 1)
-
-            if rounded_score == 10.0:
-                return 10
-            else:
-                return rounded_score
+            return rounded_score
 
     @classmethod
     def load_scoreboard_images_data(cls):
@@ -470,10 +463,21 @@ class ScoreboardMaker:
                 text, color=text_color if text_color else image_data.color, outline=True
             )
 
-        # get a random score for each position/rotation and draw them on the image
-        for position, rotation in zip(image_data.positions, image_data.rotations):
-            # Draw each score on the image at the specified positions with the given rotation
-            score = self.get_random_score()
+        # get a random score for each position
+        proc = random.randrange(1, 100)
+        num_needed = len(image_data.positions)
+        # 5% chance for all 10 or all 0
+        if proc <= 5:
+            scores = [0] * num_needed
+        elif proc >= 95:
+            scores = [10] * num_needed
+        else:
+            scores = [self.get_random_score() for _ in range(num_needed)]
+
+        # Draw each score on the image at the specified positions with the given rotation
+        for position, rotation, score in zip(
+            image_data.positions, image_data.rotations, scores
+        ):
             text_draw.draw_text_on_image(
                 str(score),
                 position=position,

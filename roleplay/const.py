@@ -5,7 +5,6 @@ import logging
 
 from discord import Color
 
-
 from . import __version__, __author__
 
 # set logging level for package.

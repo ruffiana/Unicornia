@@ -4,7 +4,25 @@
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
 
+## [2.5.4] - 2021-12-25
+
+### Changed
+
+- Using [p]ask command will now always require consent from the targeted member (or their owner).
+
+## [2.5.3] - 2021-12-22
+
+### Changed
+
+- We're now using the same extended valid yes/no responses When asking another user to become your owner
+
+### Fixed
+
+- Bug fixes.
+- Fixed incorrect variable name in some of the consent timeout messages.
+
 ## [2.5.2] - 2021-12-21
+
 ### Fixed
 - Fixed bug that would allow interactions between a command invoker and other member to skip consent if the invoker owner consented for double real I hope (You don't own everyone!!)
 

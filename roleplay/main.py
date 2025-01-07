@@ -10,7 +10,6 @@ from urllib.parse import urlparse
 import discord
 from redbot.core import commands
 from redbot.core.bot import Red
-from redbot.core.utils.predicates import MessagePredicate
 
 from . import __version__, __credits__, const
 from .actions import Action, ActionManager
@@ -356,13 +355,14 @@ class Roleplay(commands.Cog):
         # the invoker is their owner
         # the interaction is active and they are public use
         # the interaction is passive and they are servant
-        if (
-            target_selective
-            and (not invoker_owner)
-            and (interaction_type == const.InteractionType.ACTIVE and not target_public)
-            and (
-                interaction_type == const.InteractionType.PASSIVE and not target_servant
-            )
+        if all(
+            [
+                target_selective,
+                not invoker_owner,
+                interaction_type == const.InteractionType.ACTIVE and not target_public,
+                interaction_type == const.InteractionType.PASSIVE
+                and not target_servant,
+            ]
         ):
             msg = format_string(
                 const.REFUSAL_MESSAGE, target_member=f"**{target_member.display_name}**"
@@ -371,15 +371,26 @@ class Roleplay(commands.Cog):
             self.reset_cooldown(ctx, action_name)
             return False
 
-        # does the the command requires consent?
-        if (
-            action.consent
-            and (
-                interaction_type == const.InteractionType.PASSIVE and not target_servant
-            )
-            or (interaction_type == const.InteractionType.ACTIVE and not target_public)
-            or (invoker_owner or target_owner)
-        ):
+        """Check if the command requires consent and handle accordingly.
+        
+        Consent is required if:
+        - The invoker or target has an owner.
+        - The action is passive and the target is not a servant.
+        - The action is active, requires consent, and the target is not public use.
+        """
+        requires_consent = any(
+            [
+                invoker_owner,
+                target_owner,
+                interaction_type == const.InteractionType.PASSIVE
+                and not target_servant,
+                interaction_type == const.InteractionType.ACTIVE
+                and action.consent.required
+                and not target_public,
+            ]
+        )
+
+        if requires_consent:
             self.logger.debug(f"{action_name} consent is required")
             has_consent = await self.ask_for_consent(
                 ctx,
@@ -694,7 +705,11 @@ class Roleplay(commands.Cog):
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
-                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owner.display_name))
+                await ctx.send(
+                    const.TIMEOUT_MESSAGE.format(
+                        user=f"**{invoker_owner.display_name}**"
+                    )
+                )
                 return False
 
             # if the owner declines consent, send this message
@@ -728,7 +743,11 @@ class Roleplay(commands.Cog):
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
-                await ctx.send(const.TIMEOUT_MESSAGE.format(user=owner.display_name))
+                await ctx.send(
+                    const.TIMEOUT_MESSAGE.format(
+                        user=f"**{target_owner.display_name}**"
+                    )
+                )
                 return False
 
             # if the owner declines consent, send this message

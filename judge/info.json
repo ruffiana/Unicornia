@@ -1,15 +1,16 @@
 {
   "name": "Judge",
-  "short": "Redbot cog to judge people, places, aaaaaand things.",
+  "short": "Redbot cog to generate images of anime girls with scorecards",
   "description": "Enables a user to [p]judge something.",
   "author": ["Ruffiana"],
   "tags": ["fun", "images", "cute"],
-  "version": "0.1.0",
+  "version": "1.1.1",
   "api_version": 2,
   "required_core_version": ">=3.0.0a",
   "hidden": true,
   "disabled_by_default": false,
   "license": "MIT",
   "min_python_version": [3, 11, 0],
-  "end_user_data_statement": "This cog does not store any user data."
+  "end_user_data_statement": "This cog does not store any user data.",
+  "install_msg": "Thank you for installing MyCog!"
 }

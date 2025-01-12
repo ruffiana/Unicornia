@@ -1,0 +1,95 @@
+flirt:
+  description: ":heart_eyes: {author} is flirting with {target}..."
+  contentment: 3
+  require_consent: True
+  consent_description: "{author} wants to flirt with you {target}, do you give consent?"
+
+date:
+  description: ":relaxed: {author} took {target} on a nice date."
+  contentment: 10
+  require_consent: True
+  consent_description: "{author} wants to take you on a date {target}, do you give consent?"
+
+dinner:
+  description: ":ramen: {author} took {target} out to a fancy dinner."
+  contentment: 15
+  require_consent: True
+  consent_description: "{author} wants to take you to dinner {target}, do you give consent?"
+
+kiss:
+  description: ":kissing_heart: {author} is kissing {target}..."
+  contentment: 5
+  require_consent: True
+  consent_description: "{author} wants to kiss you {target}, do you give consent?"
+
+hug:
+  description: ":hugs: {author} is hugging {target}..."
+  contentment: 4
+  require_consent: True
+  consent_description: "{author} wants to give you a warm hug {target}, do you give consent?"
+
+hold_hands:
+  description: ":couple: {author} is holding hands with {target}..."
+  contentment: 6
+  require_consent: True
+  consent_description: "{author} wants to hold hands with you {target}, do you give consent?"
+
+watch_movie:
+  description: ":popcorn: {author} is watching a movie with {target}..."
+  contentment: 8
+  require_consent: True
+  consent_description: "{author} wants to watch a movie with you {target}, do you give consent?"
+
+dance:
+  description: ":dancer: {author} is dancing with {target}..."
+  contentment: 10
+  require_consent: True
+  consent_description: "{author} wants to dance with you {target}, do you give consent?"
+
+siton:
+  description: "<a:sitonfacepov:993881131239866388> {author} is sitting on {target}'s face..."
+  contentment: 25
+  require_consent: True
+  consent_description: "{author} wants to sit on your face {target} give consent?"
+
+capture:
+  description: "<:caged:993883835131502726> {author} has captured {target} and put them in a cage. :3"
+  contentment: 25
+  require_consent: True
+  consent_description: "{author} wants to do bad things to you {target} give consent?"
+
+lock:
+  description: "<:chastity:993884363798364221> {author} has put a chastity device on {target} and locked it. :3"
+  contentment: 25
+  require_consent: True
+  consent_description: "{author} wants put a chastity cage/belt on {target} give consent?"
+
+collar:
+  description: "<:a_CollarAndLeash:993884751029076008> {author} has collared {target}. They are now on a leash. :3"
+  contentment: 25
+  require_consent: True
+  consent_description: "{author} wants collar {target} give consent?"
+
+suck:
+  description: "<a:sucking:695495067376287744> {author} sucked off {target}."
+  contentment: 25
+  require_consent: True
+  consent_description: "{author} wants to suck you off {target} give consent?"
+
+peg:
+  description: "<a:pegging:964615733390753822> {author} is pegging {target}..."
+  contentment: 50
+  require_consent: True
+  consent_description: "{author} wants to peg you {target} give consent?"
+
+fuck:
+  description: ":smirk: {author} banged {target}. <a:letsfuck:964615340539670621>"
+  contentment: 50
+  require_consent: True
+  consent_description: "{author} wants to bang you {target} give consent?"
+
+breed:
+  description: "<a:breed:993881108221526166> {author} is breeding {target}... :smirk: "
+  contentment: 50
+  require_consent: True
+  consent_description: "{author} wants to breed you {target} give consent?"

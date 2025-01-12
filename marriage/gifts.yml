@@ -1,0 +1,79 @@
+letter:
+  contentment: 5
+  description: "{author} wrote a love letter and gave it to {target}."
+
+flower: 
+  contentment: 7
+  description: "{author} gave {target} a beautiful bouquet of flowers."
+
+sweets: 
+  contentment: 10
+  description: "{author} gave {target} some delicious sweets."
+
+stuffie: 
+  contentment: 12
+  description: "{author} gave {target} a cute stuffed toy."
+
+alcohol: 
+  contentment: 15
+  description: "{author} gave {target} a bottle of fine alcohol."
+
+food:
+  contentment: 18
+  description: "{author} treated {target} to a delicious meal."
+
+perfume:
+  contentment: 20
+  description: "{author} gave {target} a bottle of exquisite perfume."
+
+makeup:
+  contentment: 22
+  description: "{author} gave {target} a set of high-quality makeup."
+
+jewelry:
+  contentment: 30
+  description: "{author} gave {target} a piece of stunning jewelry."
+
+dress:
+  contentment: 32
+  description: "{author} gave {target} a beautiful dress."
+
+lingerie:
+  contentment: 32
+  description: "{author} gave {target} a set of sexy lingerie."
+
+heels:
+  contentment: 32
+  description: "{author} gave {target} a pair of gorgeous heels."
+
+car: 
+  contentment: 40
+  description: "{author} gave {target} a brand new car."
+
+house: 
+  contentment: 45
+  description: "{author} gave {target} a beautiful house."
+
+yacht: 
+  contentment: 48
+  description: "{author} gave {target} a luxurious yacht."
+
+island:
+  contentment: 50
+  description: "{author} gave {target} a private island."
+
+watch:
+  contentment: 25
+  description: "{author} gave {target} a luxury watch."
+
+suit:
+  contentment: 28
+  description: "{author} gave {target} a tailored suit."
+
+sports_car:
+  contentment: 42
+  description: "{author} gave {target} a sports car."
+
+motorcycle:
+  contentment: 38
+  description: "{author} gave {target} a motorcycle."

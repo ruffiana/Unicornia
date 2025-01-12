@@ -77,7 +77,7 @@ class Settings:
     def update(self):
         """Called from parent class after bot is ready"""
         self.data_path = Path(cog_data_path(self.parent))
-        self.logger.info(f"Cog data path: {self.data_path}")
+        self.logger.debug(f"Cog data path: {self.data_path}")
 
     def load_user_settings(self) -> Dict:
         with open(self.PATH_USER_SETTINGS, "r") as file:

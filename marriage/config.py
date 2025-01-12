@@ -12,7 +12,7 @@ class ConfigManager:
 
     def __init__(self, bot: Red, parent: commands.Cog):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
         self.bot = bot
         self.parent = parent

@@ -27,7 +27,7 @@ class Marriage(commands.Cog):
 
     def __init__(self, bot: Red):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
         self.bot = bot
         self.config_manager = ConfigManager(bot=self.bot, parent=self)

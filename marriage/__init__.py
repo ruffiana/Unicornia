@@ -7,7 +7,7 @@ https://github.com/elijabesu/SauriCogs/tree/master/marriage
 Main focus has been on decoupling everything from the currency systems
 """
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 from .main import Marriage
 

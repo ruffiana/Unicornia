@@ -133,50 +133,53 @@ class Marriage(commands.Cog):
     ):
         """Display your or someone else's about"""
         if not target:
-            user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
         else:
-            user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.get_user(ctx, target, cog=self)
 
-        if not user:
-            return
+        if not target_user:
+            return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
 
-        embed = discord.Embed(colour=user.color)
+        embed = discord.Embed(colour=target_user.color)
         embed.set_author(
-            name=f"{user.display_name}'s Profile", icon_url=user.avatar.url
+            name=f"{target_user.display_name}'s Profile",
+            icon_url=target_user.avatar.url,
         )
-        embed.set_footer(text=f"{user.display_name}#{user.discriminator} ({user.id})")
-        embed.set_thumbnail(url=user.avatar.url)
+        embed.set_footer(
+            text=f"{target_user.display_name}#{target_user.discriminator} ({target_user.id}) - Marriage v{__version__}"
+        )
+        embed.set_thumbnail(url=target_user.avatar.url)
 
-        about = await user.about
+        about = await target_user.about
         embed.add_field(name="About:", value=about, inline=False)
 
-        status = await user.relationship_status
+        status = await target_user.relationship_status
         self.logger.debug(f"Status: {status}")
         embed.add_field(name="Status:", value=status)
 
-        spouses = await user.spouses_as_list()
+        spouses = await target_user.spouses_as_list()
         if spouses:
             name = "Spouses:" if spouses and len(spouses) > 1 else "Spouse:"
             value = humanize_list(spouses) if spouses else "None"
             embed.add_field(name=name, value=value)
 
-        embed.add_field(name="Crush:", value=await user.crush)
+        embed.add_field(name="Crush:", value=await target_user.crush)
 
-        embed.add_field(name="Contentment:", value=await user.contentment)
+        embed.add_field(name="Contentment:", value=await target_user.contentment)
 
-        marriage_count = await user.marriage_count
+        marriage_count = await target_user.marriage_count
         embed.add_field(
             name="Been married:",
             value=(f'{marriage_count} {"time" if marriage_count == 1 else "times"}'),
         )
 
-        exes = await user.exes_as_list()
+        exes = await target_user.exes_as_list()
         if exes:
             name = "Ex spouses:" if len(exes) > 1 else "Ex spouse:"
             value = "None" if not exes else humanize_list(exes)
             embed.add_field(name=name, value=value)
 
-        value = await user.gifts_as_text()
+        value = await target_user.gifts_as_text()
         self.logger.debug(f"Gifts: {value}")
         embed.add_field(name="Available gifts:", value=value)
 
@@ -210,7 +213,7 @@ class Marriage(commands.Cog):
             user = MarriageUser.get_user(ctx, target, cog=self)
 
         if not user:
-            return
+            return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
 
         exes = await user.exes_as_list()
         if not exes:
@@ -234,7 +237,7 @@ class Marriage(commands.Cog):
             user = MarriageUser.get_user(ctx, target, cog=self)
 
         if not user:
-            return
+            return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
 
         user = MarriageUser(bot=self.bot, parent=self, user=user)
         spouses = await user.spouses_as_list()

@@ -70,9 +70,9 @@ suit:
   contentment: 28
   description: "{author} gave {target} a tailored suit."
 
-sports_car:
+car:
   contentment: 42
-  description: "{author} gave {target} a sports car."
+  description: "{author} gave {target} a luxurious car."
 
 motorcycle:
   contentment: 38

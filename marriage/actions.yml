@@ -28,13 +28,13 @@ hug:
   require_consent: True
   consent_description: "{author} wants to give you a warm hug {target}, do you give consent?"
 
-hold_hands:
+hands:
   description: ":couple: {author} is holding hands with {target}..."
   contentment: 6
   require_consent: True
   consent_description: "{author} wants to hold hands with you {target}, do you give consent?"
 
-watch_movie:
+movie:
   description: ":popcorn: {author} is watching a movie with {target}..."
   contentment: 8
   require_consent: True

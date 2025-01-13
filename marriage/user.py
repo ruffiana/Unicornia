@@ -189,7 +189,14 @@ class MarriageUser:
         if not spouses:
             return []
         else:
-            return [self.bot.get_user(spouse_id).display_name for spouse_id in spouses]
+            spouses_as_list = []
+            for id in spouses:
+                spouse_user = self.bot.get_user(id)
+                if not spouse_user:
+                    continue
+                else:
+                    spouses_as_list.append(spouse_user.display_name)
+        return spouses_as_list
 
     async def spouses_as_text(self) -> str:
         spouses = await self.spouses_as_list()
@@ -221,7 +228,14 @@ class MarriageUser:
         if not exes:
             return []
         else:
-            return [self.bot.get_user(ex_id).display_name for ex_id in exes]
+            exes_as_list = []
+            for id in exes:
+                ex_user = self.bot.get_user(id)
+                if not ex_user:
+                    continue
+                else:
+                    exes_as_list.append(ex_user.display_name)
+        return exes_as_list
 
     async def exes_as_text(self) -> str:
         exes = await self.exes_as_list()
@@ -240,10 +254,11 @@ class MarriageUser:
     @property
     async def crush(self) -> discord.User:
         crush = await self.config.user(self.user).crush()
-        if crush:
-            return self.bot.get_user(crush).display_name
-        else:
+        if not crush:
             return "None"
+
+        crush_user = self.bot.get_user(crush)
+        return crush_user.display_name if crush_user else "None"
 
     async def set_crush(self, user: discord.User):
         await self.config.user(self.user).crush.set(user.id)

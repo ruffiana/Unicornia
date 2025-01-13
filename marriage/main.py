@@ -20,7 +20,7 @@ class Marriage(commands.Cog):
     """Marry, divorce, perform actions, and give gifts to other members."""
 
     COG_IDENTIFIER = 5465461324979524
-    CONSENT_TIMEOUT = 2  # 120  # seconds
+    CONSENT_TIMEOUT = 120  # seconds
     NONE_USER_MESSAGE = (
         'I couldn\'t find anyone using "{key}". Try using their ID or mention.'
     )

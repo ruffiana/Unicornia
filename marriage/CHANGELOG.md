@@ -6,7 +6,7 @@
 
 - Initial creation of CHANGELOG.md template.
 
-## [2.0.1] - 2025-01-13
+## [2.0.2] - 2025-01-13
 
 ### Fixed
 

@@ -6,6 +6,12 @@
 
 - Initial creation of CHANGELOG.md template.
 
+## [2.0.1] - 2025-01-13
+
+### Fixed
+
+- Fixed bugs that would happen when trying to retrieve user data for spouses, exes, or crushes if the userID was no longer valid
+
 ## [2.0.1] - 2025-01-12
 
 ### Added

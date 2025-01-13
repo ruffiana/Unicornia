@@ -503,6 +503,10 @@ class Marriage(commands.Cog):
             spouse = MarriageUser(
                 bot=self.bot, parent=self, user=self.bot.get_user(spouse_id)
             )
+            # check if the spouse is still a valid discord user
+            if not spouse:
+                continue
+
             self.logger.debug(f"Checking contentment for {spouse.display_name}")
             await spouse.change_contentment(contentment * -1)
             current_contentment = await spouse.contentment

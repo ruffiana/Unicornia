@@ -383,6 +383,7 @@ class Manager:
                 # then we're in a server channel. Otherwise, we're in a direct message
                 # and use .get_all_members() to ge a generator with every discord.Member
                 # the Discord client can see
+                member = None
                 try:
                     members = ctx.guild.members
                 except AttributeError:
@@ -394,8 +395,11 @@ class Manager:
                         guild_member.name == user_key
                         or guild_member.display_name == user_key
                     ):
-                        user = guild_member
+                        member = guild_member
                         break
+                # if we found a member, get the user object
+                if member:
+                    user = self.bot.get_user(member.id)
 
         if user is None:
             self.logger.warning(f'Unable to find user using "{user_key}".')

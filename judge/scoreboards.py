@@ -373,7 +373,7 @@ class ScoreboardMaker:
 
     def __init__(self, logger=None):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
         self.images_data = self.load_scoreboard_images_data()
 

@@ -32,6 +32,7 @@ from . import const
 from .shared.strings import get_indefinite_article
 from .user_settings import USER_SETTINGS
 from .users import Manager
+from . import views
 
 
 class Settings:
@@ -76,7 +77,7 @@ class Settings:
     def update(self):
         """Called from parent class after bot is ready"""
         self.data_path = Path(cog_data_path(self.parent))
-        self.logger.info(f"Cog data path: {self.data_path}")
+        self.logger.debug(f"Cog data path: {self.data_path}")
 
     def load_user_settings(self) -> Dict:
         with open(self.PATH_USER_SETTINGS, "r") as file:
@@ -295,11 +296,12 @@ class Settings:
         self.logger.debug(f"show_settings - member : {member}")
 
         embed = await self.settings_embed(ctx, member)
+        view = views.EmbedView(embed, label="Show Settings")
         await ctx.send(
-            f"{ctx.author.mention}, check your private messages for your Roleplay settings.",
+            "Click the button to view your Roleplay settings.",
+            view=view,
             delete_after=const.SHORT_DELETE_TIME,
         )
-        await ctx.author.send(embed=embed)
 
     async def settings_embed(
         self, ctx: commands.Context, member: discord.Member

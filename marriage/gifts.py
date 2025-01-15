@@ -1,81 +1,65 @@
-from redbot.core import commands
+import logging
+
 from redbot.core.bot import Red
 
-from .config import ConfigManager
+from dataclasses import dataclass
+import yaml
+from pathlib import Path
+
+
+@dataclass
+class Gift:
+    contentment: int = 1
+    description: str = ":gift: {author} has gifted one {item} to {target}"
 
 
 class Gifts:
-    DEFAULT = {
-        "flower": {"contentment": 5, "price": 5},
-        "sweets": {"contentment": 5, "price": 5},
-        "alcohol": {"contentment": 5, "price": 5},
-        "loveletter": {"contentment": 5, "price": 1},
-        "food": {"contentment": 5, "price": 10},
-        "makeup": {"contentment": 5, "price": 20},
-        "car": {"contentment": 15, "price": 500},
-        "yacht": {"contentment": 30, "price": 1000},
-        "house": {"contentment": 60, "price": 25000},
-    }
+    DATA_PATH = Path(__file__).parent / "gifts.yml"
 
     def __init__(self, bot: Red = None, parent=None):
+        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+
         self.bot = bot
         self.parent = parent
-        self.config_manager = (
-            self.parent.config_manager
-            if self.parent.config_manager
-            else ConfigManager()
-        )
 
-    async def _get_gifts(self, ctx: commands.Context):
-        conf = await self.config_manager.get_guild_config(ctx.guild)
+        self.gifts_data = self.load()
 
-        gifts = list(self.DEFAULT.keys())
+    def load(self):
+        if not self.DATA_PATH.exists():
+            self.logger.warning(f"{self.DATA_PATH} does not exist.")
+            return {}
 
-        removed_gifts = await self.removed
-        for removed in removed_gifts:
-            gifts.remove(removed)
+        with open(self.DATA_PATH, "r") as file:
+            try:
+                gifts = yaml.safe_load(file)
+                return {name: Gift(**data) for name, data in gifts.items()}
+            except yaml.YAMLError as e:
+                self.logger.error(f"Error loading data from {self.DATA_PATH}: {e}")
+                return {}
 
-        custom_gifts = self.custom
-        gifts.extend(custom_gifts)
+    def get(self, name) -> dict:
+        return self.gifts_data.get(name, None)
 
-        return gifts
+    def as_list(self) -> str:
+        return list(self.gifts_data.keys())
 
-    @property
-    async def custom(self, ctx):
-        conf = await self.config_manager.get_guild_config(ctx.guild)
-        custom_gifts = await conf.custom_gifts()
-        custom_gifts = list(custom_gifts.keys()) if custom_gifts else []
-        return custom_gifts
+    def show(self, gift_name: str) -> dict:
+        gift = self.gifts_data.get(gift_name.lower())
+        if not gift:
+            return f'"{gift_name}" is not a valid gift.'
 
-    def is_custom(self, ctx, item):
-        return item in self.customW
+        display_text = f"= {gift_name.capitalize()} =\nContentment: {gift.contentment}"
+        return display_text
 
-    @property
-    async def removed(self, ctx):
-        conf = await self.config_manager.get_guild_config(ctx.guild)
-        removed_gifts = await conf.removed_gifts()
-        return removed_gifts
 
-    async def is_removed(self, ctx, item):
-        return item in await self.removed
+# this is just here for testing purposes
+if __name__ == "__main__":
+    import asyncio
 
-    async def as_list(self, ctx):
-        gifts_keys = await self._get_gifts(ctx)
+    async def main():
+        gifts = Gifts()
+        print(gifts.gifts_data)
+        print(gifts.get("flower"))
+        print(gifts.as_list())
 
-        gifts = ""
-
-        if not gifts_keys:
-            return "None"
-
-        for key in gifts_keys:
-            if key in self.custom:
-                gift = self.custom.get(key)
-            elif key in self.DEFAULT:
-                gift = self.DEFAULT.get(key)
-            else:
-                f"{key} is not a custom or default gift"
-                continue
-
-            contentment = gift.get("contentment")
-            price = gift.get("price")
-            gifts += f"{key.capitalize()}: {contentment} contentment, {price} price\n"
+    asyncio.run(main())

@@ -206,8 +206,14 @@ class Roleplay(commands.Cog):
         )(command)
         command = commands.bot_has_permissions(embed_links=True)(command)
 
+        # I don't know why, but this particular configuration makes the command
+        # executable both from the global bot scope (&hug) as well as under roleplay
+        # group (&roleplay hug) but the individual commands do not show up in the redbot
+        # help menu under "no category"
         setattr(self, action_name, command)
         self.bot.add_command(command)
+        # Add the command to the roleplay group
+        self.roleplay.add_command(command)
 
     @commands.command(aliases=["askfor", "get", "giveme", "gimme", "request"])
     async def ask(

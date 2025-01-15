@@ -1,7 +1,7 @@
 import logging
 import os
 
-LOGGER_LEVEL = logging.DEBUG
+LOGGER_LEVEL = logging.INFO
 
 # LOVENSE_DEVELOPER_TOKEN = os.getenv("LOVENSE_DEVELOPER_TOKEN")
 LOVENSE_DEVELOPER_TOKEN = 

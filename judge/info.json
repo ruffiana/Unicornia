@@ -9,8 +9,12 @@
   "required_core_version": ">=3.0.0a",
   "hidden": true,
   "disabled_by_default": false,
-  "license": "MIT",
   "min_python_version": [3, 11, 0],
+  "required_python_packages": [
+    "discord.py",
+    "git+https://github.com/ruffiana/Unicornia.git@main#egg=unicornia"
+  ],
+  "license": "MIT",
   "end_user_data_statement": "This cog does not store any user data.",
   "install_msg": "Thank you for installing MyCog!"
 }

@@ -4,7 +4,7 @@ from typing import Union
 from redbot.core import Config, commands
 from redbot.core.bot import Red
 
-from .user import MarriageUser
+from .marriage_user import MarriageUser
 
 
 class ConfigManager:

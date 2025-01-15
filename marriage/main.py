@@ -13,7 +13,7 @@ from .actions import Actions
 from .config import ConfigManager
 from .gifts import Gifts
 from .unicornia.predicates import ExtendedMessagePredicate
-from .user import MarriageUser
+from .marriage_user import MarriageUser
 
 
 class Marriage(commands.Cog):
@@ -133,9 +133,9 @@ class Marriage(commands.Cog):
     ):
         """Display your or someone else's about"""
         if not target:
-            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            target_user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not target_user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -195,7 +195,7 @@ class Marriage(commands.Cog):
                 f"Uh oh, this is not an essay. {len(about)}/1000 characters."
             )
 
-        user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         await user.set_about(about)
         await ctx.tick()
 
@@ -208,9 +208,9 @@ class Marriage(commands.Cog):
     ):
         """Display your or someone else's exes."""
         if not target:
-            user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            user = MarriageUser.get_user(ctx, target, cog=self)
+            user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -232,14 +232,14 @@ class Marriage(commands.Cog):
     ):
         """Display your or someone else's spouses."""
         if not target:
-            user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            user = MarriageUser.get_user(ctx, target, cog=self)
+            user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
 
-        user = MarriageUser(bot=self.bot, parent=self, user=user)
+        user = MarriageUser(bot=self.bot, parent=self, user_id=user)
         spouses = await user.spouses_as_list()
         if not spouses:
             return await ctx.send(f"{user.display_name} has no spouses.")
@@ -264,11 +264,11 @@ class Marriage(commands.Cog):
                 return await ctx.send("You don't have a crush.")
 
         if target.lower() in ["none", "nobody", "remove", "clear"]:
-            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
             await target_user.remove_crush()
             return await ctx.send("You no longer have a crush.")
         else:
-            target_user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not target_user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -276,7 +276,7 @@ class Marriage(commands.Cog):
         if target_user.id == ctx.author.id:
             return await ctx.send("You cannot have a crush on yourself!")
 
-        author_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         await author_user.set_crush(target_user)
         await ctx.tick()
 
@@ -286,9 +286,9 @@ class Marriage(commands.Cog):
     async def marry(self, ctx: commands.Context, target: typing.Union[int, str]):
         """Marry the love of your life!"""
         if not target:
-            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            target_user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not target_user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -296,7 +296,7 @@ class Marriage(commands.Cog):
         if target_user.id == ctx.author.id:
             return await ctx.send("You cannot marry yourself!")
 
-        author_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
 
         if target_user.id in await author_user.spouses:
             return await ctx.send("You two are already married!")
@@ -335,9 +335,9 @@ class Marriage(commands.Cog):
     async def divorce(self, ctx: commands.Context, target: typing.Union[int, str]):
         """Divorce your current spouse"""
         if not target:
-            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            target_user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not target_user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -345,7 +345,7 @@ class Marriage(commands.Cog):
         if target_user.id == ctx.author.id:
             return await ctx.send("You cannot divorce yourself!")
 
-        author_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
 
         # There's no need to ask for consent here as saying no will just result in the same outcome
         spouses = await author_user.spouses
@@ -370,9 +370,9 @@ class Marriage(commands.Cog):
     ):
         """Do something with someone."""
         if not target:
-            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            target_user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not target_user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -389,7 +389,7 @@ class Marriage(commands.Cog):
         contentment = action.contentment
         description = action.description
 
-        author_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
 
         # check if the author is married and if the target is their spouse
         # remove half of the contentment if the target is not their spouse before
@@ -436,11 +436,11 @@ class Marriage(commands.Cog):
         target: typing.Union[int, str],
     ):
         """Give someone something."""
-        author_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         if not target:
-            target_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+            target_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
         else:
-            target_user = MarriageUser.get_user(ctx, target, cog=self)
+            target_user = MarriageUser.fetch(ctx, target, cog=self)
 
         if not target_user:
             return await ctx.send(self.NONE_USER_MESSAGE.format(key=target))
@@ -482,7 +482,7 @@ class Marriage(commands.Cog):
         Returns:
             None
         """
-        author_user = MarriageUser(bot=self.bot, parent=self, user=ctx.author)
+        author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
 
         # author isn't married, it's cool
         married = await author_user.married
@@ -500,9 +500,9 @@ class Marriage(commands.Cog):
         # Uh oh, the target is not their spouse
         self.logger.debug("Author is cheating!")
         for spouse_id in spouses:
-            spouse = MarriageUser(
-                bot=self.bot, parent=self, user=self.bot.get_user(spouse_id)
-            )
+            self.logger.debug(f"looking for user_id: {spouse_id}")
+            self.logger.debug(f"{self.bot.get_user(spouse_id)}")
+            spouse = MarriageUser.fetch(ctx, spouse_id, cog=self)
             # check if the spouse is still a valid discord user
             if not spouse:
                 continue

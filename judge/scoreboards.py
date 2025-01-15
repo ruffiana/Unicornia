@@ -9,8 +9,8 @@ import yaml
 from PIL import Image
 from collections import namedtuple
 
-from unicornia.images import ImageUtil, Position
-from unicornia.images import TextDraw
+from .unicornia.images import ImageUtil, Position
+from .unicornia.images import TextDraw
 
 # Class constants for the output directory and config file path
 BASE_DIR = Path(__file__).resolve().parent

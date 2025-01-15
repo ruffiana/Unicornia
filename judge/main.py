@@ -5,9 +5,9 @@ import discord
 from redbot.core import commands
 from redbot.core.bot import Red
 
-from unicornia import strings
 from . import __author__, __version__
 from .scoreboards import ScoreboardMaker
+from .unicornia import strings
 
 
 class JudgeCog(commands.Cog):

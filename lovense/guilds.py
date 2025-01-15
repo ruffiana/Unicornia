@@ -1,13 +1,9 @@
-import os
 from pathlib import Path
 import json
 import logging
 from typing import Optional, List, Dict, Any
 
-try:
-    from . import const
-except ImportError:
-    import const
+from . import const
 
 
 class Guilds:

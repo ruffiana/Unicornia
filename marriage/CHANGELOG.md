@@ -5,6 +5,11 @@
 ### Fixed
 
 - Fixed bugs related to invalid userIDs, such as users who are no longer on the server or have deleted their Discord accout
+- Fixed bug with action display text when the emoji associted with it does not exist on the server
+
+### Changed
+
+- Separated 'emoji' in Action descriptions into it's own field to make it easier to maintain
 
 ## [2.0.2] - 2025-01-13
 

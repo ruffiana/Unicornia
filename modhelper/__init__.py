@@ -1,7 +1,10 @@
 """ModHelper Cog"""
 
 __version__ = "1.0.3"
-__author__ = "Ruffiana"
+__author__ = "Unicornia Team"
+__credits__ = ["Ruffiana"]
+__license__ = "MIT"
+
 
 from .main import ModHelperCog
 

@@ -1,6 +1,7 @@
 import platform
-from PIL import Image, ImageDraw, ImageFont
 from typing import Tuple
+
+from PIL import Image, ImageDraw, ImageFont
 
 
 def get_font_path():

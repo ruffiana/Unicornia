@@ -5,8 +5,8 @@ TODO:
 """
 
 __version__ = "2.5.42"
-__author__ = "ruffiana"
-__credits__ = ["the.kirin", "neviyn", "fitz.lol"]
+__author__ = "Unicornia Team"
+__credits__ = ["Ruffiana", "the.kirin", "neviyn", "fitz.lol"]
 
 from .main import Roleplay
 

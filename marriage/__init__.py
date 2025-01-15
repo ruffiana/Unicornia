@@ -8,6 +8,9 @@ Main focus has been on decoupling everything from the currency systems
 """
 
 __version__ = "2.0.2"
+__author__ = "Unicornia Team"
+__credits__ = ["Ruffiana"]
+__license__ = "MIT"
 
 from .main import Marriage
 

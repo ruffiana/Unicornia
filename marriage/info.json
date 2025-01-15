@@ -5,5 +5,11 @@
   "short": "Marry, divorce, and give gifts to other members.",
   "description": "Marry, divorce, and give gifts to other members.",
   "tags": ["marriage", "marry", "waifu"],
-  "end_user_data_statement": "This cog stores user IDs upon marrying and divorcing."
+  "end_user_data_statement": "This cog stores user IDs upon marrying and divorcing.",
+  "min_python_version": [3, 11, 0],
+  "required_python_packages": [
+    "discord.py",
+    "git+https://github.com/ruffiana/Unicornia.git@main#egg=unicornia"
+  ],
+  "license": "MIT"
 }

@@ -23,4 +23,5 @@ Classes:
 """
 
 __version__ = "1.0.0"
-__author__ = "Ruffiana"
+__author__ = "Unicornia Team"
+__contributors__ = ["Ruffiana"]

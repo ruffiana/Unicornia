@@ -1,8 +1,9 @@
 """Package for UwU cog."""
 
-__author__ = "Ruffiana"
-__credits__ = ["Kirin", "Ruff", "PhasecoreX"]
+__author__ = "Unicornia Team"
+__credits__ = ["Ruffiana", "Kirin", "Ruff", "PhasecoreX"]
 __version__ = "2.2.1"
+__license__ = "MIT"
 
 
 import json

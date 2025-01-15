@@ -11,5 +11,10 @@
   "disabled_by_default": false,
   "license": "MIT",
   "min_python_version": [3, 11, 0],
+  "required_python_packages": [
+    "discord.py",
+    "aiohttp",
+    "git+https://github.com/ruffiana/Unicornia.git@main#egg=unicornia"
+  ],
   "end_user_data_statement": "This cog stores userIDs for user-managed settings."
 }

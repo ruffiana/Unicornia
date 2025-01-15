@@ -387,7 +387,9 @@ class Marriage(commands.Cog):
 
         action = self.actions.get(action_name)
         contentment = action.contentment
-        description = action.description
+        # Check if the emoji is valid on this server
+        emoji = action.emoji if action.emoji in ctx.guild.emojis else "❤️"
+        description = f"{emoji} {action.description}"
 
         author_user = MarriageUser(bot=self.bot, parent=self, user_id=ctx.author.id)
 

@@ -3,9 +3,11 @@
 https://github.com/chmod-000
 """
 
-__version__ = "1.0.0"
-__author__ = "ruffiana"
-__credits__ = ["chmod-000"]
+__version__ = "0.1.0"
+__author__ = "Unicornia Team"
+__credits__ = ["Ruffiana", "chmod-000"]
+__license__ = "MIT"
+
 
 from .main import LovenseCog
 

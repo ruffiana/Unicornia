@@ -8,11 +8,11 @@ from redbot.core import checks, commands
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import box, humanize_list
 
-from unicornia.predicates import ExtendedMessagePredicate
 from . import __version__
 from .actions import Actions
 from .config import ConfigManager
 from .gifts import Gifts
+from .unicornia.predicates import ExtendedMessagePredicate
 from .user import MarriageUser
 
 

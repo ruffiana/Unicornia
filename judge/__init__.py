@@ -1,7 +1,10 @@
 """Template for redbot cog"""
 
 __version__ = "1.1.1"
-__author__ = "Ruffiana"
+__author__ = "Unicornia Team"
+__credits__ = ["Ruffiana"]
+__license__ = "MIT"
+
 
 from .main import JudgeCog
 

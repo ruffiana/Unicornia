@@ -1,12 +1,13 @@
 import logging
+import re
+
 import discord
 from redbot.core import commands
 from redbot.core.bot import Red
-import re
 
+from unicornia import strings
+from . import __author__, __version__
 from .scoreboards import ScoreboardMaker
-from . import __version__, __author__
-from . import strings
 
 
 class JudgeCog(commands.Cog):

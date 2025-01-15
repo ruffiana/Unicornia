@@ -11,13 +11,13 @@ import discord
 from redbot.core import commands
 from redbot.core.bot import Red
 
+from unicornia import images, strings
+from unicornia.predicates import ExtendedMessagePredicate
 from . import __credits__, __version__, const
 from .actions import Action, ActionManager
 from .embed import Embed
 from .help import Help
 from .settings import Settings
-from .shared import images, strings
-from .shared.predicates import CustomMessagePredicate
 
 
 class Roleplay(commands.Cog):
@@ -665,7 +665,7 @@ class Roleplay(commands.Cog):
             await ctx.send(consent_message)
 
             # wait for response from owner
-            pred = CustomMessagePredicate.yes_or_no(
+            pred = ExtendedMessagePredicate.yes_or_no(
                 ctx, ctx.channel, [invoker_owner, target_owner]
             )
             try:
@@ -700,7 +700,7 @@ class Roleplay(commands.Cog):
             await ctx.send(consent_message)
 
             # wait for response from owner
-            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, invoker_owner)
+            pred = ExtendedMessagePredicate.yes_or_no(ctx, ctx.channel, invoker_owner)
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
@@ -738,7 +738,7 @@ class Roleplay(commands.Cog):
             await ctx.send(consent_message)
 
             # wait for response from owner
-            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_owner)
+            pred = ExtendedMessagePredicate.yes_or_no(ctx, ctx.channel, target_owner)
             try:
                 await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
             except asyncio.TimeoutError:
@@ -775,7 +775,7 @@ class Roleplay(commands.Cog):
         await ctx.send(consent_message)
 
         # wait for response from target member
-        pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_member)
+        pred = ExtendedMessagePredicate.yes_or_no(ctx, ctx.channel, target_member)
         try:
             await self.bot.wait_for("message", timeout=const.TIMEOUT, check=pred)
         except asyncio.TimeoutError:

@@ -10,13 +10,14 @@ Commands:
 """
 
 import logging
+from typing import List, Tuple
+
 import discord
 from fuzzywuzzy import process
 from redbot.core import commands
 from redbot.core.bot import Red
-from typing import List, Tuple
 
-from . import __version__, __author__, const
+from . import __author__, __version__, const
 
 
 class ModHelperCog(commands.Cog):

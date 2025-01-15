@@ -1,8 +1,9 @@
-from typing import Optional, Callable, Union, Iterable
-from redbot.core.utils.predicates import MessagePredicate
-from redbot.core import commands
+from typing import Callable, Iterable, Optional, Union
+
 import discord
 from discord.ext import commands as dpy_commands
+from redbot.core import commands
+from redbot.core.utils.predicates import MessagePredicate
 
 
 class ExtendedMessagePredicate(MessagePredicate):

@@ -1,10 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [2.0.3] - 2025-01-15
 
-### Added
+### Fixed
 
-- Initial creation of CHANGELOG.md template.
+- Fixed bugs related to invalid userIDs, such as users who are no longer on the server or have deleted their Discord accout
 
 ## [2.0.2] - 2025-01-13
 

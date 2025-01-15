@@ -8,11 +8,11 @@ from redbot.core import checks, commands
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import box, humanize_list
 
+from unicornia.predicates import ExtendedMessagePredicate
 from . import __version__
 from .actions import Actions
 from .config import ConfigManager
 from .gifts import Gifts
-from .predicates import CustomMessagePredicate
 from .user import MarriageUser
 
 
@@ -311,7 +311,7 @@ class Marriage(commands.Cog):
             f"{ctx.author.display_name} has asked {target_user.display_name} to marry them!\n"
             f"{target_user.mention}, what do you say?"
         )
-        pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
+        pred = ExtendedMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
         try:
             await self.bot.wait_for("message", timeout=self.CONSENT_TIMEOUT, check=pred)
         except asyncio.TimeoutError:
@@ -402,7 +402,7 @@ class Marriage(commands.Cog):
                     author=ctx.author.display_name, target=target_user.mention
                 )
             )
-            pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
+            pred = ExtendedMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
             try:
                 await self.bot.wait_for(
                     "message", timeout=self.CONSENT_TIMEOUT, check=pred

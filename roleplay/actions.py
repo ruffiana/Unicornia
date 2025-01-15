@@ -8,14 +8,11 @@ Roleplay action commands are defined as individual YAML files in "actions" subfo
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import List, Optional, Union
 
 import yaml
 
-try:
-    from . import const
-except ImportError:
-    import const
+from . import const
 
 
 @dataclass

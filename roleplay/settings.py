@@ -27,11 +27,11 @@ from redbot.core import Config, commands
 from redbot.core.bot import Red
 from redbot.core.data_manager import cog_data_path
 from redbot.core.utils.chat_formatting import humanize_list
-from unicornia.strings import get_indefinite_article
 
 from . import const, views
 from .user_settings import USER_SETTINGS
 from .users import Manager
+from .unicornia.strings import get_indefinite_article
 
 
 class Settings:

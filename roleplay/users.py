@@ -16,11 +16,11 @@ from typing import List, Optional, Union
 
 import discord
 from redbot.core import commands
-from unicornia.predicates import ExtendedMessagePredicate
-from unicornia.strings import get_indefinite_article
 
 from . import const
 from .user_settings import USER_SETTINGS
+from .unicornia.predicates import ExtendedMessagePredicate
+from .unicornia.strings import get_indefinite_article
 
 
 @dataclass

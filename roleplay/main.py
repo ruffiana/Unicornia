@@ -11,13 +11,13 @@ import discord
 from redbot.core import commands
 from redbot.core.bot import Red
 
-from unicornia import images, strings
-from unicornia.predicates import ExtendedMessagePredicate
 from . import __credits__, __version__, const
 from .actions import Action, ActionManager
 from .embed import Embed
 from .help import Help
 from .settings import Settings
+from .unicornia import images, strings
+from .unicornia.predicates import ExtendedMessagePredicate
 
 
 class Roleplay(commands.Cog):

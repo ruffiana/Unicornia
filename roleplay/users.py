@@ -9,18 +9,18 @@ Classes:
 """
 
 import asyncio
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
 from random import choice
 from typing import List, Optional, Union
 
 import discord
 from redbot.core import commands
+from unicornia.predicates import ExtendedMessagePredicate
+from unicornia.strings import get_indefinite_article
 
 from . import const
-from .shared.strings import get_indefinite_article
 from .user_settings import USER_SETTINGS
-from .shared.predicates import CustomMessagePredicate
 
 
 @dataclass
@@ -164,7 +164,7 @@ class Manager:
                     )
                 )
 
-                pred = CustomMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
+                pred = ExtendedMessagePredicate.yes_or_no(ctx, ctx.channel, target_user)
                 try:
                     await self.bot.wait_for(
                         "message", timeout=const.TIMEOUT, check=pred

@@ -1,95 +1,111 @@
 flirt:
-  description: ":heart_eyes: {author} is flirting with {target}..."
+  description: "{author} is flirting with {target}..."
+  emoji: ":heart_eyes:"
   contentment: 3
   require_consent: True
   consent_description: "{author} wants to flirt with you {target}, do you give consent?"
 
 date:
-  description: ":relaxed: {author} took {target} on a nice date."
+  description: "{author} took {target} on a nice date."
+  emoji: ":relaxed:"
   contentment: 10
   require_consent: True
   consent_description: "{author} wants to take you on a date {target}, do you give consent?"
 
 dinner:
-  description: ":ramen: {author} took {target} out to a fancy dinner."
+  description: "{author} took {target} out to a fancy dinner."
+  emoji: ":ramen:"
   contentment: 15
   require_consent: True
   consent_description: "{author} wants to take you to dinner {target}, do you give consent?"
 
 kiss:
-  description: ":kissing_heart: {author} is kissing {target}..."
+  description: "{author} is kissing {target}..."
+  emoji: ":kissing_heart:"
   contentment: 5
   require_consent: True
   consent_description: "{author} wants to kiss you {target}, do you give consent?"
 
 hug:
-  description: ":hugs: {author} is hugging {target}..."
+  description: "{author} is hugging {target}..."
+  emoji: ":hug:"
   contentment: 4
   require_consent: True
   consent_description: "{author} wants to give you a warm hug {target}, do you give consent?"
 
 hands:
-  description: ":couple: {author} is holding hands with {target}..."
+  description: "{author} is holding hands with {target}..."
+  emoji: ":couple:"
   contentment: 6
   require_consent: True
   consent_description: "{author} wants to hold hands with you {target}, do you give consent?"
 
 movie:
-  description: ":popcorn: {author} is watching a movie with {target}..."
+  description: "{author} is watching a movie with {target}..."
+  emoji: ":popcorn:"
   contentment: 8
   require_consent: True
   consent_description: "{author} wants to watch a movie with you {target}, do you give consent?"
 
 dance:
-  description: ":dancer: {author} is dancing with {target}..."
+  description: "{author} is dancing with {target}..."
+  emoji: ":dancer:"
   contentment: 10
   require_consent: True
   consent_description: "{author} wants to dance with you {target}, do you give consent?"
 
 siton:
-  description: "<a:sitonfacepov:993881131239866388> {author} is sitting on {target}'s face..."
+  description: "{author} is sitting on {target}'s face..."
+  emoji: "<a:sitonfacepov:993881131239866388>"
   contentment: 25
   require_consent: True
   consent_description: "{author} wants to sit on your face {target} give consent?"
 
 capture:
-  description: "<:caged:993883835131502726> {author} has captured {target} and put them in a cage. :3"
+  description: "{author} has captured {target} and put them in a cage. :3"
+  emoji: "<:caged:993883835131502726>"
   contentment: 25
   require_consent: True
   consent_description: "{author} wants to do bad things to you {target} give consent?"
 
 lock:
-  description: "<:chastity:993884363798364221> {author} has put a chastity device on {target} and locked it. :3"
+  description: "{author} has put a chastity device on {target} and locked it. :3"
+  emoji: "<:chastity:993884363798364221>"
   contentment: 25
   require_consent: True
   consent_description: "{author} wants put a chastity cage/belt on {target} give consent?"
 
 collar:
-  description: "<:a_CollarAndLeash:993884751029076008> {author} has collared {target}. They are now on a leash. :3"
+  description: "{author} has collared {target}. They are now on a leash. :3"
+  emoji: "<:a_CollarAndLeash:993884751029076008>"
   contentment: 25
   require_consent: True
   consent_description: "{author} wants collar {target} give consent?"
 
 suck:
-  description: "<a:sucking:695495067376287744> {author} sucked off {target}."
+  description: "{author} sucked off {target}."
+  emoji: "<a:sucking:695495067376287744>"
   contentment: 25
   require_consent: True
   consent_description: "{author} wants to suck you off {target} give consent?"
 
 peg:
-  description: "<a:pegging:964615733390753822> {author} is pegging {target}..."
+  description: "{author} is pegging {target}..."
+  emoji: "<a:pegging:964615733390753822>"
   contentment: 50
   require_consent: True
   consent_description: "{author} wants to peg you {target} give consent?"
 
 fuck:
-  description: ":smirk: {author} banged {target}. <a:letsfuck:964615340539670621>"
+  description: "{author} banged {target}. <a:letsfuck:964615340539670621>"
+  emoji: ":smirk:"
   contentment: 50
   require_consent: True
   consent_description: "{author} wants to bang you {target} give consent?"
 
 breed:
-  description: "<a:breed:993881108221526166> {author} is breeding {target}... :smirk: "
+  description: "{author} is breeding {target}... :smirk: "
+  emoji: <a:breed:993881108221526166>
   contentment: 50
   require_consent: True
   consent_description: "{author} wants to breed you {target} give consent?"

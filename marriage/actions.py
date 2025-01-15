@@ -13,6 +13,7 @@ class Action:
     require_consent: bool = False
     consent_description: str = ""
     description: str = ""
+    emoji: str = ""
 
 
 class Actions:

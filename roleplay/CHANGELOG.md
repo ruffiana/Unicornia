@@ -1,8 +1,15 @@
 # Changelog
 
 ## Upcoming Features
+
  - Add support for for pronouns. Currently, there is no way to retrieve pronouns from a discord.User profile
  - UI interface for editing settings. This may require creating an app command ('/settings') in order to utilize discords interaction objects and ephemeral messaging
+
+## [2.5.43] - 2025-1-15
+
+### Changed
+
+- Removed author name from embed footer to make them less cluttered
 
 ## [2.5.42] - 2025-1-6
 

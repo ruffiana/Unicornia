@@ -10,13 +10,13 @@ Commands:
 """
 
 import logging
+import re
 from typing import List, Tuple
 
 import discord
-from fuzzywuzzy import process
+from rapidfuzz import process
 from redbot.core import commands
 from redbot.core.bot import Red
-import re
 
 from . import __author__, __version__, const
 
@@ -69,7 +69,10 @@ class ModHelperCog(commands.Cog):
         normalized_username = self.normalize_string(username)
 
         found_users: List[Tuple[str, int]] = process.extract(
-            normalized_username, search_targets, limit=results
+            normalized_username,
+            search_targets,
+            limit=results,
+            scorer=process.fuzz.ratio,
         )
 
         await self.show_results(ctx, username, found_users, score, members)

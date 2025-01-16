@@ -1,6 +1,6 @@
 """ModHelper Cog"""
 
-__version__ = "1.0.31"
+__version__ = "1.1.0"
 __author__ = "Unicornia Team"
 __credits__ = ["Ruffiana"]
 __license__ = "MIT"

@@ -152,7 +152,6 @@ class ModHelperCog(commands.Cog):
 
             for member in matched_members:
                 # send userID on separate line so it's easier to copy on mobile devices
-                await ctx.send(
-                    f"### {member.display_name} ({member.name}) - {member.score}%"
-                )
+                score = round(member.score, 1)
+                await ctx.send(f"### {member.display_name} ({member.name}) - {score}%")
                 await ctx.send(f"{member.id}")

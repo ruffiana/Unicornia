@@ -79,21 +79,21 @@ class ModHelperCog(commands.Cog):
     def search_members(self, ctx, search_term, score_threshold=85):
         members = self.get_members(ctx)
         # Create a list of tuples (id, name) for both name and display_name
-        names = [member.name for member in members]
-        display_names = [member.display_name for member in members]
+        names = [member.name.lower() for member in members]
+        display_names = [member.display_name.lower() for member in members]
 
         # Use rapidfuzz to get the best matches
         results_names = process.extract(
-            search_term,
+            search_term.lower(),
             names,
-            scorer=fuzz.token_set_ratio,
+            scorer=fuzz.ratio,
             score_cutoff=score_threshold,
             limit=len(names),
         )
         results_display_names = process.extract(
-            search_term,
+            search_term.lower(),
             display_names,
-            scorer=fuzz.token_set_ratio,
+            scorer=fuzz.ratio,
             score_cutoff=score_threshold,
             limit=len(display_names),
         )
@@ -113,7 +113,7 @@ class ModHelperCog(commands.Cog):
             member_name, score, index = result
             for member in members:
                 if (
-                    member.name == member_name or member.display_name == member_name
+                    member.name.lower() == member_name or member.display_name.lower() == member_name
                 ) and member.id not in added_member_ids:
                     member.score = score
                     matched_members.append(member)

@@ -4,6 +4,7 @@ import discord
 import asyncio
 
 from . import const
+from . import __version__
 
 
 class TextResponder(ABC):
@@ -16,7 +17,11 @@ class TextResponder(ABC):
 
     @abstractmethod
     async def response(self, message: discord.Message, matched_text: str):
-        """Define the response to the matched message"""
+        """Define the response to the matched message
+
+        Typically, you'll want to do something with the triggering message
+        and then reply, send a message, or send an embed as the final result.
+        """
         pass
 
     async def delay(self, message: discord.Message, text: str):
@@ -25,14 +30,31 @@ class TextResponder(ABC):
         async with message.channel.typing():
             await asyncio.sleep(typing_delay)
 
-    async def embed(self, message: discord.Message, title: str, description: str):
+    async def embed(
+        self,
+        message: discord.Message,
+        title: str,
+        description: str,
+        thumbnail: str = None,
+        fields: dict = None,
+    ):
+
         await self.delay(message, description)
         embed = discord.Embed(
             title=title,
             description=description,
             color=const.UNICORNIA_BOT_COLOR,
         )
-        embed.set_thumbnail(url=self.bot.user.avatar.url)
+        embed.set_footer(
+            text=f"Responder Cog - v{__version__}", icon_url=self.bot.user.avatar.url
+        )
+        if thumbnail:
+            embed.set_thumbnail(url=thumbnail)
+
+        if fields:
+            for name, value in fields.items():
+                embed.add_field(name=name, value=value, inline=False)
+
         await message.channel.send(embed=embed)
 
     async def message(self, message: discord.Message, text: str):

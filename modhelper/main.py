@@ -126,6 +126,7 @@ class ModHelperCog(commands.Cog):
         ctx: commands.Context,
         username: str,
         matched_members: List[dict],
+        limit=5,
     ) -> None:
         """
         Display the search results.
@@ -137,11 +138,19 @@ class ModHelperCog(commands.Cog):
             score (int): The minimum score threshold for matching.
             members (List[discord.Member]): List of guild members.
         """
-        for member in matched_members:
-            # send userID on separate line so it's easier to copy on mobile devices
-            await ctx.send(
-                f"### {member.display_name} ({member.name}) - {member.score}%"
-            )
-            await ctx.send(f"{member.id}")
+        async with ctx.typing():
+            if len(matched_members) == 0:
+                msg = f"No matches found for '{username}'."
+            elif len(matched_members) < limit:
+                msg = f"Found {len(matched_members)} matches for '{username}':"
+            else:
+                msg = f"Displaying the top {limit} matches for {username}:"
 
-        return await ctx.send(f"Found {len(matched_members)} matches for '{username}'.")
+            await ctx.send(msg)
+
+            for member in matched_members:
+                # send userID on separate line so it's easier to copy on mobile devices
+                await ctx.send(
+                    f"### {member.display_name} ({member.name}) - {member.score}%"
+                )
+                await ctx.send(f"{member.id}")

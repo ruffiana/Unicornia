@@ -16,6 +16,7 @@ import discord
 from fuzzywuzzy import process
 from redbot.core import commands
 from redbot.core.bot import Red
+import re
 
 from . import __author__, __version__, const
 
@@ -91,23 +92,23 @@ class ModHelperCog(commands.Cog):
             score (int): The minimum score threshold for matching.
             members (List[discord.Member]): List of guild members.
         """
-        if not found_users:
-            return await ctx.send(f"No good matches found for '{username}'.")
-        else:
-            for user, match_score in found_users:
-                # Only include matches that meet the minimum score
-                if match_score < score:
-                    continue
+        good_matches = 0
+        for user, match_score in found_users:
+            # Only include matches that meet the minimum score
+            if match_score < score:
+                continue
 
-                _, name = user.split(" (")
-                name = name.rstrip(")")
-                member = discord.utils.get(members, name=name)
+            match = re.match(r"^(.*) \((.*)\)$", user)
+            if match:
+                name = match.group(2)
+            member = discord.utils.get(members, name=name)
 
-                if not member:
-                    continue
+            if not member:
+                continue
 
-                # send userID on separate line so it's easier to copy on mobile devices
-                await ctx.send(f"### {member.display_name} ({member.name})")
-                await ctx.send(f"{member.id}")
+            # send userID on separate line so it's easier to copy on mobile devices
+            await ctx.send(f"### {member.display_name} ({member.name})")
+            await ctx.send(f"{member.id}")
+            good_matches += 1
 
-            return await ctx.send(f"Found {len(found_users)} matches for '{username}'.")
+        return await ctx.send(f"Found {good_matches} matches for '{username}'.")

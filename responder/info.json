@@ -1,0 +1,16 @@
+{
+  "name": "Responder",
+  "short": "Respond to messages",
+  "description": "This cog sets up responders that can do things when triggered by messages matching regex patterns.",
+  "author": ["Ruffiana"],
+  "tags": ["fun", "utility"],
+  "version": "1.0.0",
+  "license": "MIT",
+  "min_python_version": [3, 8, 0],
+  "end_user_data_statement": "This cog does not store user data.",
+  "required_cogs": {},
+  "type": "COG",
+  "hidden": false,
+  "disabled": false,
+  "install_msg": "Thank you for installing MyCog!"
+}

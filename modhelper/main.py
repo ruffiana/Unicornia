@@ -86,14 +86,14 @@ class ModHelperCog(commands.Cog):
         results_names = process.extract(
             search_term,
             names,
-            scorer=fuzz.ratio,
+            scorer=fuzz.token_set_ratio,
             score_cutoff=score_threshold,
             limit=len(names),
         )
         results_display_names = process.extract(
             search_term,
             display_names,
-            scorer=fuzz.ratio,
+            scorer=fuzz.token_set_ratio,
             score_cutoff=score_threshold,
             limit=len(display_names),
         )

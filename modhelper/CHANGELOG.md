@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0] - 2025-01-15
+
+### Changed
+
+- Replaced fuzzyWuzzy with rapidfuzz
+
 ## [1.0.31] - 2025-01-15
 
 ### Fixed

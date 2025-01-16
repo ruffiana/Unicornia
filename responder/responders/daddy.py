@@ -15,11 +15,19 @@ class Daddy(TextResponder):
     # Match "i'm | i am" at the beginning of the message
     pattern = r"\A(?:i'?\s?a?m\s+)"
 
+    # List of user IDs that will always get a response
+    always_respond = [474075064069783552]
+    # List of user IDs that will never get a response
+    never_respond = []
+
     def __init__(self, parent, bot: Red):
         self.parent = parent
         self.bot = bot
 
     async def response(self, message: discord.Message):
+        if message.author.id in self.never_respond:
+            return
+
         flags = re.IGNORECASE if self.ignore_case else 0
         match = re.match(self.pattern, message.content, flags)
         name = message.content[match.end() :].strip()
@@ -27,20 +35,5 @@ class Daddy(TextResponder):
         chance = 50 / max(1, len(name))
         self.parent.logger.debug(f"{name} = {chance}% chance to respond")
 
-        if random.randint(0, 99) < chance:
-            typing_delay = min(len(name) * 0.1, 5)
-            async with message.channel.typing():
-                await asyncio.sleep(typing_delay)
-            return await message.reply(f"Hi, {name}! I'm your daddy...")
-            # title = f"Hi {name}!"
-            # description = "I'm your daddy..."
-            # return await self.send_embed(message, title, description)
-
-    # async def send_embed(self, message: discord.Message, title: str, description: str):
-    #     embed = discord.Embed(
-    #         title=title,
-    #         description=description,
-    #         color=const.UNICORNIA_BOT_COLOR,
-    #     )
-    #     embed.set_thumbnail(url=self.bot.user.avatar.url)
-    #     await message.channel.send(embed=embed)
+        if message.author.id in self.always_respond or random.randint(0, 99) < chance:
+            await self.reply(message, f"Hi, {name}! I'm your daddy...")

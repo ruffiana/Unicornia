@@ -40,10 +40,11 @@ class ModHelperCog(commands.Cog):
     async def find(
         self,
         ctx: commands.Context,
-        username: str,
+        *username: str,
         score: int = 85,
         results: int = 5,
     ) -> None:
+        username = " ".join(username)
         """
         Find a user by username using fuzzy matching.
 
@@ -69,6 +70,10 @@ class ModHelperCog(commands.Cog):
         found_users: List[Tuple[str, int]] = process.extract(
             normalized_username, search_targets, limit=results
         )
+
+        if not found_users:
+            return await ctx.send(f"No good matches found for '{username}'.")
+
         await self.show_results(ctx, username, found_users, score, members)
 
     async def show_results(
@@ -104,6 +109,3 @@ class ModHelperCog(commands.Cog):
             # send userID on separate line so it's easier to copy on mobile devices
             await ctx.send(f"### {member.display_name} ({member.name})")
             await ctx.send(f"{member.id}")
-
-        if not found_users:
-            await ctx.send(f"No good matches found for '{username}'.")

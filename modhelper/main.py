@@ -74,7 +74,7 @@ class ModHelperCog(commands.Cog):
         """
         username = " ".join(username)
         matched_members = self.search_members(ctx, username, score_threshold=score)
-        await self.show_results(ctx, username, matched_members[:limit])
+        await self.show_results(ctx, username, matched_members, limit=limit)
 
     def search_members(self, ctx, search_term, score_threshold=85):
         members = self.get_members(ctx)
@@ -138,6 +138,8 @@ class ModHelperCog(commands.Cog):
             score (int): The minimum score threshold for matching.
             members (List[discord.Member]): List of guild members.
         """
+        matched_members = matched_members[:limit]
+
         async with ctx.typing():
             if len(matched_members) == 0:
                 msg = f"No matches found for '{username}'."

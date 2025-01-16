@@ -44,7 +44,6 @@ class ModHelperCog(commands.Cog):
         score: int = 85,
         results: int = 5,
     ) -> None:
-        username = " ".join(username)
         """
         Find a user by username using fuzzy matching.
 
@@ -54,6 +53,7 @@ class ModHelperCog(commands.Cog):
             score (int, optional): The minimum score threshold for matching. Defaults to 85.
             results (int, optional): The maximum number of results to display. Defaults to 5.
         """
+        username = " ".join(username)
         members: List[discord.Member] = ctx.guild.members
         member_names: List[Tuple[str, str]] = [
             (

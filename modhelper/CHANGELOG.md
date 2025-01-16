@@ -4,7 +4,8 @@
 
 ### Changed
 
-- Replaced fuzzyWuzzy with rapidfuzz
+- Replaced fuzzyWuzzy with rapidfuzz to support names with language characters (ex: é, ñ, ü, ç, ø)
+- Searching is now performed on Discord name and display name separately for match results
 
 ## [1.0.31] - 2025-01-15
 

@@ -3,9 +3,7 @@ import re
 
 import discord
 from redbot.core.bot import Red
-import asyncio
 
-from .. import const
 from ..text_responders import TextResponder
 
 

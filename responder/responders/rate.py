@@ -46,9 +46,11 @@ class RateResponder(BaseTextResponder):
     enabled: bool = True
     # \A: Asserts the position at the start of the string.
     # ([\w\s]+): Captures one or more word characters (letters, digits, and underscores) or spaces as the first word or words.
-    # \s*: Matches zero or more whitespace characters.
+    # \s+: Matches one or more whitespace characters.
     # rate: Matches the literal string "rate".
-    pattern: str = r"\A([\w\s]+)\s*rate"
+    # \s*: Matches zero or more whitespace characters.
+    # \Z: Asserts the position at the end of the string.
+    pattern: str = r"\A([\w\s]+)\s+rate\s*\Z"
     ignore_case: bool = True
 
     rate_classes = {

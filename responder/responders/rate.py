@@ -8,6 +8,28 @@ from .rate_base import RateBase
 from .text_responder_base import TextResponderBase
 import random
 
+IGNORE_WORDS = [
+    "separate",
+    "celebrate",
+    "operate",
+    "generate",
+    "integrate",
+    "moderate",
+    "accelerate",
+    "concentrate",
+    "collaborate",
+    "demonstrate",
+    "elaborate",
+    "illustrate",
+    "incorporate",
+    "liberate",
+    "migrate",
+    "narrate",
+    "penetrate",
+    "radiate",
+    "saturate",
+]
+
 
 class GayRate(RateBase):
     title = "❯ Not Gay"
@@ -396,6 +418,13 @@ class RateResponder(TextResponderBase):
     async def respond(self, message: discord.Message, target: discord.Member = None):
         match = re.match(self.pattern, message.content, self.regex_flags)
         topic = match.group(1).strip()
+
+        # this will ignore words that include 'rate' such as 'separate', 'celebrate', etc.
+        if f"{topic.lower}rate" in IGNORE_WORDS:
+            self.parent.logger.debug(
+                f"Ignoring {f"{topic.lower}rate"} as it is in the ignore list."
+            )
+            return
 
         if topic.lower() in self.rate_classes:
             responder_class = self.rate_classes.get(topic.lower())

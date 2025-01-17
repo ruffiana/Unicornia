@@ -4,6 +4,18 @@
 
 ## Added
 
+- Responder for Dom/Sub rate
+
+
+## Changed
+
+- Organization and renaming of responder modules/classes
+
+
+## [0.1.1] - 2025-01-17
+
+## Added
+
 - Responder for 'the game'
 - Responder for table unflip
 

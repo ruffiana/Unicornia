@@ -8,7 +8,7 @@ from .. import __version__
 from .. import const
 
 
-class TextResponderBase(ABC):
+class BaseTextResponder(ABC):
     parent = None
     bot = None
     enabled: bool = False
@@ -72,7 +72,8 @@ class TextResponderBase(ABC):
         Returns:
             None
         """
-        typing_delay = min(3, len(text) * 0.05)
+        # Calculate the typing delay based on the length of the text with a max of 3 sec
+        typing_delay = min(3, len(text) * 0.025)
         self.parent.logger.info(f"Typing delay: {typing_delay}")
         async with message.channel.typing():
             await asyncio.sleep(typing_delay)

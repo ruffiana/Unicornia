@@ -110,7 +110,16 @@ class ResponderCog(commands.Cog):
             self.logger.debug(
                 f"Checking responder: {responder} using pattern: {responder.pattern}"
             )
-            match = re.search(responder.pattern, trigger, responder.regex_flags)
-            if match:
-                self.logger.debug(f"Match: {match}")
-                return await responder.respond(message, target=target_member)
+
+            # Check if the responder has a list of patterns
+            if hasattr(responder, "patterns") and responder.patterns:
+                for pattern in responder.patterns:
+                    match = re.search(pattern, trigger, responder.regex_flags)
+                    if match:
+                        self.logger.debug(f"Match: {match}")
+                        return await responder.respond(message, target=target_member)
+            else:
+                match = re.search(responder.pattern, trigger, responder.regex_flags)
+                if match:
+                    self.logger.debug(f"Match: {match}")
+                    return await responder.respond(message, target=target_member)

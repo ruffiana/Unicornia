@@ -1,10 +1,10 @@
 import discord
 from redbot.core.bot import Red
 
-from .text_responder_base import TextResponderBase
+from .base_text_responder import BaseTextResponder
 
 
-class TableUnflipResponder(TextResponderBase):
+class TableUnflipResponder(BaseTextResponder):
     enabled = True
     pattern = r"\(╯°□°\)╯︵ ┻━┻"
     ignore_case = True

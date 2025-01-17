@@ -21,8 +21,8 @@ class ResponderCog(commands.Cog):
     # Pattern used to separate potential commands from target members
     # ^(.*?): Captures any characters (non-greedy) at the beginning of the string as trigger.
     # \s+: Matches one or more whitespace characters.
-    # (<@!?\d+>|@\w+|@\w+\s\w+)$: Matches and captures the member part, which can be a user mention, user ID, or username.
-    COMMAND_USER_PATTERN = re.compile(r"^(.*?)\s+(<@!?\d+>|@\w+|@\w+\s\w+)$")
+    # (<@!?\d+>|\d+|@\w+|@\w+\s\w+): Matches and captures the member part, which can be a user mention, user ID, or username.
+    COMMAND_USER_PATTERN = re.compile(r"\A^(.*?)\s+(<@!?\d+>|\d+|@\w+|@\w+\s\w+)$")
 
     def __init__(self, bot: Red):
         self.bot = bot
@@ -64,7 +64,7 @@ class ResponderCog(commands.Cog):
 
         return responders
 
-    def get_target_member(self, message, arg):
+    async def get_target_member(self, message, arg):
         member = None
 
         # Try to get member by mention
@@ -75,6 +75,11 @@ class ResponderCog(commands.Cog):
         # Try to get member by user ID
         if not member and arg.isdigit():
             member = message.guild.get_member(int(arg))
+            if not member:
+                try:
+                    member = await message.guild.fetch_member(int(arg))
+                except discord.NotFound:
+                    member = None
 
         # Try to get member by username
         if not member:
@@ -100,9 +105,9 @@ class ResponderCog(commands.Cog):
             target = None
 
         if target:
-            target_member = self.get_target_member(message, target)
+            target_member = await self.get_target_member(message, target)
             if target_member is None:
-                return await message.reply(f'Unable to find a member using "target".')
+                return await message.reply(f'Unable to find a member using "{target}".')
         else:
             target_member = message.author
 

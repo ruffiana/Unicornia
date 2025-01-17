@@ -354,7 +354,7 @@ class RateAnything(RateBase):
         self.title = "❯ {topic} Rate".format(topic=self.topic_title)
         self.thumbnail = self.get_random_gif()
         self.description = "{target} is {rating}% {topic}".format(
-            target=self.target, rating=self.rating, topic=self.topic
+            target=self.target.display_name, rating=self.rating, topic=self.topic
         )
         self.footer = r"The rate anything command is only available to supporters."
 

@@ -1,8 +1,23 @@
 # Changelog
 
+## [0.1.4] - 2025-01-17
+
+### Changed
+
+- Changed regex pattern for 'rate' to avoid more common words
+
+- Organization and renaming of responder modules/classes
+
+
 ## [0.1.3] - 2025-01-17
 
+### Fixed
+
 - Fixed display message for user overrides in dom/sub rate
+
+### Changed
+
+- Organization and renaming of responder modules/classes
 
 ## [0.1.2] - 2025-01-17
 

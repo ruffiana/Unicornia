@@ -7,7 +7,7 @@ from .base_rate_responder import BaseRateResponder
 
 class DomRate(BaseRateResponder):
     # default title, description, and thumnail is for unknown or 0% rating
-    title = "❯ ???"
+    title = "❯ Mysterious..."
     description = "{target} is 1000% mysterious..."
     thumbnail = r"https://cdn.discordapp.com/emojis/828672418318778398.gif?size=128&quality=lossless"
     footer = "Results scientifically calculated based on member roles."
@@ -16,22 +16,27 @@ class DomRate(BaseRateResponder):
         89582933735665664: {
             "title": "❯ Dominant",
             "description": "❯ {target} is 666% Dominant.",
-            "thumbnail": "https://cdn.discordapp.com/emojis/695147901407592499.webp?size=128&quality=lossless",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/695147901407592499.webp?size=128&quality=lossless",
         },
         140186220255903746: {
             "title": "❯ Submissive",
             "description": "❯ {target} is 690% Submissive.",
-            "thumbnail": "https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
         819276102325239840: {
             "title": "❯ Submissive",
             "description": "❯ {target} is 869% Submissive.",
-            "thumbnail": "https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
         1058458210060751039: {
             "title": "❯ Submissive",
             "description": "❯ {target} is 555% Submissive.",
-            "thumbnail": "https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
+        },
+        474075064069783552: {
+            "title": "❯ Submissive Fuck Toy",
+            "description": "❯ {target} is 100% fuck toy.",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/816087120526442506.webp?size=128&animated=true",
         },
     }
 

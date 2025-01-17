@@ -11,15 +11,19 @@ from .. import const
 class TextResponderBase(ABC):
     parent = None
     bot = None
-    enabled = False
-    delete_after = None
-    pattern = ""
+    enabled: bool = False
+    delete_after: int = None
+
+    # The pattern to match in the message content -OR- a list of patterns to match.
+    # If a list is provided, the first match will be used.
+    pattern: str = ""
+    patterns: list[str] = []
 
     # attributes used to generate regex flags
-    ignore_case = True
-    multiline = False
-    dotall = False
-    verbose = False
+    ignore_case: bool = True
+    multiline: bool = False
+    dotall: bool = False
+    verbose: bool = False
 
     @property
     def regex_flags(self):
@@ -170,6 +174,3 @@ class TextResponderBase(ABC):
 
     def __str__(self):
         return f"{self.__class__.__name__}(pattern={self.pattern})"
-
-    def __repr__(self):
-        return f"<{self.__class__.__name__} pattern={self.pattern}>"

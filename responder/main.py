@@ -10,8 +10,8 @@ from redbot.core.bot import Red
 
 from . import __version__
 from . import const
-from .responders.text_responder_base import TextResponderBase
-from .responders.rate_base import RateBase
+from .responders.base_text_responder import BaseTextResponder
+from .responders.base_rate_responder import BaseRateResponder
 
 
 class ResponderCog(commands.Cog):
@@ -54,8 +54,8 @@ class ResponderCog(commands.Cog):
                 attr = getattr(module, attr_name)
                 if (
                     isinstance(attr, type)
-                    and attr is not any([TextResponderBase, RateBase])
-                    and issubclass(attr, TextResponderBase)
+                    and attr is not any([BaseTextResponder, BaseRateResponder])
+                    and issubclass(attr, BaseTextResponder)
                     and getattr(attr, "enabled", False)
                 ):
                     self.logger.debug(f'Adding "{attr_name}" to responders')

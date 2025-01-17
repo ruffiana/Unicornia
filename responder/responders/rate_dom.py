@@ -138,6 +138,7 @@ class DomRate(BaseRateResponder):
 
         # convert rating ratio to positive percentage for display#
         rating = rating * 100 if rating > 0.0 else rating * -100
+        rating = round(rating)
 
         description = strings.format_string(
             description, target=target.display_name, rating=rating

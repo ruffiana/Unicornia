@@ -9,7 +9,7 @@ class DomRate(BaseRateResponder):
     # default title, description, and thumnail is for unknown or 0% rating
     title = "❯ Mysterious..."
     description = "{target} is 1000% mysterious..."
-    thumbnail = r"https://cdn.discordapp.com/emojis/828672418318778398.gif?size=128&quality=lossless"
+    thumbnail = r"https://cdn.discordapp.com/emojis/828672418318778398.gif"
     footer = "Results scientifically calculated based on member roles."
 
     user_overrides = {
@@ -41,7 +41,7 @@ class DomRate(BaseRateResponder):
         474075064069783552: {
             "title": "❯ Submissive Fuck Toy",
             "description": "❯ {target} is 100% fuck toy.",
-            "thumbnail": r"https://cdn.discordapp.com/emojis/816087120526442506.webp?size=128&animated=true",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/816087120526442506.webp?size=128&quality=lossless&animated=true",
         },
     }
 

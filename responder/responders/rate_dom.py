@@ -13,26 +13,31 @@ class DomRate(BaseRateResponder):
     footer = "Results scientifically calculated based on member roles."
 
     user_overrides = {
+        # junny
         89582933735665664: {
             "title": "❯ Dominant",
             "description": "❯ {target} is 666% Dominant.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/695147901407592499.webp?size=128&quality=lossless",
         },
+        # kirin
         140186220255903746: {
             "title": "❯ Submissive",
             "description": "❯ {target} is 690% Submissive.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
+        # Maid ice:3
         819276102325239840: {
             "title": "❯ Submissive",
             "description": "❯ {target} is 869% Submissive.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
+        # berry
         1058458210060751039: {
             "title": "❯ Submissive",
             "description": "❯ {target} is 555% Submissive.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
+        # ruffiana
         474075064069783552: {
             "title": "❯ Submissive Fuck Toy",
             "description": "❯ {target} is 100% fuck toy.",

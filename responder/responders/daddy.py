@@ -7,7 +7,7 @@ from redbot.core.bot import Red
 from .text_responder_base import TextResponderBase
 
 
-class Daddy(TextResponderBase):
+class ImDaddyResponder(TextResponderBase):
     enabled = True
     # Match "i'm | i am" at the beginning of the message
     pattern = r"\A(?:i'?\s?a?m\s+)"

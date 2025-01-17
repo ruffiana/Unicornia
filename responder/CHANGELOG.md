@@ -1,16 +1,18 @@
 # Changelog
 
-## [0.1.1] - 2025-01-17
+## [0.1.3] - 2025-01-17
+
+- Fixed display message for user overrides in dom/sub rate
+
+## [0.1.2] - 2025-01-17
 
 ## Added
 
 - Responder for Dom/Sub rate
 
-
 ## Changed
 
 - Organization and renaming of responder modules/classes
-
 
 ## [0.1.1] - 2025-01-17
 

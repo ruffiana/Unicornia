@@ -4,7 +4,7 @@ from redbot.core.bot import Red
 from .text_responder_base import TextResponderBase
 
 
-class TheGame(TextResponderBase):
+class TheGameResponder(TextResponderBase):
     enabled = True
     pattern = r"\bthe game\b"
     ignore_case = True

@@ -1,6 +1,6 @@
 import logging
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 
 UNICORNIA_BOT_COLOR = 5778572
 PRIDE_EMOJI = "🏳️‍🌈"

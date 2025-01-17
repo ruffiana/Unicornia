@@ -36,6 +36,7 @@ class DomRate(BaseRateResponder):
     }
 
     SUB_ROLES = {
+        1329908302187855972: 1.00,
         686097362107498504: 1.00,
         768103786119823380: 0.75,
         768103783498121296: 0.75,
@@ -54,6 +55,7 @@ class DomRate(BaseRateResponder):
     }
 
     DOM_ROLES = {
+        1329908395578495068: 1.00,
         686097057190379537: 1.00,
         686097106083119115: 1.00,
         694788857371033640: 1.00,
@@ -68,12 +70,12 @@ class DomRate(BaseRateResponder):
         811471307106942996: 0.50,
     }
 
-    dominant = {
+    dominant_properties = {
         "title": "❯ Dominant",
         "description": "{target} is {rating}% Dominant.",
         "thumbnail": r"https://cdn.discordapp.com/emojis/695147901407592499.webp?size=128&quality=lossless",
     }
-    submissive = {
+    submissive_properties = {
         "title": "❯ Submissive",
         "description": "{target} is {rating}% Submissive.",
         "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
@@ -98,7 +100,6 @@ class DomRate(BaseRateResponder):
             for role, value in self.SUB_ROLES.items()
             if role in [r.id for r in member.roles]
         )
-
         rating = dom_rating - sub_rating
 
         return rating
@@ -121,9 +122,9 @@ class DomRate(BaseRateResponder):
 
         # get the property from dominant or submissive if rating if it exists
         if rating > 0.0:
-            return getattr(self.dominant, property, getattr(self, property))
+            return self.dominant_properties.get(property, getattr(self, property))
         elif rating < 0.0:
-            return getattr(self.submissive, property, getattr(self, property))
+            return self.submissive_properties.get(property, getattr(self, property))
 
         return getattr(self, property)
 

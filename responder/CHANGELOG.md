@@ -5,6 +5,7 @@
 ## Added
 
 - Responder for 'the game'
+- Responder for table unflip
 
 ### Changed
 

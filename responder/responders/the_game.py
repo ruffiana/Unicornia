@@ -1,10 +1,10 @@
 import discord
 from redbot.core.bot import Red
 
-from .text_responder_base import TextResponderBase
+from .base_text_responder import BaseTextResponder
 
 
-class TheGameResponder(TextResponderBase):
+class TheGameResponder(BaseTextResponder):
     enabled = True
     pattern = r"\bthe game\b"
     ignore_case = True

@@ -397,7 +397,7 @@ class RateResponder(TextResponderBase):
         match = re.match(self.pattern, message.content, self.regex_flags)
         topic = match.group(1).strip()
 
-        if topic in self.rate_classes:
+        if topic.lower() in self.rate_classes:
             responder_class = self.rate_classes.get(topic.lower())
             responder = responder_class(self.parent, self.bot)
         else:

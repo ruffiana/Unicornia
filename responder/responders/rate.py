@@ -26,7 +26,6 @@ IGNORE_WORDS = [
     "migrate",
     "narrate",
     "penetrate",
-    "radiate",
     "saturate",
 ]
 
@@ -420,9 +419,10 @@ class RateResponder(TextResponderBase):
         topic = match.group(1).strip()
 
         # this will ignore words that include 'rate' such as 'separate', 'celebrate', etc.
-        if f"{topic.lower}rate" in IGNORE_WORDS:
+        check_for_ignore = f"{topic.lower()}rate"
+        if check_for_ignore in IGNORE_WORDS:
             self.parent.logger.debug(
-                f"Ignoring {f"{topic.lower}rate"} as it is in the ignore list."
+                f"Ignoring {check_for_ignore} as it is in the ignore list."
             )
             return
 

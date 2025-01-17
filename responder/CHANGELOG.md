@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Added whitespace to regex for "[trigger] [target member]" pattern
 - Changed rate anything to use target member display name instead of user name
 
 ## [0.1.0] - 2025-01-15

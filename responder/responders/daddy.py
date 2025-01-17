@@ -4,10 +4,10 @@ import re
 import discord
 from redbot.core.bot import Red
 
-from .text_responder_base import TextResponderBase
+from .base_text_responder import BaseTextResponder
 
 
-class ImDaddyResponder(TextResponderBase):
+class ImDaddyResponder(BaseTextResponder):
     enabled = True
     # Match "i'm | i am" at the beginning of the message
     pattern = r"\A(?:i'?\s?a?m\s+)"

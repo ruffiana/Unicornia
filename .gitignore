@@ -163,6 +163,7 @@ cython_debug/
 
 # workspace
 _template/
+.gitignore
 
 # vs code
 .vscode/

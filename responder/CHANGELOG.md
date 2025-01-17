@@ -2,6 +2,10 @@
 
 ## [0.1.1] - 2025-01-17
 
+## Added
+
+- Responder for 'the game'
+
 ### Changed
 
 - Rate responder will ignore common words that contain 'rate', such as "Separate", "Celebrate", "Operate", etc.

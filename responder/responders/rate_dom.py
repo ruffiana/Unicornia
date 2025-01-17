@@ -15,22 +15,22 @@ class DomRate(BaseRateResponder):
     user_overrides = {
         89582933735665664: {
             "title": "❯ Dominant",
-            "description": "❯ {member.display_name} is 666% Dominant.",
+            "description": "❯ {target} is 666% Dominant.",
             "thumbnail": "https://cdn.discordapp.com/emojis/695147901407592499.webp?size=128&quality=lossless",
         },
         140186220255903746: {
             "title": "❯ Submissive",
-            "description": "❯ {member.display_name} is 690% Submissive.",
+            "description": "❯ {target} is 690% Submissive.",
             "thumbnail": "https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
         819276102325239840: {
             "title": "❯ Submissive",
-            "description": "❯ {member.display_name} is 869% Submissive.",
+            "description": "❯ {target} is 869% Submissive.",
             "thumbnail": "https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
         1058458210060751039: {
             "title": "❯ Submissive",
-            "description": "❯ {member.display_name} is 555% Submissive.",
+            "description": "❯ {target} is 555% Submissive.",
             "thumbnail": "https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
     }

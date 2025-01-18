@@ -9,7 +9,7 @@ from . import (
     rate_anything,
     rate_bottom,
     rate_cute,
-    rate_dimo,
+    rate_dimbo,
     rate_dom,
     rate_emma,
     rate_fish,
@@ -56,7 +56,7 @@ class RateResponder(BaseTextResponder):
     rate_classes = {
         "gay": rate_gay.GayRate,
         "emma": rate_emma.EmmaRate,
-        "dimbo": rate_dimo.DimboRate,
+        "dimbo": rate_dimbo.DimboRate,
         "dom": rate_dom.DomRate,
         "sub": rate_dom.DomRate,
         "fish": rate_fish.FishRate,

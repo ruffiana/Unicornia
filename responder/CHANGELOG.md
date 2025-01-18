@@ -1,21 +1,17 @@
 # Changelog
 
-## [0.1.61] - 2025-01-18
-
-### Fixed
-
-- Fixed bug in Dom/Sub rate responder
-
-### Changed
-
-- Changed always/never respond lists to be in .const. They can be extended/overwritten in the init method in each responder class
-
 ## [0.1.6] - 2025-01-18
+
+### Added
+
+- Berry Rate
 
 ### Changed
 
 - Responder classes all now use a match pattern list for simplicity and clarity
 - Only attempt to get a discord.Member object once we have a valid match to a responder pattern. This should help with false positives and error messages.
+- Changed always/never respond lists to be in .const. They can be extended/overwritten in the init method in each responder class
+- Fixed bug in Dom/Sub rate responder
 
 ### Fixed
 

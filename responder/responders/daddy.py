@@ -10,7 +10,7 @@ from .base_text_responder import BaseTextResponder
 class ImDaddyResponder(BaseTextResponder):
     enabled = True
     # Match "i'm | i am" at the beginning of the message
-    pattern = r"\A(?:i'?\s?a?m\s+)"
+    patterns = [r"\A(?:i'?\s?a?m\s+)"]
     ignore_case = True
 
     # List of user IDs that will always get a response
@@ -23,11 +23,15 @@ class ImDaddyResponder(BaseTextResponder):
         self.parent = parent
         self.bot = bot
 
-    async def respond(self, message: discord.Message, target: discord.Member = None):
+    async def respond(
+        self,
+        message: discord.Message,
+        target: discord.Member,
+        match: re.Match,
+    ):
         if message.author.id in self.never_respond:
             return
 
-        match = re.match(self.pattern, message.content, self.regex_flags)
         name = message.content[match.end() :].strip()
 
         chance = 50 / max(1, len(name))

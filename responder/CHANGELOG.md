@@ -6,6 +6,10 @@
 
 - Fixed bug in Dom/Sub rate responder
 
+### Changed
+
+- Changed always/never respond lists to be in .const. They can be extended/overwritten in the init method in each responder class
+
 ## [0.1.6] - 2025-01-18
 
 ### Changed

@@ -1,3 +1,5 @@
+import re
+
 import discord
 from redbot.core.bot import Red
 
@@ -6,7 +8,7 @@ from .base_text_responder import BaseTextResponder
 
 class TheGameResponder(BaseTextResponder):
     enabled = True
-    pattern = r"\bthe game\b"
+    patterns = [r"\bthe game\b"]
     ignore_case = True
 
     # List of user IDs that will always get a response
@@ -19,7 +21,12 @@ class TheGameResponder(BaseTextResponder):
         self.parent = parent
         self.bot = bot
 
-    async def respond(self, message: discord.Message, target: discord.Member = None):
+    async def respond(
+        self,
+        message: discord.Message,
+        target: discord.Member,
+        match: re.Match,
+    ):
         if message.author.id in self.never_respond:
             return
 

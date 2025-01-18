@@ -5,6 +5,7 @@
 ### Added
 
 - Berry Rate
+- Added module docstrings
 
 ### Changed
 

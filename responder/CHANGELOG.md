@@ -6,6 +6,10 @@
 
 - Added allowed channel set
 
+### Fixed
+
+- Changed regex for discord ids to only trigger on integers 17-19 long
+
 ## [0.1.4] - 2025-01-17
 
 ### Changed

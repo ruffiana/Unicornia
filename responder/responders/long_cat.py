@@ -41,7 +41,11 @@ class LongCatResponder(BaseTextResponder):
         long_cat = f"{self.EMOJI_CAT_FRONT}{middle_cat}{self.EMOJI_CAT_END}"
 
         # critical fail!
-        if random.randrange(0, 100) == 5:
-            long_cat = f"{self.EMOJI_CAT_FRONT}{self.EMOJI_KNIFE}{self.EMOJI_CAT_END}\OH NO! LONG CAT WAS TOO LONG!"
+        if random.randrange(0, 20) == 1:
+            middle_cat = "".join([self.EMOJI_CAT_MIDDLE] * 2)
+            middle_cat = (
+                f"{self.EMOJI_CAT_MIDDLE}{self.EMOJI_KNIFE}{self.EMOJI_CAT_MIDDLE}"
+            )
+            long_cat = f"{self.EMOJI_CAT_FRONT}{middle_cat}{self.EMOJI_CAT_END}\OH NO! LONG CAT WAS TOO LONG!"
 
         await self.send_message(message, long_cat, as_reply=False, delay=False)

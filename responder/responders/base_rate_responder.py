@@ -1,4 +1,5 @@
 import random
+import re
 
 import discord
 from redbot.core.bot import Red
@@ -86,7 +87,12 @@ class BaseRateResponder(BaseTextResponder):
 
         return thumbnail
 
-    async def respond(self, message: discord.Message, target: discord.Member = None):
+    async def respond(
+        self,
+        message: discord.Message,
+        target: discord.Member,
+        match: re.Match,
+    ):
         rating = self.get_rating()
         title = self.get_title(target, rating)
         description = self.get_description(target, rating)

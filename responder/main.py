@@ -3,6 +3,7 @@ import importlib
 import logging
 from pathlib import Path
 import re
+from typing import Union
 
 import discord
 from redbot.core import commands
@@ -17,6 +18,20 @@ from .responders.base_rate_responder import BaseRateResponder
 class ResponderCog(commands.Cog):
     RESPONDERS_PATH = Path(__file__).parent / "responders"
     RESPONDER_FILE_PATHS = [Path(p) for p in glob.glob(str(RESPONDERS_PATH / "*.py"))]
+    ALLOWED_CHANNEL_IDS = {
+        # Ruffiana's Playground - redbot
+        1318299981668552735
+        # bot commands
+        686096388018405408,
+        # bot dungeon
+        1081656723904921651,
+        # comfy chat
+        778700678851723295,
+        # horny jail
+        686091486327996459,
+        # bot spam
+        686092688059400454,
+    }
 
     # Pattern used to separate potential commands from target members
     # ^(.*?): Captures any characters (non-greedy) at the beginning of the string as trigger.
@@ -94,6 +109,10 @@ class ResponderCog(commands.Cog):
     async def on_message(self, message: discord.Message) -> None:
         # Ignore messages from all bots
         if message.author.bot:
+            return
+
+        # Check if the message is in an allowed channel
+        if message.channel.id not in self.ALLOWED_CHANNEL_IDS:
             return
 
         match = self.COMMAND_USER_PATTERN.match(message.content.strip())

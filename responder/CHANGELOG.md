@@ -7,6 +7,10 @@
 - Responder classes all now use a match pattern list for simplicity and clarity
 - Only attempt to get a discord.Member object once we have a valid match to a responder pattern. This should help with false positives and error messages.
 
+### Fixed
+
+- Restored dimbo thumnail
+
 ## [0.1.5] - 2025-01-17
 
 ### Changed

@@ -9,7 +9,7 @@ from .base_text_responder import BaseTextResponder
 class TheGameResponder(BaseTextResponder):
     enabled = True
     patterns = [r"\bThe Game\b"]
-    ignore_case = True
+    ignore_case = False
 
     # List of user IDs that will always get a response
     always_respond = []

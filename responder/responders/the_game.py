@@ -8,7 +8,7 @@ from .base_text_responder import BaseTextResponder
 
 class TheGameResponder(BaseTextResponder):
     enabled = True
-    patterns = [r"\bthe game\b"]
+    patterns = [r"\bThe Game\b"]
     ignore_case = True
 
     # List of user IDs that will always get a response
@@ -31,5 +31,5 @@ class TheGameResponder(BaseTextResponder):
             return
 
         await self.send_message(
-            message, f"You just lost the game.", as_reply=True, delay=True
+            message, f"I just lost The Game.", as_reply=True, delay=True
         )

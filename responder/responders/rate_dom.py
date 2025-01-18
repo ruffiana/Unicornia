@@ -1,8 +1,9 @@
-import discord
 import re
 
+import discord
 from redbot.core.bot import Red
 
+from .. import const
 from ..unicornia import strings
 from .base_rate_responder import BaseRateResponder
 
@@ -15,17 +16,21 @@ class DomRate(BaseRateResponder):
     footer = "Results scientifically calculated based on member roles."
 
     user_overrides = {
+        const.KIRIN_ID: {
+            "title": "❯ Submissive",
+            "description": "❯ {target} is 690% Submissive.",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
+        },
+        const.RUFFIANA_ID: {
+            "title": "❯ Submissive Fuck Toy",
+            "description": "❯ {target} is 100% fuck toy.",
+            "thumbnail": r"https://cdn.discordapp.com/emojis/816087120526442506.webp?size=128&quality=lossless&animated=true",
+        },
         # junny
         89582933735665664: {
             "title": "❯ Dominant",
             "description": "❯ {target} is 666% Dominant.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/695147901407592499.webp?size=128&quality=lossless",
-        },
-        # kirin
-        140186220255903746: {
-            "title": "❯ Submissive",
-            "description": "❯ {target} is 690% Submissive.",
-            "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
         # Maid ice:3
         819276102325239840: {
@@ -38,12 +43,6 @@ class DomRate(BaseRateResponder):
             "title": "❯ Submissive",
             "description": "❯ {target} is 555% Submissive.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
-        },
-        # ruffiana
-        474075064069783552: {
-            "title": "❯ Submissive Fuck Toy",
-            "description": "❯ {target} is 100% fuck toy.",
-            "thumbnail": r"https://cdn.discordapp.com/emojis/816087120526442506.webp?size=128&quality=lossless&animated=true",
         },
     }
 

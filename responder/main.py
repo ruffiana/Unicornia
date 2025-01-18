@@ -20,7 +20,7 @@ class ResponderCog(commands.Cog):
     RESPONDER_FILE_PATHS = [Path(p) for p in glob.glob(str(RESPONDERS_PATH / "*.py"))]
     ALLOWED_CHANNEL_IDS = {
         # Ruffiana's Playground - redbot
-        1318299981668552735
+        1318299981668552735,
         # bot commands
         686096388018405408,
         # bot dungeon

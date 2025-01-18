@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6] - 2025-01-18
+
+### Changed
+
+- Responder classes all now use a match pattern list for simplicity and clarity
+- Only attempt to get a discord.Member object once we have a valid match to a responder pattern. This should help with false positives and error messages.
+
 ## [0.1.5] - 2025-01-17
 
 ### Changed

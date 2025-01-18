@@ -17,6 +17,8 @@ class BaseRateResponder(BaseTextResponder):
 
     # this enables hard-coding overrides for specific user ids
     # dictionary should be defined as a [user.id] = {[embed properties:values]}
+    # if a value is a list, a random choice will be made. This is handy for things like
+    # multiple descriptions or images.
     user_overrides: dict = {}
 
     # this enables changing embed properties for rating values

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.61] - 2025-01-18
+
+### Fixed
+
+- Fixed bug in Dom/Sub rate responder
+
 ## [0.1.6] - 2025-01-18
 
 ### Changed

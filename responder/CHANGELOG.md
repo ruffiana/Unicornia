@@ -1,11 +1,16 @@
 # Changelog
 
+## [0.1.5] - 2025-01-17
+
+### Changed
+
+- Added allowed channel set
+
 ## [0.1.4] - 2025-01-17
 
 ### Changed
 
 - Changed regex pattern for 'rate' to avoid more common words
-
 - Organization and renaming of responder modules/classes
 
 

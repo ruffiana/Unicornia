@@ -11,11 +11,6 @@ class TheGameResponder(BaseTextResponder):
     patterns = [r"\bThe Game\b"]
     ignore_case = False
 
-    # List of user IDs that will always get a response
-    always_respond = []
-    # List of user IDs that will never get a response
-    never_respond = []
-
     def __init__(self, parent, bot: Red):
         super().__init__()
         self.parent = parent

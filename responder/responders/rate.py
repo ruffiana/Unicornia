@@ -3,8 +3,6 @@ import re
 import discord
 from redbot.core.bot import Red
 
-from .base_text_responder import BaseTextResponder
-
 from . import (
     rate_anything,
     rate_bottom,
@@ -16,7 +14,7 @@ from . import (
     rate_gay,
     rate_stinky,
 )
-
+from .base_text_responder import BaseTextResponder
 
 IGNORE_WORDS = [
     "separate",
@@ -50,7 +48,7 @@ class RateResponder(BaseTextResponder):
     # rate: Matches the literal string "rate".
     # \s*: Matches zero or more whitespace characters.
     # \Z: Asserts the position at the end of the string.
-    pattern: str = r"\A([\w\s]+)\s+rate\s*\Z"
+    patterns: list[str] = [r"\A([\w\s]+)\s+rate\s*\Z"]
     ignore_case: bool = True
 
     rate_classes = {
@@ -69,8 +67,9 @@ class RateResponder(BaseTextResponder):
         self.parent = parent
         self.bot = bot
 
-    async def respond(self, message: discord.Message, target: discord.Member = None):
-        match = re.match(self.pattern, message.content, self.regex_flags)
+    async def respond(
+        self, message: discord.Message, target: discord.Member, match=re.Match
+    ):
         topic = match.group(1).strip()
 
         # this will ignore words that include 'rate' such as 'separate', 'celebrate', etc.
@@ -84,6 +83,7 @@ class RateResponder(BaseTextResponder):
         if topic.lower() in self.rate_classes:
             responder_class = self.rate_classes.get(topic.lower())
             responder = responder_class(self.parent, self.bot)
+        # special case for rate anything
         else:
             responder_class = rate_anything.RateAnything
             responder = responder_class(
@@ -93,4 +93,4 @@ class RateResponder(BaseTextResponder):
         self.parent.logger.debug(
             f"Calling respond method from {responder_class.__name__}"
         )
-        await responder.respond(message, target)
+        await responder.respond(message, target, match)

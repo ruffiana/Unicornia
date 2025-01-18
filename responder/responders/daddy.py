@@ -1,3 +1,8 @@
+""" I'm Your Daddy
+
+Responds to "I'm [blank]" or "I am [blank]" with "Hi, [blank]! I'm your daddy..."
+"""
+
 import random
 import re
 

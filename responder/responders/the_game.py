@@ -1,3 +1,9 @@
+"""The Game Responder
+
+Simple call/response responder that responds "I just lost The Game".
+https://en.wikipedia.org/wiki/The_Game_(mind_game)
+"""
+
 import re
 
 import discord

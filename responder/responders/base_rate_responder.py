@@ -1,4 +1,43 @@
+"""Abstract base class for rate responders.
+
+Rate responders are used to generate a rating for a given target member.
+The most basic form of these is a very simple call/response that will 
+create an embed with a title, description, and thumbnail.
+
+The title, description, and thumbnail can be customized by overwriting
+the class properties, or they can be customized on a per-user basis by
+overwriting the `user_overrides` dictionary.
+
+Embed properties:
+    title: str = "[RATE]"
+    description: str = "❯ {target} is {rating}%"
+    thumbnail: str = "https://example.com/default_thumbnail.png"
+    footer: str = None
+
+The rating can be a random number between 0 and 100, or it can be
+customized by overwriting the .get_rating() method. Note that the rating
+is used to determine which rating-specific overrides to use. See Below.
+
+User-specific overrides can be defined in the `user_overrides` dictionary.
+This dictionary should be defined as a [user.id] = {[embed properties:values]}.
+If a value is a list, a random choice will be made. This is handy for things like
+multiple descriptions or images.
+
+Rating-specific overrides can be defined in the `rating_overrides` dictionary.
+This dictionary should be defined as a [rating] = {[embed properties:values]}.
+Keys are sorted in descending order, and the first key that is less than or equal
+to the rating will be used.
+Like the user-specific overrides, if a value is a list, a random choice
+will be made.
+Note: user-specific overrides take precedence over rating-specific overrides.
+
+Finally, the 'respond' method can be overwritten to extend the behavior
+defined by the base class, or to completely replace with custom behavior.
+In all cases, this method is required for the responder to function.
+"""
+
 import random
+
 import re
 
 import discord
@@ -10,9 +49,10 @@ from .base_text_responder import BaseTextResponder
 
 class BaseRateResponder(BaseTextResponder):
     enabled: bool = False
+
     title: str = "[RATE]"
     description: str = "❯ {target} is {rating}%"
-    thumbnail: str = None
+    thumbnail: str = "https://example.com/default_thumbnail.png"
     footer: str = None
 
     # this enables hard-coding overrides for specific user ids

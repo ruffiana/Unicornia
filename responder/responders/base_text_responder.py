@@ -1,3 +1,39 @@
+"""Base test responder class
+This module defines the `BaseTextResponder` class, an abstract base class
+for creating text responders in a Discord bot.
+
+The `BaseTextResponder` class provides the following functionalities:
+- Define patterns to match in message content.
+- Generate regex flags based on object attributes.
+- Abstract method `respond` to be implemented by subclasses for defining responses to matched messages.
+- Methods for sending delayed responses, embedded messages, and plain text messages to Discord channels.
+
+Attributes:
+    parent: The parent object/main cog that instantiates the responder.
+    bot: The Discord/Redbot bot instance. Passed in from main cog function.
+
+    enabled: Flag that indicates whether the responder is enabled.
+
+    patterns The patterns to match in the message content.
+    For simplicity, this is always defined as a list of strings.
+
+    Attributes used to generate regex flags:
+    ignore_case (bool): If True, adds the `re.IGNORECASE` flag to regex.
+    multiline (bool): If True, adds the `re.MULTILINE` flag to regex.
+    dotall (bool): If True, adds the `re.DOTALL` flag to regex.
+    verbose (bool): If True, adds the `re.VERBOSE` flag to regex.
+
+    delete_after (int): The time in seconds after which the response
+    message should be deleted. You generally never want to delete the
+    message, but it's here if you need it.
+    
+    always_respond (list[int]): List of user IDs to always respond to.
+    These can be extended in the subclass to include more users.
+
+    never_respond (list[int]): List of user IDs to never respond to.
+    These can be extended in the subclass to include more users.
+"""
+
 import asyncio
 import re
 from abc import ABC, abstractmethod

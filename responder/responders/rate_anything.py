@@ -1,3 +1,9 @@
+""" Rate Anything
+
+This is the default, all-purpose rate responder. It will respond with a
+simple rating % and randomly selected gif from Tenor.
+"""
+
 import random
 
 import discord

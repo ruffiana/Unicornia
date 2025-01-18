@@ -1,3 +1,8 @@
+"""Stinky Rate Responder
+
+Responds with a random % rating for how stinky a user is.
+"""
+
 from redbot.core.bot import Red
 
 from .base_rate_responder import BaseRateResponder

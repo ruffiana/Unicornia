@@ -1,3 +1,9 @@
+"""Gay Rate Responder
+
+Reponds with a random % rating for how gay a user is.
+This one uses rating_overrides to change the embed title based on the rating.
+"""
+
 from redbot.core.bot import Red
 
 from .base_rate_responder import BaseRateResponder

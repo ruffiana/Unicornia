@@ -1,3 +1,8 @@
+"""Botom Rate Responder
+
+Responds with a rating % and a gif for how bottom the target is.
+"""
+
 from redbot.core.bot import Red
 
 from .base_rate_responder import BaseRateResponder

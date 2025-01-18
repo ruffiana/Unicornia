@@ -1,3 +1,9 @@
+""" Berry Rate Responder
+
+This responder will choose a berry type based on the user ID and respond
+with a description of the berry and a thumbnail image.
+"""
+
 import re
 
 import discord

@@ -1,3 +1,8 @@
+"""Table Unflip Responder
+
+Simple call/response responder that unflips tables.
+"""
+
 import re
 
 import discord

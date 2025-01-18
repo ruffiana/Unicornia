@@ -1,3 +1,8 @@
+"""Cute Rate Responder
+
+All users are 100% cute, except for Ruffiana.
+"""
+
 from redbot.core.bot import Red
 
 from .base_rate_responder import BaseRateResponder

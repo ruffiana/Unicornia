@@ -1,3 +1,13 @@
+"""Rate Responder
+
+This is the parent class for all rate responders. It will respond to any
+trigger containing 'rate'. It will then call the appropriate rate
+responder class based on the topic provided.
+
+When creating new rate responder classes, be sure to add them to imports
+and the 'rate_classes' mapping.
+"""
+
 import re
 
 import discord
@@ -17,31 +27,8 @@ from . import (
 )
 from .base_text_responder import BaseTextResponder
 
-IGNORE_WORDS = [
-    "separate",
-    "celebrate",
-    "operate",
-    "generate",
-    "integrate",
-    "moderate",
-    "accelerate",
-    "concentrate",
-    "collaborate",
-    "demonstrate",
-    "elaborate",
-    "illustrate",
-    "incorporate",
-    "liberate",
-    "migrate",
-    "narrate",
-    "penetrate",
-    "saturate",
-]
-
 
 class RateResponder(BaseTextResponder):
-    """Parent class that responds to any trigger containing 'rate'"""
-
     enabled: bool = True
     # \A: Asserts the position at the start of the string.
     # ([\w\s]+): Captures one or more word characters (letters, digits, and underscores) or spaces as the first word or words.
@@ -52,6 +39,9 @@ class RateResponder(BaseTextResponder):
     patterns: list[str] = [r"\A([\w\s]+)\s+rate\s*\Z"]
     ignore_case: bool = True
 
+    # Mapping of topics to their respective rate responder classes
+    # This is done manually right now, but it could be automated using
+    # filenames and class names in the future.
     rate_classes = {
         "bottom": rate_bottom.BottomRate,
         "berry": rate_berry.BerryRate,
@@ -73,14 +63,6 @@ class RateResponder(BaseTextResponder):
         self, message: discord.Message, target: discord.Member, match=re.Match
     ):
         topic = match.group(1).strip()
-
-        # this will ignore words that include 'rate' such as 'separate', 'celebrate', etc.
-        check_for_ignore = f"{topic.lower()}rate"
-        if check_for_ignore in IGNORE_WORDS:
-            self.parent.logger.debug(
-                f"Ignoring {check_for_ignore} as it is in the ignore list."
-            )
-            return
 
         if topic.lower() in self.rate_classes:
             responder_class = self.rate_classes.get(topic.lower())

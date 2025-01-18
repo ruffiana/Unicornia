@@ -1,3 +1,15 @@
+"""Dom/Sub rating responder.
+
+This responder calculates a rating based on the roles a member has.
+The roles are assigned a value based on their dominance or submissiveness.
+The total rating is the sum of the dominant roles minus the sum of the
+submissive roles.
+The rating is then converted to a percentage and displayed to the user.
+
+Note, these values are not normalized as displaying very high ratings
+values is 500% more fun.
+"""
+
 import re
 
 import discord

@@ -1,6 +1,7 @@
 from redbot.core.bot import Red
 
 from .base_rate_responder import BaseRateResponder
+from .. import const
 
 
 class GayRate(BaseRateResponder):
@@ -9,16 +10,18 @@ class GayRate(BaseRateResponder):
     thumbnail = r"https://cdn.discordapp.com/emojis/1088555199146242248.webp?size=128&quality=lossless"
 
     user_overrides: dict = {
-        140186220255903746: {  # Kirin#9329
+        const.KIRIN_ID: {
             "title": "❯ The Gay",
             "description": "❯ {target} is the gay.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/817150384111616011.webp?size=128&quality=lossless",
         },
-        240942922285973506: {  # Emma#6688
+        # Emma#6688
+        240942922285973506: {
             "title": "❯ Super Gay",
             "description": "❯ {target} is Super Duper Gay.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/817150384111616011.webp?size=128&quality=lossless",
         },
+        # radon  (Radon)
         144523162044858368: {
             "title": "❯ Super Gay",
             "description": "❯ {target} is 99.999% Gay.",

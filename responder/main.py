@@ -36,8 +36,11 @@ class ResponderCog(commands.Cog):
     # Pattern used to separate potential commands from target members
     # ^(.*?): Captures any characters (non-greedy) at the beginning of the string as trigger.
     # \s+: Matches one or more whitespace characters.
-    # (<@!?\d+>|\d+|@\w+|@\w+\s\w+): Matches and captures the member part, which can be a user mention, user ID, or username.
-    COMMAND_USER_PATTERN = re.compile(r"\A^(.*?)\s+(<@!?\d+>|\d+|@\w+|@\w+\s\w+)$")
+    # (<@!?\d{17,19}>|\d{17,19}|@\w+|@\w+\s\w+): Matches and captures the member part,
+    # which can be a user mention, user ID, or username.
+    COMMAND_USER_PATTERN = re.compile(
+        r"^(.*?)\s+(<@!?\d{17,19}>|\d{17,19}|@\w+|@\w+\s\w+)$"
+    )
 
     def __init__(self, bot: Red):
         self.bot = bot

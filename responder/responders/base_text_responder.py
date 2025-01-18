@@ -6,6 +6,7 @@ from typing import Union
 import discord
 
 from .. import __version__, const
+from .. import const
 
 
 class BaseTextResponder(ABC):
@@ -23,6 +24,9 @@ class BaseTextResponder(ABC):
     multiline: bool = False
     dotall: bool = False
     verbose: bool = False
+
+    always_respond: list[int] = const.ALWAYS_RESPOND
+    never_respond: list[int] = const.NEVER_RESPOND
 
     @property
     def regex_flags(self):

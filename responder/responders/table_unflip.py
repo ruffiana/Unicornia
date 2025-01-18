@@ -11,13 +11,17 @@ class TableUnflipResponder(BaseTextResponder):
     patterns = [r"\(╯°□°\)╯︵ ┻━┻"]
     ignore_case = True
 
-    # List of user IDs that will never get a response
-    never_respond = []
-
     def __init__(self, parent, bot: Red):
         super().__init__()
         self.parent = parent
         self.bot = bot
+
+        self.never_respond.extend(
+            [
+                # kirin
+                140186220255903746
+            ]
+        )
 
     async def respond(
         self,

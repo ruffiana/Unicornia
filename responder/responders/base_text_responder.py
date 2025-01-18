@@ -1,11 +1,11 @@
 import asyncio
 import re
 from abc import ABC, abstractmethod
+from typing import Union
 
 import discord
 
-from .. import __version__
-from .. import const
+from .. import __version__, const
 
 
 class BaseTextResponder(ABC):
@@ -14,10 +14,9 @@ class BaseTextResponder(ABC):
     enabled: bool = False
     delete_after: int = None
 
-    # The pattern to match in the message content -OR- a list of patterns to match.
-    # If a list is provided, the first match will be used.
-    pattern: str = ""
-    patterns: list[str] = []
+    # The pattern(s) to match in the message content. This is defined as a list so that
+    # we can treat them the sa
+    patterns: Union[str, list[str]] = []
 
     # attributes used to generate regex flags
     ignore_case: bool = True
@@ -51,7 +50,11 @@ class BaseTextResponder(ABC):
 
     @abstractmethod
     async def respond(
-        self, message: discord.Message, matched_text: str, target: discord.Member = None
+        self,
+        message: discord.Message,
+        matched_text: str,
+        target: discord.Member,
+        match: re.Match,
     ):
         """Define the response to the matched message
 
@@ -174,4 +177,4 @@ class BaseTextResponder(ABC):
                 self.parent.logger.error(f"Failed to send message: {e}")
 
     def __str__(self):
-        return f"{self.__class__.__name__}(pattern={self.pattern})"
+        return f"{self.__class__.__name__}(patterns={self.patterns})"

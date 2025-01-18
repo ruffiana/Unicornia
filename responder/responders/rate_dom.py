@@ -1,4 +1,6 @@
 import discord
+import re
+
 from redbot.core.bot import Red
 
 from ..unicornia import strings
@@ -138,7 +140,9 @@ class DomRate(BaseRateResponder):
 
         return getattr(self, property)
 
-    async def respond(self, message: discord.Message, target: discord.Member = None):
+    async def respond(
+        self, message: discord.Message, target: discord.Member, match: re.Match
+    ):
         """Extends the base class method to handle dominant/submissive ratings."""
         rating = self.get_rating(target)
         title = self.get_title(target, rating)

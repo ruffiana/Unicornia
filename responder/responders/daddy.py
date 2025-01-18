@@ -14,7 +14,12 @@ class ImDaddyResponder(BaseTextResponder):
     ignore_case = True
 
     # List of user IDs that will always get a response
-    always_respond = [474075064069783552]
+    always_respond = [
+        # ruffiana
+        474075064069783552,
+        # berry
+        1058458210060751039,
+    ]
     # List of user IDs that will never get a response
     never_respond = []
 

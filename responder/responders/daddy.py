@@ -13,20 +13,17 @@ class ImDaddyResponder(BaseTextResponder):
     patterns = [r"\A(?:i'?\s?a?m\s+)"]
     ignore_case = True
 
-    # List of user IDs that will always get a response
-    always_respond = [
-        # ruffiana
-        474075064069783552,
-        # berry
-        1058458210060751039,
-    ]
-    # List of user IDs that will never get a response
-    never_respond = []
-
     def __init__(self, parent, bot: Red):
         super().__init__()
         self.parent = parent
         self.bot = bot
+
+        self.always_respond.extend(
+            [
+                # berry
+                1058458210060751039
+            ]
+        )
 
     async def respond(
         self,

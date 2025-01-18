@@ -1,6 +1,7 @@
 from redbot.core.bot import Red
 
 from .base_rate_responder import BaseRateResponder
+from .. import const
 
 
 class StinkyRate(BaseRateResponder):
@@ -9,12 +10,12 @@ class StinkyRate(BaseRateResponder):
     thumbnail = r"https://cdn.discordapp.com/emojis/1318168707423408138.webp?size=96&quality=lossless"
 
     user_overrides = {
-        # kirin
-        819276102325239840: {
+        const.KIRIN_ID: {
             "title": "❯ The Stinkiest",
             "description": "❯ Ice is the stinkiest.",
             "thumbnail": "https://cdn.discordapp.com/emojis/1318168707423408138.webp?size=96&quality=lossless",
         },
+        # deft9nes_  (Maid Ry<3)
         843188175596945429: {
             "title": "❯ Super Stinky",
             "description": "❯ Ryan is super duper stinky.",

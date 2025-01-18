@@ -4,6 +4,7 @@ import discord
 from redbot.core.bot import Red
 
 from .base_text_responder import BaseTextResponder
+from .. import const
 
 
 class TableUnflipResponder(BaseTextResponder):
@@ -16,12 +17,7 @@ class TableUnflipResponder(BaseTextResponder):
         self.parent = parent
         self.bot = bot
 
-        self.never_respond.extend(
-            [
-                # kirin
-                140186220255903746
-            ]
-        )
+        self.never_respond.extend([const.KIRIN_ID])
 
     async def respond(
         self,

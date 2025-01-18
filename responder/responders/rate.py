@@ -6,6 +6,7 @@ from redbot.core.bot import Red
 from . import (
     rate_anything,
     rate_bottom,
+    rate_berry,
     rate_cute,
     rate_dimbo,
     rate_dom,
@@ -52,15 +53,16 @@ class RateResponder(BaseTextResponder):
     ignore_case: bool = True
 
     rate_classes = {
-        "gay": rate_gay.GayRate,
-        "emma": rate_emma.EmmaRate,
+        "bottom": rate_bottom.BottomRate,
+        "berry": rate_berry.BerryRate,
+        "cute": rate_cute.CuteRate,
         "dimbo": rate_dimbo.DimboRate,
         "dom": rate_dom.DomRate,
-        "sub": rate_dom.DomRate,
+        "emma": rate_emma.EmmaRate,
         "fish": rate_fish.FishRate,
-        "cute": rate_cute.CuteRate,
-        "bottom": rate_bottom.BottomRate,
+        "gay": rate_gay.GayRate,
         "stinky": rate_stinky.StinkyRate,
+        "sub": rate_dom.DomRate,
     }
 
     def __init__(self, parent, bot: Red):

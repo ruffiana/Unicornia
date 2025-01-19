@@ -2,6 +2,10 @@
 
 ## [0.1.7] - 2025-01-19
 
+### Added
+
+- Cooldown timers
+
 ### Changed
 
 - Long Cat responder now accepts 'short' cat. It also keeps the current cat length, increasing or decreasing it with more 'o's

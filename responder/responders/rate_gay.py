@@ -47,8 +47,3 @@ class GayRate(BaseRateResponder):
         10: {"title": "❯ Kinda Gay"},
         5: {"title": "❯ Slightly Gay"},
     }
-
-    def __init__(self, parent, bot: Red):
-        super().__init__(parent, bot)
-        self.parent = parent
-        self.bot = bot

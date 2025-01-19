@@ -31,8 +31,3 @@ class BottomRate(BaseRateResponder):
         # ice
         819276102325239840: bottom,
     }
-
-    def __init__(self, parent, bot: Red):
-        self.parent = parent
-        self.bot = bot
-        super().__init__(parent, bot)

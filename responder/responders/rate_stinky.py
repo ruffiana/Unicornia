@@ -35,8 +35,3 @@ class StinkyRate(BaseRateResponder):
         25: {"title": "❯ Kinda Stinky"},
         10: {"title": "❯ Not Stinky"},
     }
-
-    def __init__(self, parent, bot: Red):
-        self.parent = parent
-        self.bot = bot
-        super().__init__(parent, bot)

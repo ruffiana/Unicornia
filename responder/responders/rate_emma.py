@@ -24,8 +24,3 @@ class EmmaRate(BaseRateResponder):
             "description": "❯ {target} is *the* Emma!",
         },
     }
-
-    def __init__(self, parent, bot: Red):
-        self.parent = parent
-        self.bot = bot
-        super().__init__(parent, bot)

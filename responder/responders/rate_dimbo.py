@@ -44,8 +44,3 @@ class DimboRate(BaseRateResponder):
             "thumbnail": r"https://cdn.discordapp.com/attachments/686096388018405408/765924132822319114/dimbo3.png?size=1024&quality=lossless",
         },
     }
-
-    def __init__(self, parent, bot: Red):
-        self.parent = parent
-        self.bot = bot
-        super().__init__(parent, bot)

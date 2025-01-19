@@ -104,10 +104,8 @@ class DomRate(BaseRateResponder):
         "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
     }
 
-    def __init__(self, parent, bot: Red):
-        self.parent = parent
-        self.bot = bot
-        super().__init__(parent, bot)
+    # def __init__(self, parent, bot: Red):
+    #     super().__init__(parent, bot)
 
     def get_rating(self, member: discord.Member):
         # dom_total = sum(DOM_ROLES.values())
@@ -127,11 +125,11 @@ class DomRate(BaseRateResponder):
 
         return rating
 
-    def get_property(self, property: str, target: discord.Member, rating: int):
-        """Extends the base class method to include dominant/submissive properties."""
+    def get_property(self, property: str, member: discord.Member, rating: int):
+        """Extends base class to include dominant/submissive properties."""
 
-        if target.id in self.user_overrides:
-            value = self.user_overrides.get(target.id).get(
+        if member.id in self.user_overrides:
+            value = self.user_overrides.get(member.id).get(
                 property, getattr(self, property)
             )
             return value
@@ -152,7 +150,10 @@ class DomRate(BaseRateResponder):
         return getattr(self, property)
 
     async def respond(
-        self, message: discord.Message, target: discord.Member, match: re.Match
+        self,
+        message: discord.Message,
+        target: discord.Member,
+        match: re.Match,
     ):
         """Extends the base class method to handle dominant/submissive ratings."""
         rating = self.get_rating(target)

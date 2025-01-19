@@ -82,12 +82,6 @@ class BerryRate(BaseRateResponder):
         },
     }
 
-    def __init__(self, parent, bot: Red):
-        super().__init__(parent, bot)
-        self.parent = parent
-        self.bot = bot
-        self.bot = bot
-
     def get_property(
         self, property: str, target: discord.Member, berry_name: str
     ) -> Any:
@@ -134,7 +128,10 @@ class BerryRate(BaseRateResponder):
         return berry_name
 
     async def respond(
-        self, message: discord.Message, target: discord.Member, match: re.Match
+        self,
+        message: discord.Message,
+        target: discord.Member,
+        match: re.Match,
     ):
         """Extends the base class method to handle dominant/submissive ratings."""
         # instead of a random rating, we're going to get a berry type using the user ID

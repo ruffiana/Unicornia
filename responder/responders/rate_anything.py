@@ -5,6 +5,7 @@ simple rating % and randomly selected gif from Tenor.
 """
 
 import random
+import re
 
 import discord
 from redbot.core.bot import Red
@@ -14,22 +15,6 @@ from .base_rate_responder import BaseRateResponder
 
 
 class RateAnything(BaseRateResponder):
-    def __init__(self, parent, bot: Red, target: discord.Member, topic: str):
-        super().__init__(parent, bot)
-
-        self.topic = topic
-        self.target = target
-
-        self.rating = self.get_rating()
-
-        self.topic_title = " ".join(word.capitalize() for word in self.topic.split())
-        self.title = "❯ {topic} Rate".format(topic=self.topic_title)
-        self.thumbnail = self.get_random_gif()
-        self.description = "{target} is {rating}% {topic}".format(
-            target=self.target.display_name, rating=self.rating, topic=self.topic
-        )
-        self.footer = r"The rate anything command is only available to supporters."
-
     def get_random_gif(self):
         # Search tenor for an appropriate thumbnail image
         search_term = self.topic.replace(" ", "-")
@@ -37,3 +22,31 @@ class RateAnything(BaseRateResponder):
         gif_url = random.choice(gifs)
 
         return gif_url
+
+    async def respond(
+        self,
+        message: discord.Message,
+        target: discord.Member,
+        match: re.Match,
+    ):
+        rating = self.get_rating()
+
+        title = " ".join(word.capitalize() for word in self.topic.split())
+        title = "❯ {topic} Rate".format(topic=title)
+
+        thumbnail = self.get_random_gif()
+
+        description = "{target} is {rating}% {topic}".format(
+            target=target.display_name, rating=rating, topic=self.topic
+        )
+
+        footer = r"The rate anything command is only available to supporters."
+
+        await self.send_embed(
+            message,
+            title=title,
+            description=description,
+            thumbnail=thumbnail,
+            footer=footer,
+            delay=False,
+        )

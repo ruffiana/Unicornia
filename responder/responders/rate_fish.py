@@ -23,8 +23,3 @@ class FishRate(BaseRateResponder):
         # adrihadry
         1110256621524885586: fish,
     }
-
-    def __init__(self, parent, bot: Red):
-        self.parent = parent
-        self.bot = bot
-        super().__init__(parent, bot)

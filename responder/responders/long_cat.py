@@ -9,8 +9,8 @@ import re
 import discord
 from redbot.core.bot import Red
 
-from .base_text_responder import BaseTextResponder
 from .. import const
+from .base_text_responder import BaseTextResponder
 
 
 class LongCatResponder(BaseTextResponder):
@@ -18,6 +18,9 @@ class LongCatResponder(BaseTextResponder):
     # matches "long"/"short" "cat" or "kitty" capturing the "o"s in a group
     patterns = [r"\b(l(o+)ng|sh(o*)rt) (cat|kitty)\b"]
     ignore_case = True
+
+    cooldown_time = 120
+    silent_cooldown = False
 
     EMOJI_CAT_FRONT = "<:longcat_1:948672953715929168>"
     EMOJI_CAT_MIDDLE = "<:longcat_2:948672968073031690>"
@@ -45,7 +48,6 @@ class LongCatResponder(BaseTextResponder):
         target: discord.Member,
         match: re.Match,
     ):
-
         # capture groups
         long_or_short = match.group(1).lower()
         ooo = match.group(2) or match.group(3)

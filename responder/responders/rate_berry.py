@@ -57,6 +57,17 @@ class BerryRate(BaseRateResponder):
             "description": "{target} is a small, round, dark blue or black fruit with a sweet-tart flavor, similar to a blueberry.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Single_Huckleberry_with_Stem_Attached.png/640px-Single_Huckleberry_with_Stem_Attached.png",
         },
+        "juneberry": {
+            "decription": "{target} is a small, dark purple or red fruit possessing a mild sweetness strongly accented by the almond-like flavour of the seeds.",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Amelanchier_ovalis3.JPG/540px-Amelanchier_ovalis3.JPG?download",
+        },
+    }
+
+    user_overrides: dict = {        
+        # Berry 
+        1058458210060751039: berry_types["strawberry"],
+        # Jun
+        89582933735665664: berry_types["juneberry"],
     }
 
     def __init__(self, parent, bot: Red):

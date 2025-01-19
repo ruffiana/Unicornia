@@ -47,15 +47,15 @@ class LongCatResponder(BaseTextResponder):
     ):
 
         # capture groups
-        long_or_short = match.group(1)
+        long_or_short = match.group(1).lower()
         ooo = match.group(2) or match.group(3)
-        name = match.group(4)
+        name = match.group(4).lower()
 
         # we only want to add or remove sections if more than one 'o' is
         # captured, otherwise we just want to display the current long cat.
-        if match.group(1) and len(ooo) > 1:
+        if long_or_short.startswith("l") and len(ooo) > 1:
             self.sections += len(ooo)
-        elif match.group(2) and len(ooo) > 1:
+        elif long_or_short.startswith("s") and len(ooo) > 1:
             self.sections -= len(ooo)
 
         middle_cat = "".join([self.EMOJI_CAT_MIDDLE] * self.sections)

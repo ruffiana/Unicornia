@@ -56,6 +56,11 @@ class BaseTextResponder(ABC):
     patterns: Union[str, list[str]] = []
     target_member: discord.Member = None
 
+    # attributes used to manage cooldown
+    cooldown_time = 0  # cooldown timer in seconds. default is 0 (no cooldown)
+    silent_cooldown = True  # if True, the bot will not respond when on cooldown
+    _last_called = None
+
     # attributes used to generate regex flags
     ignore_case: bool = True
     multiline: bool = False
@@ -88,6 +93,32 @@ class BaseTextResponder(ABC):
         if self.verbose:
             flags |= re.VERBOSE
         return flags
+
+    def is_on_cooldown(self):
+        """Check if the responder is currently on cooldown."""
+        if self.last_called is None:
+            return False
+        return (asyncio.get_event_loop().time() - self.last_called) < self.cooldown_time
+
+    def get_cooldown_remaining(self):
+        """Get the remaining time in seconds before the responder is available."""
+        return round(
+            self.cooldown_time - (asyncio.get_event_loop().time() - self.last_called), 2
+        )
+
+    @property
+    def last_called(self):
+        """Get the last time the responder was called."""
+        return getattr(self, "_last_called", None)
+
+    @last_called.setter
+    def last_called(self, value):
+        """Set the last time the responder was called."""
+        self._last_called = value
+
+    def update_last_called(self):
+        """Update the last called time to the current time."""
+        self.last_called = asyncio.get_event_loop().time()
 
     @abstractmethod
     async def respond(

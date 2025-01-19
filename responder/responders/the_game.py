@@ -18,7 +18,8 @@ class TheGameResponder(BaseTextResponder):
     ignore_case = False
 
     def __init__(self, parent, bot: Red):
-        super().__init__()
+        # BaseTextResponder is an abstract class which does not have an
+        # init, so don't call super().__init__ here.
         self.parent = parent
         self.bot = bot
 

@@ -59,7 +59,7 @@ class BerryRate(BaseRateResponder):
         },
         "juneberry": {
             "decription": "{target} is a small, dark purple or red fruit possessing a mild sweetness strongly accented by the almond-like flavour of the seeds.",
-            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Amelanchier_ovalis3.JPG/540px-Amelanchier_ovalis3.JPG?download",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Amelanchier_ovalis3.JPG/540px-Amelanchier_ovalis3.JPG",
         },
     }
 

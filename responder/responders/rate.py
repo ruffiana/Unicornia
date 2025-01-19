@@ -26,6 +26,8 @@ from . import (
     rate_stinky,
 )
 from .base_text_responder import BaseTextResponder
+from .base_rate_responder import BaseRateResponder
+from pathlib import Path
 
 
 class RateResponder(BaseTextResponder):
@@ -39,42 +41,51 @@ class RateResponder(BaseTextResponder):
     patterns: list[str] = [r"\A([\w\s]+)\s+rate\s*\Z"]
     ignore_case: bool = True
 
-    # Mapping of topics to their respective rate responder classes
-    # This is done manually right now, but it could be automated using
-    # filenames and class names in the future.
-    rate_classes = {
-        "bottom": rate_bottom.BottomRate,
-        "berry": rate_berry.BerryRate,
-        "cute": rate_cute.CuteRate,
-        "dimbo": rate_dimbo.DimboRate,
-        "dom": rate_dom.DomRate,
-        "emma": rate_emma.EmmaRate,
-        "fish": rate_fish.FishRate,
-        "gay": rate_gay.GayRate,
-        "stinky": rate_stinky.StinkyRate,
-        "sub": rate_dom.DomRate,
-    }
+    RATE_RESPONDER_PATH = Path(__file__).parent
 
     def __init__(self, parent, bot: Red):
+        # BaseTextResponder is an abstract class which does not have an
+        # init, so don't call super().__init__ here.
         self.parent = parent
         self.bot = bot
+
+        # Mapping of topics to their respective rate responder classes
+        # This is done manually right now, but it could be automated using
+        # filenames and class names in the future.
+        self.rate_classes = {
+            "bottom": rate_bottom.BottomRate(parent, bot),
+            "berry": rate_berry.BerryRate(parent, bot),
+            "cute": rate_cute.CuteRate(parent, bot),
+            "dimbo": rate_dimbo.DimboRate(parent, bot),
+            "dom": rate_dom.DomRate(parent, bot),
+            "emma": rate_emma.EmmaRate(parent, bot),
+            "fish": rate_fish.FishRate(parent, bot),
+            "gay": rate_gay.GayRate(parent, bot),
+            "stinky": rate_stinky.StinkyRate(parent, bot),
+        }
+
+        # Default rate responder class
+        self.rate_classes["default"] = rate_anything.RateAnything(parent, bot)
+
+        # Aliasing topics
+        # TODO: there's probably a smarter way to do this, but this is the easiest right now
+        self.rate_classes["sub"] = self.rate_classes["dom"]
 
     async def respond(
         self, message: discord.Message, target: discord.Member, match=re.Match
     ):
         topic = match.group(1).strip()
 
-        if topic.lower() in self.rate_classes:
-            responder_class = self.rate_classes.get(topic.lower())
-            responder = responder_class(self.parent, self.bot)
-        # special case for rate anything
-        else:
-            responder_class = rate_anything.RateAnything
-            responder = responder_class(
-                self.parent, self.bot, target=target, topic=topic
-            )
+        # this attempts to get the appropriate responder object based on
+        # the topic. It will default to the RateAnything object if the
+        # topic is not found
+        responder = self.rate_classes.get(
+            topic.lower(), self.rate_classes.get("default")
+        )
+
+        responder.topic = topic
 
         self.parent.logger.debug(
-            f"Calling respond method from {responder_class.__name__}"
+            f"Calling respond method from {responder.__class__.__name__}"
         )
-        await responder.respond(message, target, match)
+        await responder.respond(message, target=target, match=match)

@@ -4,6 +4,7 @@ This responder will choose a berry type based on the user ID and respond
 with a description of the berry and a thumbnail image.
 """
 
+from typing import Any
 import re
 
 import discord
@@ -11,6 +12,7 @@ from redbot.core.bot import Red
 
 from .. import const
 from .base_rate_responder import BaseRateResponder
+from unicornia import strings
 
 
 class BerryRate(BaseRateResponder):
@@ -59,8 +61,8 @@ class BerryRate(BaseRateResponder):
         },
     }
 
-    user_overrides: dict = {        
-        # Berry 
+    user_overrides: dict = {
+        # Berry
         1058458210060751039: berry_types["strawberry"],
         # Jun
         89582933735665664: {
@@ -76,30 +78,67 @@ class BerryRate(BaseRateResponder):
         self.bot = bot
         self.bot = bot
 
-    def get_berry_by_user(self, user_id: int):
+    def get_property(
+        self, property: str, target: discord.Member, berry_name: str
+    ) -> Any:
+        """Overwrites base class method
+
+        Uses the berry name to get the property from the berry_types dictionary.
+
+        Args:
+            property (str): The property to get.
+            target (discord.Member): The target member.
+            berry_name (str): The name of the berry.
+
+        Returns:
+            Any: The value of the property.
+        """
+
+        if target.id in self.user_overrides:
+            value = self.user_overrides.get(target.id).get(
+                property, getattr(self, property)
+            )
+        else:
+            value = self.berry_types[berry_name].get(property, getattr(self, property))
+
+        return value
+
+    def get_berry_type_by_user_id(self, user_id: int):
+        """Get a berry type based on the user ID.
+
+        Args:
+            user_id (int): The user ID.
+
+        Returns:
+            str: The name of the berry type.
+        """
         berry_list = list(self.berry_types.keys())
         berry_index = user_id % len(berry_list)
         berry_name = berry_list[berry_index]
-        return berry_name, self.berry_types[berry_name]
+
+        return berry_name
 
     async def respond(
         self, message: discord.Message, target: discord.Member, match: re.Match
     ):
         """Extends the base class method to handle dominant/submissive ratings."""
-        berry_name, berry_properties = self.get_berry_by_user(target.id)
+        # instead of a random rating, we're going to get a berry type using the user ID
+        berry_name = self.get_berry_type_by_user_id(target.id)
 
-        title = f"❯ {berry_name.capitalize()}"
+        # get the properties for the embed based
+        title = self.get_property("title", target, berry_name)
+        description = self.get_property("description", target, berry_name)
+        thumbnail = self.get_property("thumbnail", target, berry_name)
+        footer = self.get_property("footer", target, berry_name)
 
-        thumbnail = berry_properties.get("thumbnail", target.avatar.url)
-
-        description = berry_properties.get("description", self.description)
-        description = description.format(target=target.display_name)
+        title = title.capitalize()
+        description = strings.format_string(description, target=target.display_name)
 
         await self.send_embed(
             message,
             title=title,
             description=description,
             thumbnail=thumbnail,
-            footer=self.footer,
+            footer=footer,
             delay=False,
         )

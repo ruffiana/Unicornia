@@ -159,4 +159,12 @@ class ResponderCog(commands.Cog):
                     f"message: {message}, target_member: {target_member}, match: {match}"
                 )
 
-                return await responder.respond(message, target_member, match)
+                if responder.is_on_cooldown():
+                    if responder.silent_cooldown:
+                        return
+                    return await message.reply(
+                        f"Please wait {responder.get_cooldown_remaining()}s before using this command again."
+                    )
+                else:
+                    responder.update_last_called()
+                    return await responder.respond(message, target_member, match)

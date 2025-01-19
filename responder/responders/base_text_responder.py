@@ -102,9 +102,8 @@ class BaseTextResponder(ABC):
 
     def get_cooldown_remaining(self):
         """Get the remaining time in seconds before the responder is available."""
-        return round(
-            self.cooldown_time - (asyncio.get_event_loop().time() - self.last_called), 2
-        )
+        cur_time = asyncio.get_event_loop().time()
+        return round(self.cooldown_time - (cur_time - self.last_called))
 
     @property
     def last_called(self):

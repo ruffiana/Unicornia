@@ -65,9 +65,20 @@ class BaseRateResponder(BaseTextResponder):
     rating_overrides = {}
 
     def __init__(self, parent, bot: Red):
-        # TextResponderBase is an abstract base class and doesn't have an init
+        # BaseTextResponder is an abstract class which does not have an
+        # init, so don't call super().__init__ here.
         self.parent = parent
         self.bot = bot
+
+        self._topic: str = None
+
+    @property
+    def topic(self):
+        return self._topic
+
+    @topic.setter
+    def topic(self, value):
+        self._topic = value
 
     @staticmethod
     def get_rating():
@@ -78,7 +89,7 @@ class BaseRateResponder(BaseTextResponder):
         """
         return random.randint(0, 100)
 
-    def get_property(self, property: str, target: discord.Member, rating: int):
+    def get_property(self, property: str, member: discord.Member, rating: int):
         """Retrieve a property value for a given target member and rating.
 
         1. This method first checks if the target member has any user-specific overrides.
@@ -90,7 +101,7 @@ class BaseRateResponder(BaseTextResponder):
 
         Args:
             property (str): The name of the property to retrieve.
-            target (discord.Member): The target member for whom the property is being retrieved.
+            member (discord.Member): The target member for whom the property is being retrieved.
             rating (int): The rating value to check for rating-specific overrides.
 
         Returns:
@@ -98,8 +109,8 @@ class BaseRateResponder(BaseTextResponder):
              rating-specific overrides, or the default property value.
         """
 
-        if target.id in self.user_overrides:
-            value = self.user_overrides.get(target.id).get(
+        if member.id in self.user_overrides:
+            value = self.user_overrides.get(member.id).get(
                 property, getattr(self, property)
             )
             return random.choice(value) if isinstance(value, list) else value
@@ -113,19 +124,19 @@ class BaseRateResponder(BaseTextResponder):
 
         return getattr(self, property)
 
-    def get_title(self, target: discord.Member, rating: int):
-        return self.get_property("title", target, rating)
+    def get_title(self, member: discord.Member, rating: int):
+        return self.get_property("title", member, rating)
 
-    def get_description(self, target: discord.Member, rating: int):
-        return self.get_property("description", target, rating)
+    def get_description(self, member: discord.Member, rating: int):
+        return self.get_property("description", member, rating)
 
-    def get_footer(self, target: discord.Member, rating: int):
-        return self.get_property("footer", target, rating)
+    def get_footer(self, member: discord.Member, rating: int):
+        return self.get_property("footer", member, rating)
 
-    def get_thumbnail(self, target: discord.Member, rating: int):
-        thumbnail = self.get_property("thumbnail", target, rating)
+    def get_thumbnail(self, member: discord.Member, rating: int):
+        thumbnail = self.get_property("thumbnail", member, rating)
         if not thumbnail:
-            thumbnail = target.display_avatar.url
+            thumbnail = member.display_avatar.url
 
         return thumbnail
 

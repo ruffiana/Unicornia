@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7] - 2025-01-19
+
+### Changed
+
+- Long Cat responder now accepts 'short' cat. It also keeps the current cat length, increasing or decreasing it with more 'o's
+- All responder classes are now initialized when the cog is. This allows us to store property values while the cog is running.
+
 ## [0.1.6] - 2025-01-18
 
 ### Added

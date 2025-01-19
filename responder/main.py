@@ -56,6 +56,7 @@ class ResponderCog(commands.Cog):
         self.logger.info("-" * 32)
 
     def collect_responders(self):
+        ignore_classes = [BaseTextResponder, BaseRateResponder]
         responders = []
 
         for filepath in self.RESPONDER_FILE_PATHS:
@@ -73,7 +74,7 @@ class ResponderCog(commands.Cog):
                 attr = getattr(module, attr_name)
                 if (
                     isinstance(attr, type)
-                    and attr is not any([BaseTextResponder, BaseRateResponder])
+                    and attr is not any(ignore_classes)
                     and issubclass(attr, BaseTextResponder)
                     and getattr(attr, "enabled", False)
                 ):
@@ -157,4 +158,5 @@ class ResponderCog(commands.Cog):
                 self.logger.debug(
                     f"message: {message}, target_member: {target_member}, match: {match}"
                 )
+
                 return await responder.respond(message, target_member, match)

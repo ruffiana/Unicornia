@@ -17,6 +17,8 @@ class TheGameResponder(BaseTextResponder):
     patterns = [r"\bThe Game\b"]
     ignore_case = False
 
+    cooldown_time = 120
+
     def __init__(self, parent, bot: Red):
         # BaseTextResponder is an abstract class which does not have an
         # init, so don't call super().__init__ here.

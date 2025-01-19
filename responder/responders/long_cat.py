@@ -53,4 +53,4 @@ class LongCatResponder(BaseTextResponder):
             long_cat = f"{self.EMOJI_CAT_FRONT}{middle_cat}{self.EMOJI_CAT_END}"
 
         await self.send_message(message, long_cat, as_reply=False, delay=False)
-        await self.send_message(messame, "OH NO! LONG CAT WAS TOO LONG!", as_reply=True, delay=False)
+        await self.send_message(message, "OH NO! LONG CAT WAS TOO LONG!", as_reply=True, delay=False)

@@ -54,6 +54,7 @@ class BaseTextResponder(ABC):
     # The pattern(s) to match in the message content. This is defined as a list so that
     # we can treat them the sa
     patterns: Union[str, list[str]] = []
+    target_member: discord.Member = None
 
     # attributes used to generate regex flags
     ignore_case: bool = True
@@ -92,7 +93,6 @@ class BaseTextResponder(ABC):
     async def respond(
         self,
         message: discord.Message,
-        matched_text: str,
         target: discord.Member,
         match: re.Match,
     ):

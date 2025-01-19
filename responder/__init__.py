@@ -2,7 +2,7 @@
 
 __version__ = "0.1.63"
 __author__ = "Unicornia Team"
-__credits__ = ["Ruffiana"]
+__credits__ = ["Ruffiana", "Radon"]
 __license__ = "MIT"
 
 

@@ -16,7 +16,7 @@ from .. import const
 class LongCatResponder(BaseTextResponder):
     enabled = True
     # matches "long"/"short" "cat" or "kitty" capturing the "o"s in a group
-    patterns = [r"\bl(o+)ng|sh(o*)rt (cat)|(kitty)\b"]
+    patterns = [r"\b(l(o+)ng|sh(o*)rt) (cat|kitty)\b"]
     ignore_case = True
 
     EMOJI_CAT_FRONT = "<:longcat_1:948672953715929168>"
@@ -46,9 +46,10 @@ class LongCatResponder(BaseTextResponder):
         match: re.Match,
     ):
 
-        # captures "o"s in either "long" or "short"
-        ooo = match.group(1) or match.group(2)
-        name = match.group(3) or match.group(4)
+        # capture groups
+        long_or_short = match.group(1)
+        ooo = match.group(2) or match.group(3)
+        name = match.group(4)
 
         # we only want to add or remove sections if more than one 'o' is
         # captured, otherwise we just want to display the current long cat.

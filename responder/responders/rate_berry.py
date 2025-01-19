@@ -12,7 +12,7 @@ from redbot.core.bot import Red
 
 from .. import const
 from .base_rate_responder import BaseRateResponder
-from unicornia import strings
+from ..unicornia import strings
 
 
 class BerryRate(BaseRateResponder):
@@ -20,42 +20,52 @@ class BerryRate(BaseRateResponder):
 
     berry_types = {
         "strawberry": {
+            "title": "❯ Strawberry",
             "description": "{target} is a sweet, red fruit with a juicy texture.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Garden_strawberry_%28Fragaria_%C3%97_ananassa%29_single2.jpg/800px-Garden_strawberry_%28Fragaria_%C3%97_ananassa%29_single2.jpg?20220126170106",
         },
         "blueberry": {
+            "title": "❯ Blueberry",
             "description": "{target} is a small, round, blue fruit that is often used in desserts.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Afin%C4%83.jpg/450px-Afin%C4%83.jpg?20230815131650",
         },
         "raspberry": {
+            "title": "❯ Raspberry",
             "description": "{target} is a red or black fruit with a tart flavor and a bumpy texture.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Raspberry_-_whole_%28Rubus_idaeus%29.jpg/800px-Raspberry_-_whole_%28Rubus_idaeus%29.jpg?20201209125004",
         },
         "blackberry": {
+            "title": "❯ Blackberry",
             "description": "{target} is a dark purple or black fruit with a sweet and tart flavor.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Blackberry_%28Rubus_fruticosus%29.jpg/800px-Blackberry_%28Rubus_fruticosus%29.jpg?20210222123148",
         },
         "cranberry": {
+            "title": "❯ Cranberry",
             "description": "{target} is a small, red fruit with a tart flavor, often used in sauces and juices.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Cranberry_whole.JPG/800px-Cranberry_whole.JPG?20121224121656",
         },
         "gooseberry": {
+            "title": "❯ Gooseberry",
             "description": "{target} is a small, round fruit that can be green, red, or purple, with a tart flavor.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Gooseberries.JPG/800px-Gooseberries.JPG?20080722134215",
         },
         "elderberry": {
+            "title": "❯ Elderberry",
             "description": "{target} is a small, dark purple fruit that is often used in syrups and jams.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Sambucus-berries.jpg/640px-Sambucus-berries.jpg",
         },
         "mulberry": {
+            "title": "❯ Mulberry",
             "description": "{target} is a dark purple or black fruit with a sweet flavor, often used in pies and jams.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Black_mulberry_fruit_%28Morus_nigra%29.jpg/640px-Black_mulberry_fruit_%28Morus_nigra%29.jpg",
         },
         "boysenberry": {
+            "title": "❯ Boysenberry",
             "description": "{target} is a large, dark purple fruit with a sweet-tart flavor, a cross between a raspberry and a blackberry.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/MG_9472.jpg/640px-MG_9472.jpg",
         },
         "huckleberry": {
+            "title": "❯ Huckleberry",
             "description": "{target} is a small, round, dark blue or black fruit with a sweet-tart flavor, similar to a blueberry.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Single_Huckleberry_with_Stem_Attached.png/640px-Single_Huckleberry_with_Stem_Attached.png",
         },
@@ -67,7 +77,7 @@ class BerryRate(BaseRateResponder):
         # Jun
         89582933735665664: {
             "title": "❯ Juneberry",
-            "decription": "{target} is a small, dark purple or red fruit possessing a mild sweetness strongly accented by the almond-like flavour of the seeds.",
+            "description": "{target} is a small, dark purple or red fruit possessing a mild sweetness strongly accented by the almond-like flavour of the seeds.",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Amelanchier_ovalis3.JPG/540px-Amelanchier_ovalis3.JPG",
         },
     }
@@ -98,10 +108,15 @@ class BerryRate(BaseRateResponder):
             value = self.user_overrides.get(target.id).get(
                 property, getattr(self, property)
             )
+            return value
         else:
-            value = self.berry_types[berry_name].get(property, getattr(self, property))
+            berry_properties = self.berry_types.get(berry_name)
+            value = berry_properties.get(property)
 
-        return value
+        if value:
+            return value
+        else:
+            return getattr(self, property)
 
     def get_berry_type_by_user_id(self, user_id: int):
         """Get a berry type based on the user ID.
@@ -131,7 +146,6 @@ class BerryRate(BaseRateResponder):
         thumbnail = self.get_property("thumbnail", target, berry_name)
         footer = self.get_property("footer", target, berry_name)
 
-        title = title.capitalize()
         description = strings.format_string(description, target=target.display_name)
 
         await self.send_embed(

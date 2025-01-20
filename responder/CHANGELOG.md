@@ -14,6 +14,7 @@
 ### Fixed
 
 - Fixed regex for long cat causing false positives
+- Fixed User ID for Kirin
 
 ## [0.1.6] - 2025-01-18
 

@@ -15,6 +15,8 @@ from .base_rate_responder import BaseRateResponder
 
 
 class RateAnything(BaseRateResponder):
+    SUPPORTER_ROLE_ID = 700121551483437128
+
     def get_random_gif(self):
         # Search tenor for an appropriate thumbnail image
         search_term = self.topic.replace(" ", "-")
@@ -23,12 +25,23 @@ class RateAnything(BaseRateResponder):
 
         return gif_url
 
+    def is_approved(self, message: discord.Message):
+        if message.author.guild_permissions.administrator:
+            return True
+        if any(role.id == self.SUPPORTER_ROLE_ID for role in message.author.roles):
+            return True
+        return False
+
     async def respond(
         self,
         message: discord.Message,
         target: discord.Member,
         match: re.Match,
     ):
+        # Check if the user is an approved user
+        if not self.is_approved(message):
+            return
+
         rating = self.get_rating()
 
         title = " ".join(word.capitalize() for word in self.topic.split())

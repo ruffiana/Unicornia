@@ -12,6 +12,7 @@ from redbot.core.bot import Red
 from . import __version__, const
 from .responders.base_rate_responder import BaseRateResponder
 from .responders.base_text_responder import BaseTextResponder
+from .unicornia import discord as unicornia_discord
 
 
 class ResponderCog(commands.Cog):
@@ -49,13 +50,14 @@ class ResponderCog(commands.Cog):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(const.LOG_LEVEL)
 
-        self.responders = self.collect_responders()
+        self.responders = self._init_responders()
 
         self.logger.info("-" * 32)
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
         self.logger.info("-" * 32)
 
-    def collect_responders(self):
+    def _init_responders(self):
+        """Collect all responder classes from the responders directory and instantiates them."""
         ignore_classes = [BaseTextResponder, BaseRateResponder]
         responders = []
 
@@ -84,32 +86,6 @@ class ResponderCog(commands.Cog):
 
         return responders
 
-    async def get_target_member(self, message, target_key):
-        member = None
-
-        # Try to get member by mention
-        if re.match(r"<@!?\d+>", target_key):
-            member_id = int(re.findall(r"\d+", target_key)[0])
-            member = message.guild.get_member(member_id)
-
-        # Try to get member by user ID
-        if not member and target_key.isdigit():
-            member = message.guild.get_member(int(target_key))
-            if not member:
-                try:
-                    member = await message.guild.fetch_member(int(target_key))
-                except discord.NotFound:
-                    member = None
-
-        # Try to get member by username
-        if not member:
-            for m in message.guild.members:
-                if str(m) == target_key or f"{m.name}#{m.discriminator}" == target_key:
-                    member = m
-                    break
-
-        return member
-
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
         # Ignore messages from all bots
@@ -123,10 +99,10 @@ class ResponderCog(commands.Cog):
         match = self.COMMAND_USER_PATTERN.match(message.content.strip())
         if match:
             trigger = match.group(1).strip()
-            target = match.group(2).strip()
+            target_key = match.group(2).strip()
         else:
             trigger = message.content
-            target = None
+            target_key = None
 
         for responder in self.responders:
             self.logger.debug(
@@ -144,12 +120,23 @@ class ResponderCog(commands.Cog):
                     self.logger.debug(f"No match for {trigger} in pattern: {pattern}")
                     continue
 
+                # Check if the responder is on cooldown
+                if responder.is_on_cooldown():
+                    if responder.silent_cooldown:
+                        return
+                    return await message.reply(
+                        f"Please wait {responder.get_cooldown_remaining()}s before using this command again."
+                    )
+
                 # We have a valid responder pattern and a target key
-                if target:
-                    target_member = await self.get_target_member(message, target)
+                if target_key:
+                    context = await self.bot.get_context(message)
+                    target_member = await unicornia_discord.get_member(
+                        context, target_key
+                    )
                     if target_member is None:
                         return await message.reply(
-                            f'Unable to find a member using "{target}".'
+                            f'Unable to find a member using "{target_key}".'
                         )
                 # No target key, use the message author
                 else:
@@ -159,12 +146,6 @@ class ResponderCog(commands.Cog):
                     f"message: {message}, target_member: {target_member}, match: {match}"
                 )
 
-                if responder.is_on_cooldown():
-                    if responder.silent_cooldown:
-                        return
-                    return await message.reply(
-                        f"Please wait {responder.get_cooldown_remaining()}s before using this command again."
-                    )
-                else:
-                    responder.update_last_called()
-                    return await responder.respond(message, target_member, match)
+                # Update the last called time for the responder and call the respond method
+                responder.update_last_called()
+                return await responder.respond(message, target_member, match)

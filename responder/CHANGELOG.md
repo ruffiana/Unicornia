@@ -10,6 +10,7 @@
 
 - Long Cat responder now accepts 'short' cat. It also keeps the current cat length, increasing or decreasing it with more 'o's
 - All responder classes are now initialized when the cog is. This allows us to store property values while the cog is running.
+- Rate Anything command now only useable by Supporters
 
 ### Fixed
 

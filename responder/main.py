@@ -175,6 +175,8 @@ class ResponderCog(commands.Cog):
 
         # Try and find a responder for any triggers in the message
         responder, responder_match = self._get_responder(trigger)
+        if responder is None:
+            return
 
         # Check if the responder is on cooldown
         if (

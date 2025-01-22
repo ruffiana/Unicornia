@@ -55,10 +55,11 @@ class LongCatResponder(BaseTextResponder):
 
         # we only want to add or remove sections if more than one 'o' is
         # captured, otherwise we just want to display the current long cat.
-        if long_or_short.startswith("l") and len(ooo) > 1:
-            self.sections += len(ooo)
-        elif long_or_short.startswith("s") and len(ooo) > 1:
-            self.sections -= len(ooo)
+        sections_to_remove = len(ooo) - 1
+        if sections_to_remove > 0 and long_or_short.startswith("l"):
+            self.sections += sections_to_remove
+        elif sections_to_remove > 0 and long_or_short.startswith("s"):
+            self.sections -= sections_to_remove
 
         middle_cat = "".join([self.EMOJI_CAT_MIDDLE] * self.sections)
         long_cat = f"{self.EMOJI_CAT_FRONT}{middle_cat}{self.EMOJI_CAT_END}"
@@ -80,7 +81,7 @@ class LongCatResponder(BaseTextResponder):
 
             await self.send_message(message, long_cat, as_reply=False, delay=False)
             await self.send_message(
-                message, "OH NO! LONG CAT WAS TOO SHORT!", as_reply=True, delay=False
+                message, "OH NO! SHORT CAT WAS TOO SHORT!", as_reply=True, delay=False
             )
             self.sections = self.DEFAULT_SECTIONS
         else:

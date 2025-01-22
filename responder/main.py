@@ -45,6 +45,7 @@ class ResponderCog(commands.Cog):
 
         self.bot = bot
         self.uwu_cog = bot.get_cog("UwUCog")
+        self.logger.info(f"UwUCog: {self.uwu_cog}")
 
         self.responders = self._init_responders()
 

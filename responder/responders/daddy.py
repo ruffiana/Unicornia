@@ -10,6 +10,7 @@ import discord
 from redbot.core.bot import Red
 
 from .base_text_responder import BaseTextResponder
+from .. import const
 
 
 class ImDaddyResponder(BaseTextResponder):
@@ -46,6 +47,8 @@ class ImDaddyResponder(BaseTextResponder):
         self.parent.logger.debug(f"{name} = {chance}% chance to respond")
 
         if message.author.id in self.always_respond or random.randint(0, 99) < chance:
-            await self.send_message(
-                message, f"Hi, {name}! I'm your daddy...", as_reply=True, delay=True
-            )
+            daddy_response = f"Hi, {name}! I'm your daddy..."
+            if message.author.id == const.RUFFIANA_ID:
+                daddy_response = self.parent.uwu_cog.translate(daddy_response)
+
+            await self.send_message(message, daddy_response, as_reply=True, delay=True)

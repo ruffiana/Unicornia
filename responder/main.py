@@ -83,7 +83,7 @@ class ResponderCog(commands.Cog):
 
     def _get_responder(
         self, trigger: str
-    ) -> Union[tuple[BaseTextResponder, re.Match], tuple[None, None]:
+    ) -> Union[tuple[BaseTextResponder, re.Match], tuple[None, None]]:
         """Retrieve the appropriate responder based on the given trigger.
 
         This method iterates through the list of responders and checks if any of them
@@ -174,10 +174,7 @@ class ResponderCog(commands.Cog):
             target_key = None
 
         # Try and find a responder for any triggers in the message
-        responder_and_match = self._get_responder(trigger)
-        if responder_and_match is None:
-            return
-        responder, responder_match = responder_and_match
+        responder, responder_match = self._get_responder(trigger)
 
         # Check if the responder is on cooldown
         if (

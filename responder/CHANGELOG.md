@@ -18,6 +18,7 @@
 - Fixed bug in determining new length of cat
 - Fixed regex for long cat causing false positives
 - Fixed User ID for Kirin
+- Fixed bug in get responder method
 
 ## [0.1.6] - 2025-01-18
 

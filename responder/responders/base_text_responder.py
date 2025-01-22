@@ -147,7 +147,7 @@ class BaseTextResponder(ABC):
         """
         # Calculate the typing delay based on the length of the text with a max of 3 sec
         typing_delay = min(3, len(text) * 0.025)
-        self.parent.logger.info(f"Typing delay: {typing_delay}")
+        self.parent.logger.debug(f"Typing delay: {typing_delay}")
         async with message.channel.typing():
             await asyncio.sleep(typing_delay)
 

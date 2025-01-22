@@ -40,10 +40,11 @@ class ResponderCog(commands.Cog):
     COMMAND_USER_PATTERN = re.compile(r"^(.*?)\s+(<@!?\d{17,19}>|\d{17,19})$")
 
     def __init__(self, bot: Red):
-        self.bot = bot
-
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(const.LOG_LEVEL)
+
+        self.bot = bot
+        self.uwu_cog = bot.get_cog("UwUCog")
 
         self.responders = self._init_responders()
 

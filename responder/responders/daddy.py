@@ -25,13 +25,6 @@ class ImDaddyResponder(BaseTextResponder):
         self.parent = parent
         self.bot = bot
 
-        self.always_respond.extend(
-            [
-                # berry
-                1058458210060751039
-            ]
-        )
-
     async def respond(
         self,
         message: discord.Message,

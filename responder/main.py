@@ -18,20 +18,6 @@ from .unicornia import discord as unicornia_discord
 class ResponderCog(commands.Cog):
     RESPONDERS_PATH = Path(__file__).parent / "responders"
     RESPONDER_FILE_PATHS = [Path(p) for p in glob.glob(str(RESPONDERS_PATH / "*.py"))]
-    ALLOWED_CHANNEL_IDS = {
-        # Ruffiana's Playground - redbot
-        1318299981668552735,
-        # bot commands
-        686096388018405408,
-        # bot dungeon
-        1081656723904921651,
-        # comfy chat
-        778700678851723295,
-        # horny jail
-        686091486327996459,
-        # bot spam
-        686092688059400454,
-    }
 
     # Pattern used to separate potential trigger from the target member
     # ^(.*?): Captures any characters (non-greedy) at the beginning of the string as trigger.
@@ -44,8 +30,9 @@ class ResponderCog(commands.Cog):
         self.logger.setLevel(const.LOG_LEVEL)
 
         self.bot = bot
+
+        # Note that this is the name of the cog class
         self.uwu_cog = bot.get_cog("UwUCog")
-        self.logger.info(f"UwUCog: {self.uwu_cog}")
 
         self.responders = self._init_responders()
 
@@ -138,6 +125,14 @@ class ResponderCog(commands.Cog):
         context = await self.bot.get_context(message)
         return await unicornia_discord.get_member(context, target_key)
 
+    def is_allowed_channel(self, guild_id: int, channel_id: int) -> bool:
+        # Check if the message is in a guild's allowed channel
+        if guild_id not in const.SERVER_PERMISSIONS:
+            return False
+        if channel_id not in const.SERVER_PERMISSIONS[guild_id]["allowed_channels"]:
+            return False
+        return True
+
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
         """Event listener that is called when a message is created and sent to a channel.
@@ -162,8 +157,8 @@ class ResponderCog(commands.Cog):
         if message.author.bot:
             return
 
-        # Check if the message is in an allowed channel
-        if message.channel.id not in self.ALLOWED_CHANNEL_IDS:
+        # Check if the message is in a guild's allowed channel
+        if not self.is_allowed_channel(message.guild.id, message.channel.id):
             return
 
         # Separate trigger from potential target member

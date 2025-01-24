@@ -19,6 +19,7 @@
 - Fixed regex for long cat causing false positives
 - Fixed User ID for Kirin
 - Fixed bug in get responder method
+- Fixed bug in missing thumnails for various rate responders
 
 ## [0.1.6] - 2025-01-18
 

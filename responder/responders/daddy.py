@@ -19,6 +19,9 @@ class ImDaddyResponder(BaseTextResponder):
     patterns = [r"\A(?:i'?\s?a?m\s+)"]
     ignore_case = True
 
+    # respond to these users in UwU
+    UWU = [const.RUFFIANA_ID, const.RADON_ID]
+
     def __init__(self, parent, bot: Red):
         # BaseTextResponder is an abstract class which does not have an
         # init, so don't call super().__init__ here.
@@ -48,7 +51,7 @@ class ImDaddyResponder(BaseTextResponder):
 
         if message.author.id in self.always_respond or random.randint(0, 99) < chance:
             daddy_response = f"Hi, {name}! I'm your daddy..."
-            if message.author.id == const.RUFFIANA_ID:
+            if message.author.id in self.UWU:
                 daddy_response = self.parent.uwu_cog.translate(daddy_response)
 
             await self.send_message(message, daddy_response, as_reply=True, delay=True)

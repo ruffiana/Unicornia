@@ -1,6 +1,6 @@
 """Template for redbot cog"""
 
-__version__ = "0.1.76"
+__version__ = "0.1.77"
 __author__ = "Unicornia Team"
 __credits__ = ["Ruffiana", "Radon"]
 __license__ = "MIT"

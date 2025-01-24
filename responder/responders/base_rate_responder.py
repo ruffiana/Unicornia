@@ -52,7 +52,7 @@ class BaseRateResponder(BaseTextResponder):
 
     title: str = "[RATE]"
     description: str = "❯ {target} is {rating}%"
-    thumbnail: str = "https://example.com/default_thumbnail.png"
+    thumbnail: str = None  # "https://example.com/default_thumbnail.png"
     footer: str = None
 
     # this enables hard-coding overrides for specific user ids

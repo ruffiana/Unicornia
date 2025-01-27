@@ -1,6 +1,6 @@
 """Cutie of the Month Contest Cog"""
 
-__version__ = "1.0.1"
+__version__ = "1.0.11"
 __author__ = "Unicornia Team"
 __credits__ = ["Ruffiana"]
 __license__ = "MIT"

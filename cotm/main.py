@@ -124,7 +124,7 @@ class ContestCog(commands.Cog):
         )
         await channel.send(embed=votes_Embed)
 
-    @commands.command()
+    @commands.command(aliases=["cotm"])
     @commands.admin_or_permissions(administrator=True)
     async def contest(self, ctx: commands.Context, contest_number: int = None):
         if contest_number is not None:

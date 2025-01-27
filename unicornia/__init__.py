@@ -22,7 +22,7 @@ Classes:
     [List any module-level classes here, if applicable]
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Unicornia Team"
 __contributors__ = ["Ruffiana"]
 __license__ = "MIT"

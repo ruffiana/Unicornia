@@ -6,6 +6,11 @@
 
 - "cotm" command alias
 
+### Changed
+
+- Moved logger level into const
+- Added docstrings to all methods
+
 ### Fixed
 
 - Channel & role mentions in description texts.

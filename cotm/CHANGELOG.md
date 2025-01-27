@@ -2,6 +2,10 @@
 
 ## [1.0.1] - 2025-1-27
 
+### Added
+
+- "cotm" command alias
+
 ### Fixed
 
 - Channel & role mentions in description texts.

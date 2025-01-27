@@ -17,7 +17,7 @@ class ContestCog(commands.Cog):
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self.logger.setLevel(logging.DEBUG)
 
-        self._contest_number: int = 54
+        self._contest_number: int = 1
 
         self.logger.info("-" * 32)
         self.logger.info(f"{self.__class__.__name__} v({__version__}) initialized!")
@@ -54,11 +54,12 @@ class ContestCog(commands.Cog):
             const.FOOTER_TEXT, contest_number=self.contest_number
         )
         embed.set_footer(text=footer_text, icon_url=const.FOOTER_ICON_URL)
+        embed.color = const.UNICORNIA_BOT_COLOR
 
         return embed
 
     def _get_channel(self, ctx: commands.Context) -> discord.TextChannel:
-        channel_id = const.CONTEST_CHANNEL_IDS.get(ctx.guild.id)
+        channel_id = const.CONTEST_CHANNEL_IDS[ctx.guild.id]["info"]
         if channel_id is None:
             self.logger.error(
                 f"Unable to find contest channel id for Guild ID:{ctx.guild.id}"
@@ -72,6 +73,15 @@ class ContestCog(commands.Cog):
 
         return channel
 
+    def _format_text(self, ctx: commands.Context, text: str) -> str:
+        return strings.format_string(
+            text,
+            contest_number=self.contest_number,
+            cutie_role=const.CUTIE_ROLE_MENTION,
+            entries_channel=const.ENTRIES_CHANNEL_MENTION,
+            winners_channel=const.WINNERS_CHANNEL_MENTION,
+        )
+
     async def _post_contest_info(self, ctx: commands.Context, contest_number: int):
         channel = self._get_channel(ctx)
         if channel is None:
@@ -80,16 +90,13 @@ class ContestCog(commands.Cog):
         # this updates property as an integer, and gets it a a string with ordinal suffix
         # ex: "52nd", "53rd", etc
         self.contest_number = contest_number
-        contest_number = self.contest_number
 
         # post embed for general description of Cutie of the Month Contest
         contest_description = self._import_txt(const.CONTEST_DESCRIPTION)
+
         contest_Embed = self._create_embed(
             const.CONTEST_TITLE,
-            strings.format_string(
-                contest_description,
-                contest_number=contest_number,
-            ),
+            self._format_text(ctx, contest_description),
         )
         await channel.send(embed=contest_Embed)
 
@@ -97,10 +104,7 @@ class ContestCog(commands.Cog):
         terms_description = self._import_txt(const.TERMS_DESCRIPTION)
         terms_Embed = self._create_embed(
             const.TERMS_TITLE,
-            strings.format_string(
-                terms_description,
-                contest_number=contest_number,
-            ),
+            self._format_text(ctx, terms_description),
         )
         await channel.send(embed=terms_Embed)
 
@@ -108,10 +112,7 @@ class ContestCog(commands.Cog):
         prizes_description = self._import_txt(const.PRIZES_DESCRIPTION)
         prizes_Embed = self._create_embed(
             const.PRIZES_TITLE,
-            strings.format_string(
-                prizes_description,
-                contest_number=contest_number,
-            ),
+            self._format_text(ctx, prizes_description),
         )
         await channel.send(embed=prizes_Embed)
 
@@ -119,10 +120,7 @@ class ContestCog(commands.Cog):
         votes_description = self._import_txt(const.VOTES_DESCRIPTION)
         votes_Embed = self._create_embed(
             const.VOTES_TITLE,
-            strings.format_string(
-                votes_description,
-                contest_number=contest_number,
-            ),
+            self._format_text(ctx, votes_description),
         )
         await channel.send(embed=votes_Embed)
 

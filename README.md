@@ -34,11 +34,14 @@ Roleplay Cog is originally based on [Jintaku-Cogs-V3 Roleplay](https://github.co
 
 #### Install cogs
 
+- `&cog install unicornia cotm`
 - `&cog install unicornia judge`
 - `&cog install unicornia lovense`
 - `&cog install unicornia marriage`
 - `&cog install unicornia modhelper`
+- `&cog install unicornia responder`
 - `&cog install unicornia roleplay`
+- `&cog install unicornia uwu`
 
 ### Updating with Redbot (*replace '&' with your bot prefix* )
 
@@ -48,16 +51,22 @@ Roleplay Cog is originally based on [Jintaku-Cogs-V3 Roleplay](https://github.co
 
 #### Update cogs
 
+- `&cog update cotm`
 - `&cog update judge`
 - `&cog update lovense`
 - `&cog update marriage`
 - `&cog update modhelper`
+- `&cog update responder`
 - `&cog update roleplay`
+- `&cog update uwu`
 
 #### Load cogs
 
+- `&load cotm`
 - `&load judge`
 - `&load lovense`
 - `&load marriage`
 - `&load modhelper`
+- `&load responder`
 - `&load roleplay`
+- `&load uwu`

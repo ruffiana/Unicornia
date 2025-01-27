@@ -1,0 +1,16 @@
+{
+  "name": "ContestCog",
+  "short": "Cog to post embeds for Unicornia's Cutie of the Month Contest",
+  "description": "This cog posts embeds for contest information, terms, prizes, and instructions for voting to a specified channel.",
+  "author": ["Ruffiana"],
+  "tags": ["unicornia", "utility", "contest"],
+  "version": "1.0.0",
+  "license": "MIT",
+  "min_python_version": [3, 8, 0],
+  "end_user_data_statement": "This cog does not store any user data.",
+  "required_cogs": {},
+  "type": "COG",
+  "hidden": false,
+  "disabled": false,
+  "install_msg": "Thank you for installing the Unicornia Cutie of the !"
+}

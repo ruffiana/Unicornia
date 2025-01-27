@@ -1,5 +1,5 @@
-🗳️ React to posts in ⁠🎏᠈entries with the :uwuheart:.
+🗳️ React to posts in {entries_channel} with the <:uwuheart:862261325077544971>.
 
-‼️ Only :uwuheart: reactions will count as a vote.
+‼️ Only <:uwuheart:862261325077544971> reactions will count as a vote.
 
 👥 You can react to as many posts as you like.

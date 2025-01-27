@@ -145,3 +145,21 @@ def dict_to_string(data: dict) -> str:
         str: The string representation of the dictionary.
     """
     return "\n".join(f"{key}: {value}" for key, value in data.items())
+
+
+def add_ordinal_suffix(number: int) -> str:
+    """
+    Add the appropriate ordinal suffix to an integer.
+
+    Args:
+        number (int): The integer to add the suffix to.
+
+    Returns:
+        str: The integer with its ordinal suffix.
+    """
+    if 10 <= number % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(number % 10, "th")
+
+    return f"{number}{suffix}"

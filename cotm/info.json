@@ -4,7 +4,7 @@
   "description": "This cog posts embeds for contest information, terms, prizes, and instructions for voting to a specified channel.",
   "author": ["Ruffiana"],
   "tags": ["unicornia", "utility", "contest"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "min_python_version": [3, 8, 0],
   "end_user_data_statement": "This cog does not store any user data.",
@@ -12,5 +12,5 @@
   "type": "COG",
   "hidden": false,
   "disabled": false,
-  "install_msg": "Thank you for installing the Unicornia Cutie of the !"
+  "install_msg": "Thank you for installing the Unicornia Cutie of the Month Contest Cog!"
 }

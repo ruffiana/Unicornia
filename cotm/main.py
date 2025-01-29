@@ -147,8 +147,6 @@ class ContestCog(commands.Cog):
         if contest_number is not None:
             self.contest_number = contest_number
 
-        self.contest_number = contest_number
-
         # post embed for general description of Cutie of the Month Contest
         contest_Embed = self._create_embed(
             const.CONTEST_TITLE,
@@ -186,4 +184,4 @@ class ContestCog(commands.Cog):
             ctx (commands.Context): The context in which the command was invoked.
             contest_number (int, optional): The number of the contest to retrieve information for. Defaults to None.
         """
-        await self._post_contest_info(ctx, self._contest_number)
+        return await self._post_contest_info(ctx, contest_number)

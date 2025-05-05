@@ -12,7 +12,8 @@ __all__ = ["TextDraw"]
 class TextDraw(ImageUtil):
     """Utility class for drawing text on images using Pillow."""
 
-    FONTS_PATH = Path(__file__).parent / "fonts"
+    # Set FONTS_PATH to the absolute path you want
+    FONTS_PATH = Path("/root/.local/share/Red-DiscordBot/data/redbot/cogs/CogManager/cogs/judge/fonts")
     TEXT_FONT = FONTS_PATH / "calibrib.ttf"
     EMOJI_FONT = FONTS_PATH / "NotoColorEmoji-Regular.ttf"
 

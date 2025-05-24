@@ -76,7 +76,7 @@ class BerryRate(BaseRateResponder):
         #1058458210060751039: berry_types["strawberry"],
         1058458210060751039: {
             "title": "❯ Unique Berry",
-            "description": "{target} is a very unique Berry.",
+            "description": "{target} is the {target}.",
             "thumbnail": "https://cdn.discordapp.com/avatars/1058458210060751039/2ce710c92c6599d959f786e308ffddde.webp",
         },
         # Jun

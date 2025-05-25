@@ -53,7 +53,7 @@ class DomRate(BaseRateResponder):
         # berry
         1058458210060751039: {
             "title": "❯ Submissive",
-            "description": "❯ {target} is 555% Submissive.",
+            "description": "❯ {target} is 666% Submissive.",
             "thumbnail": r"https://cdn.discordapp.com/emojis/729249758715183144.webp?size=128&quality=lossless",
         },
     }
